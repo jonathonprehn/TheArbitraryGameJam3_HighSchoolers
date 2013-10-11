@@ -7,7 +7,17 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../lib/BigLittleFrameworkV5000.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="https://dl.dropboxusercontent.com/u/187598658/java%20projects/DocsForBigLittle/index.html" />
+        </JAVADOC>
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 
