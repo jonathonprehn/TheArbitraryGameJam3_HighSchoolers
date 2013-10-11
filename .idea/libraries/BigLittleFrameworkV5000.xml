@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="BigLittleFrameworkV5000">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/BigLittleFrameworkV5000.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
