@@ -6,6 +6,7 @@ import tag3.utility.RandomChance;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -18,8 +19,8 @@ import java.util.Random;
 public class Party {
 
     // food and water supplies of the party
-    private ArrayList<Food> foodSupply;
-    private ArrayList<Water> waterSupply;
+    private List<Food> foodSupply = new ArrayList<Food>();
+    private List<Water> waterSupply = new ArrayList<Water>();
 
     // a number added to the percentage chance of getting a disease
     private int diseaseModifier;

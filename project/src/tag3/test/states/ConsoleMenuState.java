@@ -22,7 +22,7 @@ public class ConsoleMenuState extends MainMenuState {
     @Override
     public void updateLogic() {
         System.out.println("Days since slept: " + party.getDaysSinceSlept());
-        party.updateVariables();
+        party.moveForward();
         super.updateLogic();
     }
 }
