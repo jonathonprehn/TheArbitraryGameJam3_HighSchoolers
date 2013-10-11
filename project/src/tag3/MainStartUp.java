@@ -4,6 +4,7 @@ import horsentp.display.DisplayConfiguration;
 import horsentp.gamelogic.GameRunner;
 
 import tag3.states.MainMenuState;
+import tag3.test.states.ConsoleMenuState;
 import tag3.utility.GraphicsFactory;
 
 public class MainStartUp {
@@ -13,6 +14,6 @@ public class MainStartUp {
         GameRunner runner = new GameRunner(new DisplayConfiguration(800, 600, DisplayConfiguration.STATIC_WINDOW), false);
         GraphicsFactory.getFactory().initFactory(runner.getDisplayer(), runner.getInput());
         runner.startGame();    ///Don't forget to change the state!
-        runner.changeState(new MainMenuState());
+        runner.changeState(new ConsoleMenuState());
     }
 }
