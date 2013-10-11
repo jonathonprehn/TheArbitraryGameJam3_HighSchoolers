@@ -9,12 +9,14 @@ import horsentp.gamelogic.GameRunner;
 
 import javax.swing.*;
 import java.awt.*;
+import tag3.states.TestState;
 
 public class MainStartUp {
 
     public static void main(String[] args) {
         System.out.println("Lets finish this game or at least start it.");
         GameRunner runner = new GameRunner(new DisplayConfiguration(800, 600, DisplayConfiguration.STATIC_WINDOW), false);
-        runner.startGame();
+        runner.startGame();    ///Don't forget to change the state!
+        runner.changeState(new TestState());
     }
 }
