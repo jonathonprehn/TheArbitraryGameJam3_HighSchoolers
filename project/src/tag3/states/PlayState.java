@@ -27,6 +27,8 @@ public class PlayState extends GameState {
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
         graphics2D = (Graphics2D)bufferedImage.getGraphics();
+        graphics2D.setColor(Color.BLACK);
+        graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
         return bufferedImage;
     }
