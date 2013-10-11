@@ -31,7 +31,7 @@ local.properties
 #################
 ## Intellij
 #################
-.idea/.xml
+.idea/*.xml
 
 
 #################
