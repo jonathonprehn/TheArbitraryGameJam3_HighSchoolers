@@ -35,8 +35,8 @@ public class Party {
     private int morale;
     private double daysSinceSlept;
 
-    private int walkingPace;
-    private int distanceTraveled;
+    private double walkingPace;
+    private double distanceTraveled;
 
     public Party(int numberLion, int numberGiraffe, int numberLlama) {
         this.numLion = numberLion;
@@ -99,7 +99,8 @@ public class Party {
         updateVariables();
         consumeFood();
         consumeWater();
-
+        daysSinceSlept = daysSinceSlept + (1/24.0);
+        distanceTraveled = distanceTraveled + walkingPace;
     }
 
     public void sleep() {
@@ -107,7 +108,6 @@ public class Party {
         consumeFood();
         consumeWater();
         daysSinceSlept = 0; // all refreshed!
-
     }
 
     public void consumeFood() {
@@ -226,11 +226,11 @@ public class Party {
         return daysSinceSlept;
     }
 
-    public int getWalkingPace() {
+    public double getWalkingPace() {
         return walkingPace;
     }
 
-    public int getDistanceTraveled() {
+    public double getDistanceTraveled() {
         return distanceTraveled;
     }
 
