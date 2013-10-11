@@ -26,8 +26,8 @@ public class Party {
     // the chance of being more successful when hunting or collecting food
     private int huntingSuccess, collectingSuccess;
     // number of members in your party
-    private int numLion, numGiraffe, numLlamma;
-    private int numDiseasedLion, numDiseasedGiraffe, numDiseasedLlamma;
+    private int numLion, numGiraffe, numLlama;
+    private int numDiseasedLion, numDiseasedGiraffe, numDiseasedLlama;
     // the current image of the party (changes as party grows and shrinks)
     private BufferedImage partyImage;
     // a percentage number between -100 and 100 on how much morale the party has
@@ -37,10 +37,10 @@ public class Party {
     private int walkingPace;
     private int distanceTraveled;
 
-    public Party(int numberLion, int numberGiraffe, int numberLlamma) {
+    public Party(int numberLion, int numberGiraffe, int numberLlama) {
         this.numLion = numberLion;
         this.numGiraffe = numberGiraffe;
-        this.numLlamma = numberLlamma;
+        this.numLlama = numberLlama;
         this.morale = 0; // 0% morale
         this.daysSinceSlept = 0;
         this.walkingPace = 1;
@@ -48,7 +48,7 @@ public class Party {
     }
 
     public void updateVariables() {
-        this.diseaseModifier = (int)(getNumberOfDiseased()*0.10) - (getNumLlamma()*5);
+        this.diseaseModifier = (int)(getNumberOfDiseased()*0.10) - (getNumLlama()*5);
 
         int sleepMod = 0;
         if (getDaysSinceSlept() > 3) {
@@ -62,12 +62,12 @@ public class Party {
     }
 
     public int getSize() {
-        return (numLion + numGiraffe + numLlamma +
-                numDiseasedGiraffe + numDiseasedLion + numDiseasedLlamma);
+        return (numLion + numGiraffe + numLlama +
+                numDiseasedGiraffe + numDiseasedLion + numDiseasedLlama);
     }
 
     public int getNumberOfDiseased() {
-        return (numDiseasedGiraffe + numDiseasedLion + numLlamma);
+        return (numDiseasedGiraffe + numDiseasedLion + numLlama);
     }
 
     public void addLion(int addedLions) {
@@ -80,8 +80,8 @@ public class Party {
         updatePartyImage();
     }
 
-    public void addLlamma(int addedLlammas) {
-        this.numLlamma = this.numLlamma + addedLlammas;
+    public void addLlama(int addedLlamas) {
+        this.numLlama = this.numLlama + addedLlamas;
         updatePartyImage();
     }
 
@@ -126,10 +126,10 @@ public class Party {
             }
 
             // see if llamas get disease
-            for (int i=0; i<this.numLlamma; i++) {
+            for (int i=0; i<this.numLlama; i++) {
                 if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
-                    this.numLlamma--;
-                    this.numDiseasedLlamma--;
+                    this.numLlama--;
+                    this.numDiseasedLlama--;
                 }
             }
 
@@ -162,10 +162,10 @@ public class Party {
             }
 
             // see if llamas get disease
-            for (int i=0; i<this.numLlamma; i++) {
+            for (int i=0; i<this.numLlama; i++) {
                 if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
-                    this.numLlamma--;
-                    this.numDiseasedLlamma--;
+                    this.numLlama--;
+                    this.numDiseasedLlama--;
                 }
             }
 
@@ -197,12 +197,12 @@ public class Party {
         return numGiraffe;
     }
 
-    public int getNumLlamma() {
-        return numLlamma;
+    public int getNumLlama() {
+        return numLlama;
     }
 
-    public int getNumDiseasedLlamma() {
-        return numDiseasedLlamma;
+    public int getNumDiseasedLlama() {
+        return numDiseasedLlama;
     }
 
     public int getNumDiseasedGiraffe() {
