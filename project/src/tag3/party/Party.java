@@ -51,6 +51,10 @@ public class Party {
     public void updateVariables() {
         this.diseaseModifier = (int)(getNumberOfDiseased()*0.10) - (getNumLlama()*5);
 
+        // 50% base with each animal adding 2%, each diseased animal subtracting 1.5% + morale percent
+        this.huntingSuccess = 50 + (numLion*2) - (int)(numDiseasedLion*1.5) + morale;
+        this.collectingSuccess = 50 + (numGiraffe*2) - (int)(numDiseasedGiraffe*1.5) + morale;
+
         int sleepMod = 0;
         if (getDaysSinceSlept() > 3) {
             sleepMod = -20;
@@ -244,5 +248,13 @@ public class Party {
 
     public BufferedImage getPartyImage() {
         return partyImage;
+    }
+
+    public int getHuntingSuccess() {
+        return huntingSuccess;
+    }
+
+    public int getCollectingSuccess() {
+        return collectingSuccess;
     }
 }

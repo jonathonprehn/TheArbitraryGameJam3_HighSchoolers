@@ -20,7 +20,10 @@ public class MeatResource extends SupplyCollectPoint {
     @Override
     public void collectFrom(Party collectingParty) {
         if (getSize() > 0) {
-            setSize(getSize()-1);
+            int yield = (int)(getSize()*(collectingParty.getHuntingSuccess()/100.0));
+            for (int i=0; i<getSize(); i++) {
+                collectingParty.addFood(new Food(getQuality()));
+            }
         }
     }
 }

@@ -20,7 +20,11 @@ public class WaterResource extends SupplyCollectPoint {
 
     public void collectFrom(Party collectingParty) {
         if (getSize() > 0) {
-            collectingParty.addWater(new Water(getQuality()));
+            // 50% plus morale percent yield
+            int yield = (int)((0.5+(collectingParty.getMorale()/100.0))*getSize());
+            for (int i=0; i<getSize(); i++) {
+                collectingParty.addWater(new Water(getQuality()));
+            }
         }
     }
 
