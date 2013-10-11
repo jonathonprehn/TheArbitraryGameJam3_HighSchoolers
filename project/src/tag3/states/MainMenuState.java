@@ -77,7 +77,11 @@ public class MainMenuState extends GameState {
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
         graphics2D = (Graphics2D)bufferedImage.getGraphics();
             for (int i=0; i< buttons.length; i++) {
-                bufferedImage = buttons[i].render(bufferedImage, graphics2D);
+                if (buttons[i]==null) {
+                    System.out.println("Buttons haven't been made properly!");
+                } else {
+                    bufferedImage = buttons[i].render(bufferedImage, graphics2D);
+                }
             }
         return bufferedImage;
     }
