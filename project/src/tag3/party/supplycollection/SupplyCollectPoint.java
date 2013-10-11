@@ -1,6 +1,7 @@
 package tag3.party.supplycollection;
 
 import tag3.party.Party;
+import tag3.party.food.Food;
 import tag3.party.food.Quality;
 
 /**
@@ -17,5 +18,22 @@ public abstract class SupplyCollectPoint {
     // the amount of stuff taken from this point
     private int size;
 
-    public abstract int collectFrom(Party collectingParty);
+    public SupplyCollectPoint(int size, Quality resourceQuality) {
+        this.quality = resourceQuality;
+        this.size = size;
+    }
+
+    public Quality getQuality() {
+        return quality;
+    }
+
+    public abstract Food collectFrom(Party collectingParty);
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 }
