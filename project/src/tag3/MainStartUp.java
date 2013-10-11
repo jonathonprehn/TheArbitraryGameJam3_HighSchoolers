@@ -4,7 +4,6 @@ import horsentp.display.DisplayConfiguration;
 import horsentp.gamelogic.GameRunner;
 
 import tag3.states.MainMenuState;
-import tag3.test.states.ConsoleMenuState;
 import tag3.utility.GraphicsFactory;
 
 public class MainStartUp {

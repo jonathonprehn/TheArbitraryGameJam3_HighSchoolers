@@ -68,7 +68,7 @@ public class Party {
     }
 
     public int getNumberOfDiseased() {
-        return (numDiseasedGiraffe + numDiseasedLion + numLlama);
+        return (numDiseasedGiraffe + numDiseasedLion + numDiseasedLlama);
     }
 
     public void addLion(int addedLions) {

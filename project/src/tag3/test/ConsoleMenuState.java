@@ -1,4 +1,4 @@
-package tag3.test.states;
+package tag3.test;
 
 import tag3.party.Party;
 import tag3.states.MainMenuState;
@@ -26,6 +26,12 @@ public class ConsoleMenuState extends MainMenuState {
             return;
         }
         System.out.println("Days since slept: " + party.getDaysSinceSlept());
+        System.out.println("Food remaining: " + party.getFoodAmount());
+        System.out.println("Water remaining: " + party.getWaterAmount());
+        System.out.println("Walking pace: " + party.getWalkingPace());
+        System.out.println("Moral: " + party.getMorale());
+        System.out.println("Distance traveled: " + party.getDistanceTraveled());
+        System.out.println("Num of diseased animals: " + party.getNumberOfDiseased());
         party.moveForward();
         super.updateLogic();
     }
