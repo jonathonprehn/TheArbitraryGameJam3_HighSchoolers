@@ -31,12 +31,12 @@ public class ImageToggle implements Displayable, MouseDownListener {
     private boolean toggle;
     private ArrayList<GenericToggleListener> listeners;
 
-    public ImageToggle(BufferedImage trueImage, BufferedImage falseImage, InputBridge bridge, int x, int y) {
+    public ImageToggle(BufferedImage trueImage, BufferedImage falseImage, InputBridge bridge, int x, int y, boolean defaultValue) {
         this.falseImage = falseImage; this.trueImage = trueImage;
         this.x = x; this.y = y;
         bridge.addMouseDownListener(this);
         rect = new Rectangle(x, y, trueImage.getWidth(), trueImage.getHeight());
-        toggle = false;
+        toggle = defaultValue;
         listeners = new ArrayList<GenericToggleListener>();
     }
 
@@ -73,6 +73,7 @@ public class ImageToggle implements Displayable, MouseDownListener {
 
     public void setLocation(int x, int y) {
         this.x = x; this.y = y;
+        rect = new Rectangle(x, y, trueImage.getWidth(), trueImage.getHeight());
     }
 
     private void notifyListeners() {

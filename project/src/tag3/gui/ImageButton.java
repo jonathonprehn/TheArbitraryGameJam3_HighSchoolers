@@ -61,6 +61,7 @@ public class ImageButton implements Displayable , MouseDownListener, MouseMoveLi
 
     public void setLocation(int x, int y) {
         this.x = x; this.y = y;
+        rect = new Rectangle(x, y, upImage.getWidth(), upImage.getHeight());
     }
 
     @Override

@@ -3,10 +3,7 @@ package tag3.utility;
 import horsentp.display.Displayer;
 import horsentp.display.ImageDisplay;
 import horsentp.input.InputBridge;
-import tag3.gui.GenericButtonListener;
-import tag3.gui.GenericToggleListener;
-import tag3.gui.ImageButton;
-import tag3.gui.ImageToggle;
+import tag3.gui.*;
 
 import java.awt.image.BufferedImage;
 
@@ -49,12 +46,16 @@ public class GraphicsFactory {
         return button;
     }
 
-    public ImageToggle makeImageToggle(BufferedImage trueImage, BufferedImage falseImage, int x, int y) {
-        return new ImageToggle(trueImage, falseImage, bridge, x, y);
+    public SimpleTextField makeTextField(int x, int y, int width, int height, String defaultText, int maxText) {
+        return new SimpleTextField(x, y, width, height, maxText, defaultText, bridge);
     }
 
-    public ImageToggle makeLinkedImageToggle(BufferedImage trueImage, BufferedImage falseImage, int x, int y, GenericToggleListener... listeners) {
-        ImageToggle toggle= new ImageToggle(trueImage, falseImage, bridge, x, y);
+    public ImageToggle makeImageToggle(BufferedImage trueImage, BufferedImage falseImage, int x, int y, boolean defaultValue) {
+        return new ImageToggle(trueImage, falseImage, bridge, x, y, defaultValue);
+    }
+
+    public ImageToggle makeLinkedImageToggle(BufferedImage trueImage, BufferedImage falseImage, int x, int y, boolean defaultValue, GenericToggleListener... listeners) {
+        ImageToggle toggle= new ImageToggle(trueImage, falseImage, bridge, x, y, defaultValue);
         for (int i=0; i<listeners.length; i++) {
             toggle.addToggleListener(listeners[i]);
         }

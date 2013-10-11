@@ -2,9 +2,7 @@ package tag3.states;
 
 import horsentp.display.DisplayConfiguration;
 import horsentp.gamelogic.GameState;
-import tag3.gui.GenericButtonListener;
-import tag3.gui.GenericToggleListener;
-import tag3.gui.ImageButton;
+import tag3.gui.*;
 import tag3.media.MediaLoader;
 import tag3.utility.GraphicsFactory;
 
@@ -20,7 +18,9 @@ import java.awt.image.BufferedImage;
  */
 public class OptionsState extends GameState {
 
-    private ImageButton backButton;
+    private ImageButton backButton, applyButton;
+    private ImageToggle fullScreenToggle;
+    private SimpleTextField widthField, heightField;
 
     @Override
     public void updateLogic() {
@@ -40,6 +40,28 @@ public class OptionsState extends GameState {
                     }
                 }
         );
+
+        fullScreenToggle = GraphicsFactory.getFactory().makeImageToggle(
+                MediaLoader.quickLoadImage("toggles/genericOn.png"),
+                MediaLoader.quickLoadImage("toggles/genericOff.png"),
+                (getDisplayer().getDisplayWidth()/6)*2, ((getDisplayer().getDisplayHeight()/5)*3), getDisplayer().isFullScreen()
+        );
+
+        applyButton = GraphicsFactory.getFactory().makeLinkedImageButton(
+                MediaLoader.quickLoadImage("buttons/applyChangesButtonUp.png"),
+                MediaLoader.quickLoadImage("buttons/applyChangesButtonDown.png"),
+                (getDisplayer().getDisplayWidth()/6)*4, ((getDisplayer().getDisplayHeight()/5)*3),
+                new ApplyNewDisplay()
+        );
+
+        widthField = GraphicsFactory.getFactory().makeTextField(
+                (getDisplayer().getDisplayWidth()/3), ((getDisplayer().getDisplayHeight()/6)*2) ,
+                100, 40, "" + getDisplayer().getDisplayWidth() + "" , 4
+        );
+        heightField = GraphicsFactory.getFactory().makeTextField(
+                (getDisplayer().getDisplayWidth()/3), ((getDisplayer().getDisplayHeight()/6)*3) ,
+                100, 40, "" + getDisplayer().getDisplayHeight() + "" , 4
+        );
     }
 
     @Override
@@ -49,19 +71,37 @@ public class OptionsState extends GameState {
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
         bufferedImage = backButton.render(bufferedImage, graphics2D);
+        bufferedImage = widthField.render(bufferedImage, graphics2D);
+        bufferedImage = heightField.render(bufferedImage, graphics2D);
+        bufferedImage = applyButton.render(bufferedImage, graphics2D);
+        bufferedImage = fullScreenToggle.render(bufferedImage, graphics2D);
 
         return bufferedImage;
     }
 
-    class FullScreenToggle implements GenericToggleListener {
+    class ApplyNewDisplay implements GenericButtonListener {
 
         @Override
-        public void toggleChanged(boolean valueSetTo) {
-            if (valueSetTo) {
-                getRunner().getDisplayer().setDisplayConfiguration(new DisplayConfiguration(getRunner().getDisplayer().getDisplayWidth(), getRunner().getDisplayer().getDisplayHeight(), DisplayConfiguration.FULLSCREEN));
-            } else {
-                getRunner().getDisplayer().setDisplayConfiguration(new DisplayConfiguration(getRunner().getDisplayer().getDisplayWidth(), getRunner().getDisplayer().getDisplayHeight(), DisplayConfiguration.STATIC_WINDOW));
+        public void buttonPushed() {
+            getDisplayer().destroyAllDisplays();
+            //Reality checks
+            int newWidth = getDisplayer().getDisplayWidth();
+            int newHeight = getDisplayer().getDisplayHeight();
+            boolean fullScreen = fullScreenToggle.isToggle();
+            try {
+                newWidth = Integer.parseInt(widthField.getText());
+                newHeight = Integer.parseInt(heightField.getText());
+            } catch(Exception e) {
+                System.out.println("Need to be acceptable widths and heights!");
             }
+            DisplayConfiguration newConfig;
+            if (fullScreen) {
+                newConfig = new DisplayConfiguration(newWidth, newHeight, DisplayConfiguration.FULLSCREEN);
+            } else {
+                newConfig = new DisplayConfiguration(newWidth, newHeight, DisplayConfiguration.STATIC_WINDOW);
+            }
+            getDisplayer().setDisplayConfiguration(newConfig);
+            getRunner().changeState(new OptionsState());
         }
     }
 }
