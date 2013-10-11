@@ -2,9 +2,9 @@ package tag3.states;
 
 import horsentp.display.DisplayConfiguration;
 import horsentp.gamelogic.GameState;
+import tag3.gui.GenericButtonListener;
 import tag3.gui.GenericToggleListener;
 import tag3.gui.ImageButton;
-import tag3.gui.ToMainMenuListener;
 import tag3.media.MediaLoader;
 import tag3.utility.GraphicsFactory;
 
@@ -32,7 +32,13 @@ public class OptionsState extends GameState {
         backButton = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/mainMenuButtonUp.png"),
                 MediaLoader.quickLoadImage("buttons/mainMenuButtonDown.png"),
-                (getDisplayer().getDisplayWidth()/5), ((getDisplayer().getDisplayHeight()/5)*4), new ToMainMenuListener(getRunner())
+                (getDisplayer().getDisplayWidth()/6), ((getDisplayer().getDisplayHeight()/5)*4),
+                new GenericButtonListener() {
+                    @Override
+                    public void buttonPushed() {
+                        getRunner().changeState(new MainMenuState());
+                    }
+                }
         );
     }
 
