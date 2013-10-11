@@ -56,7 +56,7 @@ public class Party {
             sleepMod = -20;
         } else if (getDaysSinceSlept() > 1) {
             sleepMod = 0;
-        } else if (getDaysSinceSlept() > 0) {
+        } else if (getDaysSinceSlept() >= 0) {
             sleepMod = 15;
         }
         this.morale = (int)(this.getSize()*0.25)+sleepMod;
@@ -99,6 +99,14 @@ public class Party {
         updateVariables();
         consumeFood();
         consumeWater();
+
+    }
+
+    public void sleep() {
+        updateVariables();
+        consumeFood();
+        consumeWater();
+        daysSinceSlept = 0; // all refreshed!
 
     }
 
