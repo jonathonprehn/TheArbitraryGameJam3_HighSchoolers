@@ -1,4 +1,4 @@
-package tag3.test;
+package tag3.test.states;
 
 import tag3.party.Party;
 import tag3.states.MainMenuState;
