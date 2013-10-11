@@ -10,6 +10,7 @@ package tag3.party.food;
 public class Food {
 
     private Quality quality;
+    private int diseasePercentMod;
 
     /**
      * A piece of food, enough for the party to eat for one day
@@ -21,5 +22,27 @@ public class Food {
      */
     public Food(Quality foodQuality) {
         this.quality = foodQuality;
+        switch(foodQuality) {
+            case GOOD:
+                diseasePercentMod = 0;
+                break;
+            case QUESTIONABLE:
+                diseasePercentMod = 15;
+                break;
+            case STRANGE:
+                diseasePercentMod = 30;
+                break;
+            case DISGUSTING:
+                diseasePercentMod = 40;
+                break;
+        }
+    }
+
+    public Quality getQuality() {
+        return this.quality;
+    }
+
+    public int getDiseasePercentMod() {
+        return this.diseasePercentMod;
     }
 }

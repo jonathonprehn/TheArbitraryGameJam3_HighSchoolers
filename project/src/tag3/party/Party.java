@@ -1,6 +1,10 @@
 package tag3.party;
 
+import tag3.party.food.Food;
+import tag3.party.food.Water;
+
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +16,9 @@ import java.awt.image.BufferedImage;
 public class Party {
 
     // food and water supplies of the party
-    private int foodAmount, waterAmount;
+    private ArrayList<Food> foodSupply;
+    private ArrayList<Water> waterSupply;
+
     // a number added to the percentage chance of getting a disease
     private int diseaseModifier;
     // the chance of being more successful when hunting or collecting food
@@ -24,7 +30,7 @@ public class Party {
     private BufferedImage partyImage;
     // a percentage number between -100 and 100 on how much morale the party has
     private int morale;
-    private int daysSinceSlept;
+    private double daysSinceSlept;
 
     private int walkingPace;
     private int distanceTraveled;
@@ -36,6 +42,7 @@ public class Party {
         this.morale = 0; // 0% morale
         this.daysSinceSlept = 0;
         this.walkingPace = 1;
+        this.distanceTraveled = 0;
     }
 
     public int getSize() {
@@ -43,16 +50,84 @@ public class Party {
                 numDiseasedGiraffe + numDiseasedLion + numDiseasedLlamma);
     }
 
+    public int getNumberOfDiseased() {
+        return (numDiseasedGiraffe + numDiseasedLion + numLlamma);
+    }
+
     public void addLion(int addedLions) {
         this.numLion = this.numLion + addedLions;
+        updatePartyImage();
+    }
+
+    public void addGiraffe(int addedGiraffes) {
+        this.numGiraffe = this.numGiraffe + addedGiraffes;
+        updatePartyImage();
+    }
+
+    public void addLlamma(int addedLlammas) {
+        this.numLlamma = this.numLlamma + addedLlammas;
+        updatePartyImage();
+    }
+
+    private void updatePartyImage() {
+
+    }
+
+    /**
+     * Makes the party move forwards
+     * Increases distance traveled and makes timeSinceSlept increase
+     * Decreases Food and Water amount
+     */
+    public void moveForward() {
+        updateDiseaseModifier();
+        consumeFood();
+        consumeWater();
+
+    }
+
+    public void consumeFood() {
+        Food eatenFood = foodSupply.get(foodSupply.size());
+        int diseasePercent = eatenFood.getDiseasePercentMod() + diseaseModifier;
+        // see if lions get disease
+        for (int i=0; i<this.numLion; i++) {
+
+        }
+
+        // see if girrafes get disease
+        for (int i=0; i<this.numGiraffe; i++) {
+
+        }
+
+        // see if llamas get disease
+        for (int i=0; i<this.numLlamma; i++) {
+
+        }
+
+        foodSupply.remove(foodSupply.size());
+    }
+
+    public void consumeWater() {
+
+    }
+
+    public void updateDiseaseModifier() {
+        this.diseaseModifier = (int)(getNumberOfDiseased()*0.10) - (getNumLlamma()*5);
+    }
+
+    public void addFood(Food food) {
+        this.foodSupply.add(food);
+    }
+
+    public void addWater(Water water) {
+        this.waterSupply.add(water);
     }
 
     public int getFoodAmount() {
-        return foodAmount;
+        return foodSupply.size();
     }
 
     public int getWaterAmount() {
-        return waterAmount;
+        return waterSupply.size();
     }
 
     public int getNumLion() {
@@ -79,7 +154,7 @@ public class Party {
         return numDiseasedLion;
     }
 
-    public int getDaysSinceSlept() {
+    public double getDaysSinceSlept() {
         return daysSinceSlept;
     }
 
