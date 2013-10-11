@@ -4,7 +4,9 @@ import horsentp.display.Displayer;
 import horsentp.display.ImageDisplay;
 import horsentp.input.InputBridge;
 import tag3.gui.GenericButtonListener;
+import tag3.gui.GenericToggleListener;
 import tag3.gui.ImageButton;
+import tag3.gui.ImageToggle;
 
 import java.awt.image.BufferedImage;
 
@@ -49,5 +51,17 @@ public class GraphicsFactory {
             button.addButtonListener(listeners[i]);
         }
         return button;
+    }
+
+    public ImageToggle makeImageToggle(BufferedImage trueImage, BufferedImage falseImage, int x, int y) {
+        return new ImageToggle(trueImage, falseImage, bridge, x, y);
+    }
+
+    public ImageToggle makeLinkedImageToggle(BufferedImage trueImage, BufferedImage falseImage, int x, int y, GenericToggleListener... listeners) {
+        ImageToggle toggle= new ImageToggle(trueImage, falseImage, bridge, x, y);
+        for (int i=0; i<listeners.length; i++) {
+            toggle.addToggleListener(listeners[i]);
+        }
+        return toggle;
     }
 }

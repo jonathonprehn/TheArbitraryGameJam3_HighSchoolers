@@ -36,6 +36,7 @@ public class ImageButton implements Displayable , MouseDownListener, MouseMoveLi
         listeners = new ArrayList<GenericButtonListener>();
         input.addMouseDownListener(this);
         input.addMouseMoveListener(this);
+        hovering = false;
     }
 
 
