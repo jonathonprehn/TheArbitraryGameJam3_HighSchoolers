@@ -11,7 +11,7 @@ import tag3.states.MainMenuState;
  * To change this template use File | Settings | File Templates.
  */
 public class ConsoleMenuState extends MainMenuState {
-    Party party;
+    Party party = null;
 
     @Override
     public void initState() {
@@ -21,6 +21,10 @@ public class ConsoleMenuState extends MainMenuState {
 
     @Override
     public void updateLogic() {
+        if (party == null) {
+            initState();
+            return;
+        }
         System.out.println("Days since slept: " + party.getDaysSinceSlept());
         party.moveForward();
         super.updateLogic();
