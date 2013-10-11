@@ -101,6 +101,7 @@ public class OptionsState extends GameState {
                 newConfig = new DisplayConfiguration(newWidth, newHeight, DisplayConfiguration.STATIC_WINDOW);
             }
             getDisplayer().setDisplayConfiguration(newConfig);
+            getRunner().relinkDisplayer();
             getRunner().changeState(new OptionsState());
         }
     }
