@@ -2,9 +2,11 @@ package tag3.party;
 
 import tag3.party.food.Food;
 import tag3.party.food.Water;
+import tag3.utility.RandomChance;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,6 +47,20 @@ public class Party {
         this.distanceTraveled = 0;
     }
 
+    public void updateVariables() {
+        this.diseaseModifier = (int)(getNumberOfDiseased()*0.10) - (getNumLlamma()*5);
+
+        int sleepMod = 0;
+        if (getDaysSinceSlept() > 3) {
+            sleepMod = -20;
+        } else if (getDaysSinceSlept() > 1) {
+            sleepMod = 0;
+        } else if (getDaysSinceSlept() > 0) {
+            sleepMod = 15;
+        }
+        this.morale = (int)(this.getSize()*0.25)+sleepMod;
+    }
+
     public int getSize() {
         return (numLion + numGiraffe + numLlamma +
                 numDiseasedGiraffe + numDiseasedLion + numDiseasedLlamma);
@@ -79,39 +95,82 @@ public class Party {
      * Decreases Food and Water amount
      */
     public void moveForward() {
-        updateDiseaseModifier();
+        updateVariables();
         consumeFood();
         consumeWater();
 
     }
 
     public void consumeFood() {
-        Food eatenFood = foodSupply.get(foodSupply.size());
-        int diseasePercent = eatenFood.getDiseasePercentMod() + diseaseModifier;
-        // see if lions get disease
-        for (int i=0; i<this.numLion; i++) {
+        if (foodSupply.size() > 0) {
+            Food eatenFood = foodSupply.get(foodSupply.size());
+            int diseasePercent = eatenFood.getDiseasePercentMod() + diseaseModifier;
+            if (diseasePercent > 100) {
+                diseasePercent = 100;
+            }
 
+            // see if lions get disease
+            for (int i=0; i<this.numLion; i++) {
+                if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
+                    this.numLion--;
+                    this.numDiseasedLion--;
+                }
+            }
+
+            // see if giraffes get disease
+            for (int i=0; i<this.numGiraffe; i++) {
+                if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
+                    this.numGiraffe--;
+                    this.numDiseasedGiraffe--;
+                }
+            }
+
+            // see if llamas get disease
+            for (int i=0; i<this.numLlamma; i++) {
+                if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
+                    this.numLlamma--;
+                    this.numDiseasedLlamma--;
+                }
+            }
+
+            foodSupply.remove(foodSupply.size());
         }
-
-        // see if girrafes get disease
-        for (int i=0; i<this.numGiraffe; i++) {
-
-        }
-
-        // see if llamas get disease
-        for (int i=0; i<this.numLlamma; i++) {
-
-        }
-
-        foodSupply.remove(foodSupply.size());
     }
 
     public void consumeWater() {
+        if (waterSupply.size() > 0) {
+            Water drinkedWater = waterSupply.get(waterSupply.size());
+            int diseasePercent = drinkedWater.getDiseasePercentMod() + diseaseModifier;
+            if (diseasePercent > 100) {
+                diseasePercent = 100;
+            }
 
-    }
+            // see if lions get disease
+            for (int i=0; i<this.numLion; i++) {
+                if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
+                    this.numLion--;
+                    this.numDiseasedLion--;
+                }
+            }
 
-    public void updateDiseaseModifier() {
-        this.diseaseModifier = (int)(getNumberOfDiseased()*0.10) - (getNumLlamma()*5);
+            // see if giraffes get disease
+            for (int i=0; i<this.numGiraffe; i++) {
+                if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
+                    this.numGiraffe--;
+                    this.numDiseasedGiraffe--;
+                }
+            }
+
+            // see if llamas get disease
+            for (int i=0; i<this.numLlamma; i++) {
+                if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
+                    this.numLlamma--;
+                    this.numDiseasedLlamma--;
+                }
+            }
+
+            waterSupply.remove(waterSupply.size());
+        }
     }
 
     public void addFood(Food food) {
