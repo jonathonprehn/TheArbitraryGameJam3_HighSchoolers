@@ -18,12 +18,10 @@ public class WaterResource extends SupplyCollectPoint {
         super(size, waterQuality);
     }
 
-    @Override
-    public Water collectFrom(Party collectingParty) {
+    public void collectFrom(Party collectingParty) {
         if (getSize() > 0) {
-            setSize(getSize()-1);
-            return new Water(getQuality());
+            collectingParty.addWater(new Water(getQuality()));
         }
-        return null;
     }
+
 }

@@ -27,7 +27,7 @@ public abstract class SupplyCollectPoint {
         return quality;
     }
 
-    public abstract Food collectFrom(Party collectingParty);
+    public abstract void collectFrom(Party collectingParty);
 
     public int getSize() {
         return size;

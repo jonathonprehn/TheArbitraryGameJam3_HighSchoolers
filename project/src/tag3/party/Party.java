@@ -143,6 +143,8 @@ public class Party {
             }
 
             foodSupply.remove(foodSupply.size());
+        } else {
+            morale = morale - 10;
         }
     }
 
@@ -179,6 +181,8 @@ public class Party {
             }
 
             waterSupply.remove(waterSupply.size());
+        } else {
+            morale = morale - 10;
         }
     }
 

@@ -18,11 +18,9 @@ public class PlantResource extends SupplyCollectPoint {
     }
 
     @Override
-    public Food collectFrom(Party collectingParty) {
+    public void collectFrom(Party collectingParty) {
         if (getSize() > 0) {
             setSize(getSize()-1);
-            return new Food(getQuality());
         }
-        return null;
     }
 }
