@@ -13,6 +13,7 @@ public class MainStartUp {
         GameRunner runner = new GameRunner(new DisplayConfiguration(800, 600, DisplayConfiguration.STATIC_WINDOW), false);
         GraphicsFactory.getFactory().initFactory(runner.getDisplayer(), runner.getInput());
         runner.startGame();    ///Don't forget to change the state!
+        runner.setDebugging(true);
         runner.changeState(new MainMenuState());
     }
 }
