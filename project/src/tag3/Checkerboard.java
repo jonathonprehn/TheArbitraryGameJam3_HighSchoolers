@@ -24,6 +24,17 @@ public class Checkerboard implements Displayable {
         return bufferedImage;
     }
 
+    public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.fillRect(0,0,20,20);
+        g2.setColor(Color.WHITE);
+        g2.fillRect(20,0,20,20);
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0,0,20,20);
+        g2.setColor(Color.WHITE);
+        g2.fillRect(20,0,20,20);
+    }
+
     @Override
     public void setDisplayLink(DisplayLink displayLink) {
 
