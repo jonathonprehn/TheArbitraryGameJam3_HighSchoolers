@@ -19,11 +19,7 @@ import java.awt.image.BufferedImage;
  */
 public class GraphicsFactory {
 
-    private static GraphicsFactory factory;
-
-    static {
-        factory = new GraphicsFactory();
-    }
+    private static GraphicsFactory factory = new GraphicsFactory();
 
     private Displayer displayer;
     private InputBridge bridge;
