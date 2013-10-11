@@ -3,6 +3,8 @@ package tag3.states;
 import horsentp.gamelogic.GameState;
 import tag3.gui.GenericButtonListener;
 import tag3.gui.ImageButton;
+import tag3.media.MediaLoader;
+import tag3.utility.GraphicsFactory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -25,13 +27,58 @@ public class MainMenuState extends GameState {
 
     @Override
     public void initState() {
+        //Try to get screen size for positioning
+        int width = getScreenWidth();
+        int height = getScreenHeight();
+        int buttonWidth = 120;
+        int buttonHeight = 60;
+        buttons = new ImageButton[3];
+        //Play button
+        buttons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                MediaLoader.quickLoadImage("buttons/playButtonUp.png"),
+                MediaLoader.quickLoadImage("buttons/playButtonDown.png"),
+                (width/2)-buttonWidth, (height/5)-buttonHeight, new PlayGame()
+        );
+        //Options button
+        buttons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                MediaLoader.quickLoadImage("buttons/optionsButtonUp.png"),
+                MediaLoader.quickLoadImage("buttons/optionsButtonDown.png"),
+                (width/2)-buttonWidth, (height/5)-buttonHeight, new OptionsGame()
+        );
+        //Quit button
+        buttons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                MediaLoader.quickLoadImage("buttons/quitButtonUp.png"),
+                MediaLoader.quickLoadImage("buttons/quitButtonDown.png"),
+                (width/2)-buttonWidth, (height/5)-buttonHeight, new QuitGame()
+        );
+    }
 
+    private int getScreenWidth() {
+        try {
+        Component comp = (Component)getDisplayer().getCanvas();
+        return comp.getWidth();
+        } catch (Exception e) {
+            System.out.println("Unable to get Screen width!");
+            return 0;
+        }
+    }
+
+    private int getScreenHeight() {
+        try {
+            Component comp = (Component)getDisplayer().getCanvas();
+            return comp.getHeight();
+        } catch (Exception e) {
+            System.out.println("Unable to get Screen height!");
+            return 0;
+        }
     }
 
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
         graphics2D = (Graphics2D)bufferedImage.getGraphics();
-
+            for (int i=0; i< buttons.length; i++) {
+                bufferedImage = buttons[i].render(bufferedImage, graphics2D);
+            }
         return bufferedImage;
     }
 
@@ -39,7 +86,7 @@ public class MainMenuState extends GameState {
 
         @Override
         public void buttonPushed() {
-
+            getRunner().changeState(new PlayState());
         }
     }
 
@@ -47,7 +94,7 @@ public class MainMenuState extends GameState {
 
         @Override
         public void buttonPushed() {
-
+            System.exit(0);
         }
     }
 
@@ -55,7 +102,7 @@ public class MainMenuState extends GameState {
 
         @Override
         public void buttonPushed() {
-
+            getRunner().changeState(new OptionsState());
         }
     }
 }
