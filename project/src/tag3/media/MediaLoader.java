@@ -53,6 +53,7 @@ public class MediaLoader {
         BufferedImage img = null;
         try {
             img = (BufferedImage) ImageIO.read(MainStartUp.class.getResourceAsStream("assets/images/" + path + ""));
+            System.out.println("Loaded image: " + path + "");
             return img;
         } catch(Exception e) {
             System.out.println("Could not load image: " + path + "");

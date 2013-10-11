@@ -84,6 +84,7 @@ public class ImageButton implements Displayable , MouseDownListener, MouseMoveLi
         for (int i=0;i<listeners.size(); i++) {
             listeners.get(i).buttonPushed();
         }
+        System.out.println("The button has been pushed");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package tag3.states;
 
+import horsentp.gamelogic.EmptyGameState;
 import horsentp.gamelogic.GameState;
 import tag3.gui.GenericButtonListener;
 import tag3.gui.ImageButton;
@@ -37,19 +38,19 @@ public class MainMenuState extends GameState {
         buttons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/playButtonUp.png"),
                 MediaLoader.quickLoadImage("buttons/playButtonDown.png"),
-                (width/2)-buttonWidth, (height/5)-buttonHeight, new PlayGame()
+                (width/2)-buttonWidth, ((height/5)*2)-buttonHeight, new PlayGame()
         );
         //Options button
         buttons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/optionsButtonUp.png"),
                 MediaLoader.quickLoadImage("buttons/optionsButtonDown.png"),
-                (width/2)-buttonWidth, (height/5)-buttonHeight, new OptionsGame()
+                (width/2)-buttonWidth, ((height/5)*3)-buttonHeight, new OptionsGame()
         );
         //Quit button
         buttons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/quitButtonUp.png"),
                 MediaLoader.quickLoadImage("buttons/quitButtonDown.png"),
-                (width/2)-buttonWidth, (height/5)-buttonHeight, new QuitGame()
+                (width/2)-buttonWidth, ((height/5)*4)-buttonHeight, new QuitGame()
         );
     }
 
@@ -78,7 +79,7 @@ public class MainMenuState extends GameState {
         graphics2D = (Graphics2D)bufferedImage.getGraphics();
             for (int i=0; i< buttons.length; i++) {
                 if (buttons[i]==null) {
-                    System.out.println("Buttons haven't been made properly!");
+                    System.out.println("Buttons haven't been made properly! (index " + i + ")");
                 } else {
                     bufferedImage = buttons[i].render(bufferedImage, graphics2D);
                 }
@@ -98,7 +99,8 @@ public class MainMenuState extends GameState {
 
         @Override
         public void buttonPushed() {
-            System.exit(0);
+            System.out.println("Trying to quit");
+            getRunner().exitGame();
         }
     }
 
