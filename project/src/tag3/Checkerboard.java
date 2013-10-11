@@ -13,12 +13,13 @@ import java.awt.*;
 public class Checkerboard extends JComponent {
     @Override
     public void paintComponent(Graphics g) {
-        g.fillRect(0,0,20,20);
-        g.setColor(Color.WHITE);
-        g.fillRect(20,0,20,20);
-        g.setColor(Color.BLACK);
-        g.fillRect(0,0,20,20);
-        g.setColor(Color.WHITE);
-        g.fillRect(20,0,20,20);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.fillRect(0,0,20,20);
+        g2.setColor(Color.WHITE);
+        g2.fillRect(20,0,20,20);
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0,0,20,20);
+        g2.setColor(Color.WHITE);
+        g2.fillRect(20,0,20,20);
     }
 }
