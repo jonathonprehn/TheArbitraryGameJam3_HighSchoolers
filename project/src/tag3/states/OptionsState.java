@@ -1,6 +1,8 @@
 package tag3.states;
 
+import horsentp.display.DisplayConfiguration;
 import horsentp.gamelogic.GameState;
+import tag3.gui.GenericToggleListener;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -31,5 +33,17 @@ public class OptionsState extends GameState {
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
         return bufferedImage;
+    }
+
+    class FullScreenToggle implements GenericToggleListener {
+
+        @Override
+        public void toggleChanged(boolean valueSetTo) {
+            if (valueSetTo) {
+                getRunner().getDisplayer().setDisplayConfiguration(new DisplayConfiguration(getRunner().getDisplayer().getDisplayWidth(), getRunner().getDisplayer().getDisplayHeight(), DisplayConfiguration.FULLSCREEN));
+            } else {
+                getRunner().getDisplayer().setDisplayConfiguration(new DisplayConfiguration(getRunner().getDisplayer().getDisplayWidth(), getRunner().getDisplayer().getDisplayHeight(), DisplayConfiguration.STATIC_WINDOW));
+            }
+        }
     }
 }

@@ -29,8 +29,8 @@ public class MainMenuState extends GameState {
     @Override
     public void initState() {
         //Try to get screen size for positioning
-        int width = getScreenWidth();
-        int height = getScreenHeight();
+        int width = getRunner().getDisplayer().getDisplayWidth();
+        int height = getRunner().getDisplayer().getDisplayHeight();
         int buttonWidth = 120;
         int buttonHeight = 60;
         buttons = new ImageButton[3];
@@ -52,26 +52,6 @@ public class MainMenuState extends GameState {
                 MediaLoader.quickLoadImage("buttons/quitButtonDown.png"),
                 (width/2)-buttonWidth, ((height/5)*4)-buttonHeight, new QuitGame()
         );
-    }
-
-    private int getScreenWidth() {
-        try {
-        Component comp = (Component)getDisplayer().getCanvas();
-        return comp.getWidth();
-        } catch (Exception e) {
-            System.out.println("Unable to get Screen width!");
-            return 0;
-        }
-    }
-
-    private int getScreenHeight() {
-        try {
-            Component comp = (Component)getDisplayer().getCanvas();
-            return comp.getHeight();
-        } catch (Exception e) {
-            System.out.println("Unable to get Screen height!");
-            return 0;
-        }
     }
 
     @Override
