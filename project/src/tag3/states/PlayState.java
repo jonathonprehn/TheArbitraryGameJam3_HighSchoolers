@@ -120,8 +120,8 @@ public class PlayState extends GameState implements KeyDownListener {
                     300, 0, false, new MovementToggleListener()
             );
         toggles[1] = GraphicsFactory.getFactory().makeLinkedImageToggle(
-                MediaLoader.quickLoadImage("play_state_images/moreInfoOn.png"),
                 MediaLoader.quickLoadImage("play_state_images/moreInfoOff.png"),
+                MediaLoader.quickLoadImage("play_state_images/moreInfoOn.png"),
                 725, 70, false, new MoreInfoListener()
         );
         quickInfoCornerX = 500;
