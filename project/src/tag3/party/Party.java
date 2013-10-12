@@ -171,50 +171,49 @@ public class Party {
     }
 
     public void kickOutLlama() {
-        this.numLlama--;
-        addTemporaryMorale(-5);
-        if(numLlama<0) {
-            numLlama=0;
+        if(numLlama>0) {
+            this.numLlama--;
+            addTemporaryMorale(-5);
         }
     }
 
     public void kickOutDiseasedLlama() {
-        this.numDiseasedLlama--;
-        addTemporaryMorale(-5);
-        if (numDiseasedLlama<0) {
-            numDiseasedLlama=0;
+
+        if (numDiseasedLlama>0) {
+            this.numDiseasedLlama--;
+            addTemporaryMorale(-5);
         }
     }
 
     public void kickOutLion() {
-        this.numLion--;
-        addTemporaryMorale(-5);
-        if (numLion<0) {
-            numLion =0;
+
+        if (numLion>0) {
+            this.numLion--;
+            addTemporaryMorale(-5);
         }
     }
 
     public void kickOutDiseasedLion() {
-        this.numDiseasedLion--;
-        addTemporaryMorale(-5);
-        if (numDiseasedLion<0) {
-            numDiseasedLion = 0;
+
+        if (numDiseasedLion>0) {
+            this.numDiseasedLion--;
+            addTemporaryMorale(-5);
         }
     }
 
     public void kickOutGiraffe() {
-        this.numGiraffe--;
-        addTemporaryMorale(-5);
+
         if (numGiraffe<0) {
-            numGiraffe = 0;
+            this.numGiraffe--;
+            addTemporaryMorale(-5);
         }
     }
 
     public void kickOutDiseasedGiraffe() {
-        this.numDiseasedGiraffe--;
-        addTemporaryMorale(-5);
+
         if (numDiseasedGiraffe<0) {
-            numDiseasedGiraffe =0;
+            this.numDiseasedGiraffe--;
+            addTemporaryMorale(-5);
         }
     }
 
