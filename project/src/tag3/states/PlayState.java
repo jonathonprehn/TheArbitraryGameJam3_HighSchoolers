@@ -219,6 +219,8 @@ public class PlayState extends GameState implements KeyDownListener {
         bufferedImage = background.render(bufferedImage, graphics2D);
         bufferedImage = drawWalkingPart(bufferedImage, graphics2D);
         bufferedImage = drawResources(bufferedImage, graphics2D);
+        bufferedImage = drawTextInfo(bufferedImage, graphics2D);
+
         //Draw management window if managing
         if (isManaging()) {
             bufferedImage = drawManageMenu(bufferedImage, graphics2D);
@@ -228,6 +230,13 @@ public class PlayState extends GameState implements KeyDownListener {
             bufferedImage = drawPauseMenu(bufferedImage, graphics2D);
         }
         return bufferedImage;
+    }
+
+    //Draw all the text labels that tells the player what is going on
+    private BufferedImage drawTextInfo(BufferedImage bImage, Graphics2D g2d) {
+        g2d = (Graphics2D) bImage.getGraphics();
+
+        return bImage;
     }
 
     //Buttons 0, 1. Toggles 0, 1, labels 0, 1, 2
