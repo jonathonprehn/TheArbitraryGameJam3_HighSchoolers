@@ -4,6 +4,7 @@ import horsentp.gamelogic.EmptyGameState;
 import horsentp.gamelogic.GameState;
 import tag3.gui.GenericButtonListener;
 import tag3.gui.ImageButton;
+import tag3.gui.ImageLabel;
 import tag3.media.MediaLoader;
 import tag3.utility.GraphicsFactory;
 
@@ -38,19 +39,19 @@ public class MainMenuState extends GameState {
         buttons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/playButtonUp.png"),
                 MediaLoader.quickLoadImage("buttons/playButtonDown.png"),
-                (width/2)-buttonWidth, ((height/5)*2)-buttonHeight, new PlayGame()
+                (width/2)-(buttonWidth/2), ((height/5)*2)-(buttonHeight/2), new PlayGame()
         );
         //Options button
         buttons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/optionsButtonUp.png"),
                 MediaLoader.quickLoadImage("buttons/optionsButtonDown.png"),
-                (width/2)-buttonWidth, ((height/5)*3)-buttonHeight, new OptionsGame()
+                (width/2)-(buttonWidth/2), ((height/5)*3)-(buttonHeight/2), new OptionsGame()
         );
         //Quit button
         buttons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/quitButtonUp.png"),
                 MediaLoader.quickLoadImage("buttons/quitButtonDown.png"),
-                (width/2)-buttonWidth, ((height/5)*4)-buttonHeight, new QuitGame()
+                (width/2)-(buttonWidth/2), ((height/5)*4)-(buttonHeight/2), new QuitGame()
         );
     }
 
