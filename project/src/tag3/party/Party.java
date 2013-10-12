@@ -153,17 +153,50 @@ public class Party {
 
     public void addLion(int addedLions) {
         this.numLion = this.numLion + addedLions;
+        addTemporaryMorale(5);
         updatePartyImage();
     }
 
     public void addGiraffe(int addedGiraffes) {
         this.numGiraffe = this.numGiraffe + addedGiraffes;
+        addTemporaryMorale(5);
         updatePartyImage();
     }
 
     public void addLlama(int addedLlamas) {
         this.numLlama = this.numLlama + addedLlamas;
+        addTemporaryMorale(5);
         updatePartyImage();
+    }
+
+    public void kickOutLlama() {
+        this.numLlama--;
+        addTemporaryMorale(-5);
+    }
+
+    public void kickOutDiseasedLlama() {
+        this.numDiseasedLlama--;
+        addTemporaryMorale(-5);
+    }
+
+    public void kickOutLion() {
+        this.numLion--;
+        addTemporaryMorale(-5);
+    }
+
+    public void kickOutDiseasedLion() {
+        this.numDiseasedLion--;
+        addTemporaryMorale(-5);
+    }
+
+    public void kickOutGiraffe() {
+        this.numGiraffe--;
+        addTemporaryMorale(-5);
+    }
+
+    public void kickOutDiseasedGiraffe() {
+        this.numDiseasedGiraffe--;
+        addTemporaryMorale(-5);
     }
 
     private void updatePartyImage() {
@@ -202,7 +235,7 @@ public class Party {
         partyIdleImage = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
 
         Graphics2D pi0 = (Graphics2D) partyImage0.getGraphics();
-        Graphics2D pi1 = (Graphics2D) partyImage0.getGraphics();
+        Graphics2D pi1 = (Graphics2D) partyImage1.getGraphics();
         Graphics2D pii = (Graphics2D) partyIdleImage.getGraphics();
 
         byte num1, num2;
