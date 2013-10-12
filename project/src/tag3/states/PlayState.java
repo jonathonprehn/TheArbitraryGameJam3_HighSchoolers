@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * Time: 3:51 PM
  * To change this template use File | Settings | File Templates.
  */
-public class PlayState extends GameState implements KeyDownListener {
+public class PlayState extends GameState implements KeyDownListener, ResourceDialogListener {
 
     //Graphical User Interface stuff
     protected GuiComponent[] labels, manageLabels;
@@ -47,7 +47,7 @@ public class PlayState extends GameState implements KeyDownListener {
     private int hoursUntilNextWater = 20;
 
     //Global Logic and managers
-    boolean paused, managing;
+    private boolean paused, managing;
 
     @Override
     public void updateLogic() {
@@ -57,13 +57,13 @@ public class PlayState extends GameState implements KeyDownListener {
                 partyWrapper.setMoving(false);
 
                 // spawn a food resource
-
+                notifyRandomFood();
                 hoursUntilNextFood= 20 + (int)(Math.random()*8);
             } else if (hoursUntilNextWater <=0) {
                 partyWrapper.setMoving(false);
 
                 // spawn a water resource
-
+                notifyWater();
                 hoursUntilNextWater = 20 + (int)(Math.random()*8);
             } else if ((hoursUntilNextFood > 0) && (hoursUntilNextWater > 0)) {
                 partyWrapper.setMoving(toggles[0].isToggle()); //Are we moving according to the toggle?
@@ -321,6 +321,8 @@ public class PlayState extends GameState implements KeyDownListener {
 
         //Init input
         getInput().addKeyDownListener(this);
+        resourceDialog = new ResourceDialog(getRunner());
+        resourceDialog.addResourceListener(this);
     }
 
     //Make sure the text actually shows the correct values
@@ -519,6 +521,15 @@ public class PlayState extends GameState implements KeyDownListener {
         gameLabels[1].setVisible(true);
     }
 
+    private void notifyRandomFood() {
+        int num = (int)(Math.round(Math.random()*1));
+        if (num==0) {
+            notifyPlants();
+        } else {
+            notifyMeat();
+        }
+    }
+
     private void notifyMeat() {
         hideGameLabels();
         gameLabels[2].setVisible(true);
@@ -529,6 +540,11 @@ public class PlayState extends GameState implements KeyDownListener {
         hideGameLabels();
         gameLabels[4].setVisible(true);
         gameLabels[5].setVisible(true);
+    }
+
+    @Override
+    public void reactToConfirm(boolean c) {
+
     }
 
     class SleepButtonListener implements GenericButtonListener {
@@ -646,7 +662,7 @@ public class PlayState extends GameState implements KeyDownListener {
         public ResourceDialog(GameRunner runner) {
             int boxX = (runner.getDisplayer().getDisplayWidth()/2)-150, boxY = (runner.getDisplayer().getDisplayHeight()/2)-75;
             background = new ImageLabel(MediaLoader.quickLoadImage("confirm_dialogue/dialogBackground.png"), boxX, boxY);
-            buttons = new ImageButton[3];
+            buttons = new ImageButton[2];
             //MAKE BUTTONS 100x50
             buttons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
                     MediaLoader.quickLoadImage("confirm_dialogue/yesButtonUp.png"),
@@ -658,12 +674,6 @@ public class PlayState extends GameState implements KeyDownListener {
                     MediaLoader.quickLoadImage("confirm_dialogue/noButtonUp.png"),
                     MediaLoader.quickLoadImage("confirm_dialogue/noButtonDown.png"),
                     boxX+50, boxY+75, new NoDialogListener()
-            );
-
-            buttons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                    MediaLoader.quickLoadImage("confirm_dialogue/noButtonUp.png"),
-                    MediaLoader.quickLoadImage("confirm_dialogue/noButtonDown.png"),
-                    boxX+50, boxY+75, new ExitDialogListener()
             );
             listeners = new ArrayList<ResourceDialogListener>();
         }
