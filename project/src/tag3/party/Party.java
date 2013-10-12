@@ -203,7 +203,7 @@ public class Party {
 
     public void kickOutGiraffe() {
 
-        if (numGiraffe<0) {
+        if (numGiraffe>0) {
             this.numGiraffe--;
             addTemporaryMorale(-5);
         }
@@ -211,7 +211,7 @@ public class Party {
 
     public void kickOutDiseasedGiraffe() {
 
-        if (numDiseasedGiraffe<0) {
+        if (numDiseasedGiraffe>0) {
             this.numDiseasedGiraffe--;
             addTemporaryMorale(-5);
         }

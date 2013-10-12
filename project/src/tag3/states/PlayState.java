@@ -11,6 +11,7 @@ import tag3.media.MediaLoader;
 import tag3.party.food.Quality;
 import tag3.party.supplycollection.MeatResource;
 import tag3.party.supplycollection.PlantResource;
+import tag3.party.supplycollection.SupplyCollectPoint;
 import tag3.party.supplycollection.WaterResource;
 import tag3.utility.GraphicsFactory;
 
@@ -70,7 +71,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
             updateInfoText();
             partyImage.setImage(partyWrapper.getCurrentAnimationFrame());
             int barWidth = 460;
-            partyDistanceIcon.setX(barWidth-(int)(barWidth*(partyWrapper.getRawParty().getDistanceTraveled()/partyWrapper.getDistanceFromWyoming())));
+            partyDistanceIcon.setX(barWidth - (int) (barWidth * (partyWrapper.getRawParty().getDistanceTraveled() / partyWrapper.getDistanceFromWyoming())));
         }
     }
 
@@ -372,8 +373,37 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     }
 
     public void askForConfirmation() {
+        resourceDialog.setText("You have found " + qualityToText(partyWrapper.getResource().getQuality()) + " " + resourceTypeToText(partyWrapper.getResource()) + ".");
         asking = true;
         setPressed(false);
+    }
+
+    private String qualityToText(Quality qual) {
+        switch (qual) {
+            case GOOD:
+                return "good";
+            case QUESTIONABLE:
+                return "questionable";
+            case STRANGE:
+                return "strange";
+            case DISGUSTING:
+                return "disgusting";
+            default:
+            return "funny looking";
+        }
+    }
+
+    private String resourceTypeToText(SupplyCollectPoint scp) {
+        if (scp instanceof WaterResource) {
+            return "water";
+        }
+        else if (scp instanceof MeatResource) {
+            return "meat";
+        }
+        else if (scp instanceof PlantResource) {
+            return "plant";
+        }
+        return "thing";
     }
 
     @Override
@@ -707,6 +737,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         private ArrayList<ResourceDialogListener> listeners;
         private ImageLabel background;
         private ImageButton[] buttons;
+        private TextLabel diaText, eatIt;
 
         public ResourceDialog(GameRunner runner) {
             int boxX = (runner.getDisplayer().getDisplayWidth() / 2) - 150, boxY = (runner.getDisplayer().getDisplayHeight() / 2) - 75;
@@ -724,7 +755,13 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                     MediaLoader.quickLoadImage("confirm_dialogue/noButtonDown.png"),
                     boxX + 20, boxY + 120, new NoDialogListener()
             );
+            diaText = makeInfoText("", boxX+30, boxY + 40);
+            eatIt = makeInfoText("Consume it?", boxX+60, boxY + 70);
             listeners = new ArrayList<ResourceDialogListener>();
+        }
+
+        public void setText(String text) {
+            diaText.setText(text);
         }
 
         protected void notifyListeners(boolean confirmation) {
@@ -753,6 +790,8 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                 buttons[i].setVisible(visibility);
             }
             background.setVisible(visibility);
+            diaText.setVisible(visibility);
+            eatIt.setVisible(visibility);
         }
 
         @Override
@@ -768,6 +807,8 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                 for (int i = 0; i < buttons.length; i++) {
                     bufferedImage = buttons[i].render(bufferedImage, graphics2D);
                 }
+                bufferedImage = diaText.render(bufferedImage, graphics2D);
+                bufferedImage = eatIt.render(bufferedImage, graphics2D);
             }
             return bufferedImage;
         }
