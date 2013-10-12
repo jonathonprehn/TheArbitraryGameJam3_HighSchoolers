@@ -27,6 +27,8 @@ public class PartyWrapper implements GameCalenderListener {
     private BufferedImage currentImage;
     private boolean choseConfirmation;
 
+    private int distanceFromWyoming = 500;
+
     public boolean isMoving() {
         return moving;
     }
@@ -143,6 +145,10 @@ public class PartyWrapper implements GameCalenderListener {
             resource.collectFrom(party);
             setResource(null);
         }
+    }
+
+    public int getDistanceFromWyoming() {
+        return distanceFromWyoming;
     }
 
     @Override

@@ -42,6 +42,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     private Font infoFont, headerFont;
     private TextLabel[] quickInfoText, muchInfoText;
     private ImageLabel partyImage;
+    private ImageLabel partyDistanceIcon;
     //Global Logic and managers
     private boolean paused;
     private boolean managing, asking;
@@ -68,6 +69,8 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
             //calender.printData();
             updateInfoText();
             partyImage.setImage(partyWrapper.getCurrentAnimationFrame());
+            int barWidth = 460;
+            partyDistanceIcon.setX(barWidth-(int)(barWidth*(partyWrapper.getRawParty().getDistanceTraveled()/partyWrapper.getDistanceFromWyoming())));
         }
     }
 
@@ -156,6 +159,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         labels[0] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/quickInfoBackground.png"), quickInfoCornerX, quickInfoCornerY);
         labels[1] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/muchInfoBackground.png"), muchInfoCornerX, muchInfoCornerY);
         labels[2] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/distanceBar.png"), 0, 100);
+        partyDistanceIcon = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/movementIcon.png"), 0, 100);
 
         //Special case stuff for game
         labels[1].setVisible(false);
@@ -384,6 +388,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         bufferedImage = drawWalkingPart(bufferedImage, graphics2D); //UI mostly
         bufferedImage = drawResources(bufferedImage, graphics2D); //Resources and resource spots
         bufferedImage = toggles[2].render(bufferedImage, graphics2D); //Draw the pause button
+        bufferedImage = partyDistanceIcon.render(bufferedImage, graphics2D);
 
         //Info text
         bufferedImage = drawQuickTextInfo(bufferedImage, graphics2D); //Quick info
