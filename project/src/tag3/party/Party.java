@@ -24,7 +24,7 @@ public class Party {
 
     // a number added to the percentage chance of getting a disease
     private int diseaseModifier;
-    private int diseaseCureChance;
+    private int diseaseCureChance, diseaseKillChance;
     // the chance of being more successful when hunting or collecting food
     private int huntingSuccess, collectingSuccess;
     // number of members in your party
@@ -42,6 +42,8 @@ public class Party {
     private double daysWithNoFood = 0;
     private double daysWithNoWater = 0;
 
+    private double temporaryMoraleModifier = 0;
+
     public Party(int numberLion, int numberGiraffe, int numberLlama) {
         this.numLion = numberLion;
         this.numGiraffe = numberGiraffe;
@@ -56,7 +58,10 @@ public class Party {
     public void updateVariables() {
         this.diseaseModifier = 5 + (int)(getNumberOfDiseased()*0.10) - (int)(getNumLlama()*2);
 
-        this.diseaseCureChance = (int)(15*(morale/100.0));
+        // increases with morale - 15% base chance
+        this.diseaseCureChance = (int)(10*(1+(morale/200.0)));
+        // decreases with morale - 5% base chance
+        this.diseaseKillChance = (int)(3*(1+(-morale/200.0)));
 
         int sleepMod = 0;
         if (getDaysSinceSlept() > 3) {
@@ -79,7 +84,15 @@ public class Party {
             noWaterMod = -(int)(daysWithNoWater*35.0);
         }
 
-        this.morale = (int)(this.getSize()*0.25)+sleepMod+noFoodMod+noWaterMod;
+        if (temporaryMoraleModifier > 3 || temporaryMoraleModifier < 3) {
+            // temportary morale decays at a rate of 50% every update cycle
+            temporaryMoraleModifier = temporaryMoraleModifier*0.5;
+        } else {
+            temporaryMoraleModifier = 0;
+        }
+
+        this.morale = (int)((this.getSize()*0.25) + sleepMod + noFoodMod + noWaterMod
+            + temporaryMoraleModifier);
 
         this.walkingPace = 1 + (morale/100.0);
         if (this.walkingPace < 0.1) {
@@ -131,6 +144,7 @@ public class Party {
      */
     public void moveForward() {
         updateVariables();
+        randomlyKill();
         int beforeDiseasedNum = getNumberOfDiseased();
         consumeFood();
         consumeWater();
@@ -146,6 +160,32 @@ public class Party {
         consumeWater();
         randomlyCure(); // when you sleep some animals have a chance of being cured from a good night's sleep
         daysSinceSlept = 0; // all refreshed!
+    }
+
+    public void randomlyKill() {
+        // see if lions die
+        for (int i=0; i<this.numDiseasedLion; i++) {
+            if (RandomChance.rollForChance(diseaseKillChance))  {
+                this.numDiseasedLion--;
+                addTemporaryMorale(-10);
+            }
+        }
+
+        // see if giraffe die
+        for (int i=0; i<this.numDiseasedGiraffe; i++) {
+            if (RandomChance.rollForChance(diseaseKillChance))  {
+                this.numDiseasedGiraffe--;
+                addTemporaryMorale(-10);
+            }
+        }
+
+        // see if Llama die
+        for (int i=0; i<this.numDiseasedLlama; i++) {
+            if (RandomChance.rollForChance(diseaseKillChance))  {
+                this.numDiseasedLlama--;
+                addTemporaryMorale(-10);
+            }
+        }
     }
 
     public void randomlyCure() {
@@ -251,6 +291,10 @@ public class Party {
             daysWithNoWater = 0;
             waterSupply.remove(waterSupply.size()-1);
         }
+    }
+
+    private void addTemporaryMorale(double moraleAmount) {
+        this.temporaryMoraleModifier = this.temporaryMoraleModifier + moraleAmount;
     }
 
     public void addFood(Food food) {
