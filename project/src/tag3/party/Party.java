@@ -181,17 +181,17 @@ public class Party {
         while (llamasInImage>0 || lionsInImage>0 || giraffesInImage>0) {
             if (llamasInImage > 0) {
                 llamaPositions[(llamasInImage-1)] =
-                        new Point((int)(Math.random()*(width-150)), height-250 + (int)(Math.random()*50));
+                        new Point((int)(Math.random()*(width-150)), height-280 + (int)(Math.random()*20));
                 llamasInImage--;
             }
             if (lionsInImage > 0) {
                 lionPositions[(lionsInImage-1)] =
-                        new Point((int)(Math.random()*(width-200)), height-200 + (int)(Math.random()*50));
+                        new Point((int)(Math.random()*(width-200)), height-230 + (int)(Math.random()*20));
                 lionsInImage--;
             }
             if (giraffesInImage > 0) {
                 giraffePositions[(giraffesInImage-1)] =
-                        new Point((int)(Math.random()*(width-150)), height-300 + (int)(Math.random()*50));
+                        new Point((int)(Math.random()*(width-150)), height-330 + (int)(Math.random()*20));
                 giraffesInImage--;
             }
         }
