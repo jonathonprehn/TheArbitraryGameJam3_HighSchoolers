@@ -588,6 +588,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         if (c) {
             partyWrapper.givePartyResources();
         }
+        hideGameLabels();
     }
 
     class SleepButtonListener implements GenericButtonListener {

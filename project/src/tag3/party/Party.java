@@ -167,36 +167,55 @@ public class Party {
         this.numLlama = this.numLlama + addedLlamas;
         addTemporaryMorale(5);
         updatePartyImage();
+
     }
 
     public void kickOutLlama() {
         this.numLlama--;
         addTemporaryMorale(-5);
+        if(numLlama<0) {
+            numLlama=0;
+        }
     }
 
     public void kickOutDiseasedLlama() {
         this.numDiseasedLlama--;
         addTemporaryMorale(-5);
+        if (numDiseasedLlama<0) {
+            numDiseasedLlama=0;
+        }
     }
 
     public void kickOutLion() {
         this.numLion--;
         addTemporaryMorale(-5);
+        if (numLion<0) {
+            numLion =0;
+        }
     }
 
     public void kickOutDiseasedLion() {
         this.numDiseasedLion--;
         addTemporaryMorale(-5);
+        if (numDiseasedLion<0) {
+            numDiseasedLion = 0;
+        }
     }
 
     public void kickOutGiraffe() {
         this.numGiraffe--;
         addTemporaryMorale(-5);
+        if (numGiraffe<0) {
+            numGiraffe = 0;
+        }
     }
 
     public void kickOutDiseasedGiraffe() {
         this.numDiseasedGiraffe--;
         addTemporaryMorale(-5);
+        if (numDiseasedGiraffe<0) {
+            numDiseasedGiraffe =0;
+        }
     }
 
     private void updatePartyImage() {
