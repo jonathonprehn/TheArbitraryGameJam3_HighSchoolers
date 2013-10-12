@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Time: 3:10 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ImageButton implements Displayable , MouseDownListener, MouseMoveListener{
+public class ImageButton implements MouseDownListener, MouseMoveListener, GuiComponent{
 
     private BufferedImage upImage, downImage;
     private Rectangle rect;
@@ -33,6 +33,11 @@ public class ImageButton implements Displayable , MouseDownListener, MouseMoveLi
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    @Override
+    public void updateComponent() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     private boolean visible, enabled;

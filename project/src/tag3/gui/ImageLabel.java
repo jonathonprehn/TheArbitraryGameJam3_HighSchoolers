@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
  * Time: 8:40 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ImageLabel implements Displayable {
+public class ImageLabel implements GuiComponent {
 
     private BufferedImage image;
 
@@ -23,6 +23,11 @@ public class ImageLabel implements Displayable {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    @Override
+    public void updateComponent() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     private boolean visible;

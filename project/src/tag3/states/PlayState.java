@@ -3,6 +3,7 @@ package tag3.states;
 import horsentp.gamelogic.GameState;
 import horsentp.input.KeyDownListener;
 import tag3.gui.*;
+import tag3.gui.GuiComponent;
 import tag3.media.MediaLoader;
 import tag3.utility.GraphicsFactory;
 
@@ -20,7 +21,7 @@ import java.awt.image.BufferedImage;
 public class PlayState extends GameState implements KeyDownListener {
 
     //Graphical User Interface stuff
-    protected ImageLabel[] labels, manageLabels;
+    protected GuiComponent[] labels, manageLabels;
     protected ImageButton[] buttons, manageButtons;
     protected ImageToggle[] toggles;
     private ImageLabel background;
@@ -65,9 +66,15 @@ public class PlayState extends GameState implements KeyDownListener {
     public void setManaging(boolean managing) {
         this.managing = managing;
         for (int i=0; i<manageLabels.length; i++) {
+            if (manageLabels[i] == null) {
+                continue;
+            }
             manageLabels[i].setVisible(managing);
         }
         for (int i=0; i<manageButtons.length; i++) {
+            if (manageLabels[i] == null) {
+                continue;
+            }
             manageButtons[i].setVisible(managing);
         }
     }
@@ -236,7 +243,7 @@ public class PlayState extends GameState implements KeyDownListener {
         return bImage;
     }
 
-    //Label 3, buttons 2, 3, 4
+    //GuiComponent 3, buttons 2, 3, 4
     private BufferedImage drawPauseMenu(BufferedImage bImage, Graphics2D g2d) {
         g2d = (Graphics2D) bImage.getGraphics();
         bImage = labels[3].render(bImage, g2d);
@@ -249,9 +256,15 @@ public class PlayState extends GameState implements KeyDownListener {
     private BufferedImage drawManageMenu(BufferedImage bImage, Graphics2D g2d) {
         g2d = (Graphics2D) bImage.getGraphics();
         for (int i=0; i<manageLabels.length; i++) {
+            if (manageLabels[i] == null) {
+                continue;
+            }
             bImage = manageLabels[i].render(bImage, g2d);
         }
         for (int j=0; j<manageButtons.length; j++) {
+            if (manageButtons[j] == null) {
+                continue;
+            }
             bImage = manageButtons[j].render(bImage, g2d);
         }
         return bImage;
@@ -260,6 +273,9 @@ public class PlayState extends GameState implements KeyDownListener {
     private BufferedImage drawResources(BufferedImage bImage, Graphics2D g2d) {
         g2d = (Graphics2D) bImage.getGraphics();
         for (int i=0; i<gameLabels.length; i++) {
+            if (gameLabels[i] == null) {
+                continue;
+            }
             bImage = gameLabels[i].render(bImage, g2d);
         }
         return bImage;
@@ -288,6 +304,9 @@ public class PlayState extends GameState implements KeyDownListener {
 
     private void hideGameLabels() {
         for (int i=0; i<gameLabels.length; i++) {
+            if (gameLabels[i] == null) {
+                continue;
+            }
             gameLabels[i].setVisible(false);
         }
     }

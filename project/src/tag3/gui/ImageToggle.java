@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Time: 3:34 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ImageToggle implements Displayable, MouseDownListener {
+public class ImageToggle implements GuiComponent, MouseDownListener {
 
     private BufferedImage trueImage, falseImage;
     private Rectangle rect;
@@ -44,6 +44,11 @@ public class ImageToggle implements Displayable, MouseDownListener {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    @Override
+    public void updateComponent() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     private boolean visible;

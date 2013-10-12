@@ -18,11 +18,13 @@ import java.awt.image.BufferedImage;
  * Time: 5:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class SimpleTextField implements Displayable, KeyDownListener, MouseDownListener {
+public class SimpleTextField implements GuiComponent, KeyDownListener, MouseDownListener {
 
     private int x, y, width, height, maxText;
     private String text;
     private boolean focused;
+    private boolean visibility = true;
+
     public SimpleTextField(int x, int y, int width, int height, int maxText, String defaultText, InputBridge bridge) {
         this.x = x; this.y = y; this.width = width; this.height = height; this.maxText = maxText;
         bridge.addMouseDownListener(this);
@@ -85,5 +87,18 @@ public class SimpleTextField implements Displayable, KeyDownListener, MouseDownL
         } else {
             focused = false;
         }
+    }
+
+    public boolean isVisible() {
+        return visibility;
+    }
+
+    public void setVisible(boolean visibility) {
+        this.visibility = visibility;
+    }
+
+    @Override
+    public void updateComponent() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }
