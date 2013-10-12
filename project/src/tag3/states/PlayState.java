@@ -225,7 +225,8 @@ public class PlayState extends GameState implements KeyDownListener {
 
         //Init game logic handlers
         calender = new GameCalender();
-        partyWrapper = new PartyWrapper(23,31,20, calender);    //Party initialized here!
+        // start with 15 of each animal at the start
+        partyWrapper = new PartyWrapper(15,15,15, calender);    //Party initialized here!
         infoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 
         //Init info text
