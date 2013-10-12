@@ -1,5 +1,7 @@
 package tag3.states;
 
+import horsentp.display.DisplayLink;
+import horsentp.gamelogic.GameRunner;
 import horsentp.gamelogic.GameState;
 import horsentp.input.KeyDownListener;
 import tag3.gamelogic.GameCalender;
@@ -13,6 +15,7 @@ import tag3.utility.GraphicsFactory;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +32,7 @@ public class PlayState extends GameState implements KeyDownListener {
     protected TextLabel[] manageText;
     protected ImageToggle[] toggles;
     private ImageLabel background;
+    private ResourceDialog resourceDialog;
 
     //Actual game stuff now
     protected ImageLabel[] gameLabels;
@@ -240,18 +244,18 @@ public class PlayState extends GameState implements KeyDownListener {
             centerWidth+250, centerHeight-225, new ExitManageButton()
         );
 
-        manageText[0] = makeGiantInfoText("", manageGridCornerX+30, manageGridCornerY+60); //Normal Llamas
-        manageText[1] = makeGiantInfoText("", manageGridCornerX+180, manageGridCornerY+60); //Diseased Llamas
-        manageText[2] = makeGiantInfoText("", manageGridCornerX+30, manageGridCornerY+170); //Normal Giraffes
-        manageText[3] = makeGiantInfoText("", manageGridCornerX+180, manageGridCornerY+170); //Diseased Giraffes
-        manageText[4] = makeGiantInfoText("", manageGridCornerX+30, manageGridCornerY+280); //Normal Lions
-        manageText[5] = makeGiantInfoText("", manageGridCornerX+180, manageGridCornerY+280); //Diseased Lions
-        manageText[6] = makeGiantInfoText("", manageGridCornerX+300, manageGridCornerY+60); //Total Llamas
-        manageText[7] = makeGiantInfoText("", manageGridCornerX+300, manageGridCornerY+170); //Total Giraffes
-        manageText[8] = makeGiantInfoText("", manageGridCornerX+300, manageGridCornerY+280); //Total Lions
+        manageText[0] = makeGiantInfoText("", manageGridCornerX + 30, manageGridCornerY + 60); //Normal Llamas
+        manageText[1] = makeGiantInfoText("", manageGridCornerX + 180, manageGridCornerY + 60); //Diseased Llamas
+        manageText[2] = makeGiantInfoText("", manageGridCornerX + 30, manageGridCornerY + 170); //Normal Giraffes
+        manageText[3] = makeGiantInfoText("", manageGridCornerX + 180, manageGridCornerY + 170); //Diseased Giraffes
+        manageText[4] = makeGiantInfoText("", manageGridCornerX + 30, manageGridCornerY + 280); //Normal Lions
+        manageText[5] = makeGiantInfoText("", manageGridCornerX + 180, manageGridCornerY + 280); //Diseased Lions
+        manageText[6] = makeGiantInfoText("", manageGridCornerX + 300, manageGridCornerY + 60); //Total Llamas
+        manageText[7] = makeGiantInfoText("", manageGridCornerX + 300, manageGridCornerY + 170); //Total Giraffes
+        manageText[8] = makeGiantInfoText("", manageGridCornerX + 300, manageGridCornerY + 280); //Total Lions
         manageText[9] = makeGiantInfoText("Normal", manageGridCornerX+5, manageGridCornerY-10); //"Normal" header
-        manageText[10] = makeGiantInfoText("Diseased", manageGridCornerX+130, manageGridCornerY-10); //"Diseased" header
-        manageText[11] = makeGiantInfoText("Total", manageGridCornerX+290, manageGridCornerY-10); //"Total" header
+        manageText[10] = makeGiantInfoText("Diseased", manageGridCornerX + 130, manageGridCornerY - 10); //"Diseased" header
+        manageText[11] = makeGiantInfoText("Total", manageGridCornerX + 290, manageGridCornerY - 10); //"Total" header
 
         //Pause button
         toggles[2] = GraphicsFactory.getFactory().makeLinkedImageToggle(
@@ -629,6 +633,103 @@ public class PlayState extends GameState implements KeyDownListener {
         @Override
         public void toggleChanged(boolean valueSetTo) {
             partyWrapper.setMoving(valueSetTo);
+        }
+    }
+
+    class ResourceDialog implements GuiComponent {
+
+        private ArrayList<ResourceDialogListener> listeners;
+        protected boolean visible;
+        private ImageLabel background;
+        private ImageButton[] buttons;
+
+        public ResourceDialog(GameRunner runner) {
+            int boxX = (runner.getDisplayer().getDisplayWidth()/2)-150, boxY = (runner.getDisplayer().getDisplayHeight()/2)-75;
+            background = new ImageLabel(MediaLoader.quickLoadImage("confirm_dialogue/dialogBackground.png"), boxX, boxY);
+            buttons = new ImageButton[3];
+            //MAKE BUTTONS 100x50
+            buttons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                    MediaLoader.quickLoadImage("confirm_dialogue/yesButtonUp.png"),
+                    MediaLoader.quickLoadImage("confirm_dialogue/yesButtonDown.png"),
+                    boxX+50, boxY+75, new YesDialogListener()
+            );
+
+            buttons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                    MediaLoader.quickLoadImage("confirm_dialogue/noButtonUp.png"),
+                    MediaLoader.quickLoadImage("confirm_dialogue/noButtonDown.png"),
+                    boxX+50, boxY+75, new NoDialogListener()
+            );
+
+            buttons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                    MediaLoader.quickLoadImage("confirm_dialogue/noButtonUp.png"),
+                    MediaLoader.quickLoadImage("confirm_dialogue/noButtonDown.png"),
+                    boxX+50, boxY+75, new ExitDialogListener()
+            );
+            listeners = new ArrayList<ResourceDialogListener>();
+        }
+
+        protected void notifyListeners(boolean confirmation) {
+            for (int i=0; i<listeners.size(); i++) {
+                listeners.get(i).reactToConfirm(confirmation);
+            }
+        }
+
+        public void addResourceListener(ResourceDialogListener rl) {
+            listeners.add(rl);
+        }
+        public void removeResourceListener(ResourceDialogListener rl) {
+            listeners.remove(rl);
+        }
+        @Override
+        public boolean isVisible() {
+            return visible;
+        }
+
+        @Override
+        public void setVisible(boolean visibility) {
+            this.visible = visibility;
+            for (int i=0; i<buttons.length; i++) {
+                buttons[i].setVisible(visibility);
+            }
+            background.setVisible(visibility);
+        }
+
+        @Override
+        public void updateComponent() {
+
+        }
+
+        @Override
+        public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
+            graphics2D = (Graphics2D) bufferedImage.getGraphics();
+
+            return bufferedImage;
+        }
+
+        @Override
+        public void setDisplayLink(DisplayLink displayLink) {
+
+        }
+
+        class YesDialogListener implements GenericButtonListener {
+            @Override
+            public void buttonPushed() {
+                notifyListeners(true);
+                setVisible(false);
+            }
+        }
+        class NoDialogListener implements GenericButtonListener {
+            @Override
+            public void buttonPushed() {
+                notifyListeners(false);
+                setVisible(false);
+            }
+        }
+        class ExitDialogListener implements GenericButtonListener {
+            @Override
+            public void buttonPushed() {
+
+            }
         }
     }
 }
