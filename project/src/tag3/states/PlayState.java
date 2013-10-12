@@ -42,10 +42,6 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     private TextLabel[] quickInfoText, muchInfoText;
     private ImageLabel partyImage;
 
-    // timers for finding stuff
-    private int hoursUntilNextFood = 24;
-    private int hoursUntilNextWater = 20;
-
     //Global Logic and managers
     private boolean paused, managing;
 
@@ -53,27 +49,6 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     public void updateLogic() {
         //System.out.println("Tick");
         if(!isPaused()) {  //Do logic only if the game is running!
-            if (hoursUntilNextFood <= 0) {
-                partyWrapper.setMoving(false);
-
-                // spawn a food resource
-                notifyRandomFood();
-                hoursUntilNextFood= 20 + (int)(Math.random()*8);
-            } else if (hoursUntilNextWater <=0) {
-                partyWrapper.setMoving(false);
-
-                // spawn a water resource
-                notifyWater();
-                hoursUntilNextWater = 20 + (int)(Math.random()*8);
-            } else if ((hoursUntilNextFood > 0) && (hoursUntilNextWater > 0)) {
-                partyWrapper.setMoving(toggles[0].isToggle()); //Are we moving according to the toggle?
-            }
-
-            // if currentFoundResource!=null
-            // ask player if they want to collect it
-
-            hoursUntilNextFood--;
-            hoursUntilNextWater--;
 
             // System.out.println("Moving: " + toggles[0].isToggle() + "");
             calender.tickCalender(); //Calender handles the updating of the party (PartyWrapper is a GameCalenderListener)
@@ -293,7 +268,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         //Init info text
         quickInfoText = new TextLabel[6];
         muchInfoText = new TextLabel[9];
-        int xOffsetMuchInfo = 10;
+        int xOffsetMuchInfo = 40;
         int yOffsetMuchInfo = 30;
 
         //Total animal num, total diseased animal num
@@ -498,6 +473,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         }
     }
 
+    public boolean getMoveToggleValue() {
+        return toggles[0].isToggle();
+    }
+
     public void togglePaused() {
         if (isPaused()) {
             setPaused(false);
@@ -515,13 +494,13 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         }
     }
 
-    private void notifyWater() {
+    public void notifyWater() {
         hideGameLabels();
         gameLabels[0].setVisible(true);
         gameLabels[1].setVisible(true);
     }
 
-    private void notifyRandomFood() {
+    public void notifyRandomFood() {
         int num = (int)(Math.round(Math.random()*1));
         if (num==0) {
             notifyPlants();
@@ -530,13 +509,13 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         }
     }
 
-    private void notifyMeat() {
+    public void notifyMeat() {
         hideGameLabels();
         gameLabels[2].setVisible(true);
         gameLabels[3].setVisible(true);
     }
 
-    private void notifyPlants() {
+    public void notifyPlants() {
         hideGameLabels();
         gameLabels[4].setVisible(true);
         gameLabels[5].setVisible(true);

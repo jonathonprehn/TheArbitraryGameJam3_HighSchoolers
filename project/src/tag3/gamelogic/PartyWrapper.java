@@ -16,6 +16,10 @@ import java.awt.image.BufferedImage;
 //For putting the logic for the party (and the game) in 1 place
 public class PartyWrapper implements GameCalenderListener {
 
+    // timers for finding stuff
+    private int hoursUntilNextFood = 24;
+    private int hoursUntilNextWater = 20;
+
     private int daysPassed;
     private int frame;
     private GameCalender calender;
@@ -89,6 +93,28 @@ public class PartyWrapper implements GameCalenderListener {
         } else {
             party.setIdle(true);
         }
+
+        if (hoursUntilNextFood <= 0) {
+            setMoving(false);
+
+            // spawn a food resource
+            state.notifyRandomFood();
+            hoursUntilNextFood= 20 + (int)(Math.random()*8);
+        } else if (hoursUntilNextWater <=0) {
+            setMoving(false);
+
+            // spawn a water resource
+            state.notifyWater();
+            hoursUntilNextWater = 20 + (int)(Math.random()*8);
+        } else if ((hoursUntilNextFood > 0) && (hoursUntilNextWater > 0)) {
+            setMoving(state.getMoveToggleValue()); //Are we moving according to the toggle?
+        }
+
+        // if currentFoundResource!=null
+        // ask player if they want to collect it
+
+        hoursUntilNextFood--;
+        hoursUntilNextWater--;
 
     }
 
