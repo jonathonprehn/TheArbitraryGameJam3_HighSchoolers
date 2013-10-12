@@ -35,6 +35,7 @@ public class Party {
     // the current image of the party (changes as party grows and shrinks)
     private BufferedImage partyImage0;
     private BufferedImage partyImage1;
+    private BufferedImage partyIdleImage;
 
     private BufferedImage[] llamaImages = {
             MediaLoader.quickLoadImage("animals/llama0.png"),
@@ -74,14 +75,12 @@ public class Party {
     }
 
     private void updateVariables() {
-        // 10% diseased animal amount - 1.5% per llama
-        this.diseaseModifier = (int)(getNumberOfDiseased()*0.1) - (int)(getNumLlama()*1.5);
-
         // increases with morale - 20% base chance
         this.diseaseCureChance = (int)(35*(1+(morale/100.0)));
         // decreases with morale - 2% base chance
         this.diseaseKillChance = (int)(2*(1+(-morale/200.0)));
 
+        // morale modifiers
         int sleepMod = 0;
         if (getDaysSinceSlept() > 3) {
             sleepMod = -20;
@@ -115,6 +114,9 @@ public class Party {
 
         this.morale = (int)((this.getSize()*0.25) + sleepMod + noFoodMod + noWaterMod
             + temporaryMoraleModifier);
+
+        // 15% diseased animal amount - 1.5% per llama - 1/2 morale percent
+        this.diseaseModifier = (int)(-morale/200.0) + (int)(getNumberOfDiseased()*0.15) - (int)(getNumLlama()*1.5);
 
         this.walkingPace = 1 + (morale/100.0);
         if (this.walkingPace < 0.1) {
@@ -194,10 +196,11 @@ public class Party {
         // idk what the third constructor is supposed to do :<
         partyImage0 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         partyImage1 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
+        partyIdleImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         Graphics2D pi0 = (Graphics2D) partyImage0.getGraphics();
         Graphics2D pi1 = (Graphics2D) partyImage0.getGraphics();
+        Graphics2D pii = (Graphics2D) partyIdleImage.getGraphics();
 
         byte num1, num2;
 
@@ -211,6 +214,7 @@ public class Party {
             }
             pi0.drawImage(llamaImages[num1], (int)llamaPositions[i].getX(), (int)llamaPositions[i].getY(), null);
             pi1.drawImage(llamaImages[num2], (int)llamaPositions[i].getX(), (int)llamaPositions[i].getY(), null);
+            pii.drawImage(llamaImages[1], (int)llamaPositions[i].getX(), (int)llamaPositions[i].getY(), null);
         }
 
         for (int i=0; i<lionPositions.length; i++) {
@@ -223,6 +227,7 @@ public class Party {
             }
             pi0.drawImage(lionImages[num1], (int)lionPositions[i].getX(), (int)lionPositions[i].getY(), null);
             pi1.drawImage(lionImages[num2], (int)lionPositions[i].getX(), (int)lionPositions[i].getY(), null);
+            pii.drawImage(lionImages[1], (int)lionPositions[i].getX(), (int)lionPositions[i].getY(), null);
         }
 
         for (int i=0; i<giraffePositions.length; i++) {
@@ -235,6 +240,7 @@ public class Party {
             }
             pi0.drawImage(giraffeImages[num1], (int)giraffePositions[i].getX(), (int)giraffePositions[i].getY(), null);
             pi1.drawImage(giraffeImages[num2], (int)giraffePositions[i].getX(), (int)giraffePositions[i].getY(), null);
+            pii.drawImage(giraffeImages[1], (int)giraffePositions[i].getX(), (int)giraffePositions[i].getY(), null);
         }
     }
 
@@ -495,6 +501,13 @@ public class Party {
             updatePartyImage();
         }
         return partyImage1;
+    }
+
+    public BufferedImage getPartyIdleImage() {
+        if (partyIdleImage==null) {
+            updatePartyImage();
+        }
+        return partyIdleImage;
     }
 
     public int getHuntingSuccess() {
