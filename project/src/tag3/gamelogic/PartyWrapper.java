@@ -1,6 +1,7 @@
 package tag3.gamelogic;
 
 import tag3.party.Party;
+import tag3.party.supplycollection.SupplyCollectPoint;
 import tag3.states.PlayState;
 
 import java.awt.image.BufferedImage;
@@ -24,6 +25,7 @@ public class PartyWrapper implements GameCalenderListener {
     private int frame;
     private GameCalender calender;
     private BufferedImage currentImage;
+    private boolean choseConfirmation;
 
     public boolean isMoving() {
         return moving;
@@ -82,29 +84,37 @@ public class PartyWrapper implements GameCalenderListener {
         }
     }
 
+    public void setChoseConfirmation(boolean b) {
+        this.choseConfirmation = b;
+    }
+
     @Override
     public void hourPassed() {
-        System.out.println("Hour passed");
+        //System.out.println("Hour passed");
         updatePartyImage();
         if (isMoving()) {
             party.setIdle(false);
             getRawParty().moveForward();
-            System.out.println("Moved forward!");
+           // System.out.println("Moved forward!");
         } else {
             party.setIdle(true);
         }
 
         if (hoursUntilNextFood <= 0) {
             setMoving(false);
-
+            System.out.println("Spawning a food resource!");
             // spawn a food resource
             state.notifyRandomFood();
+
+            state.askForConfirmation();
+
             hoursUntilNextFood= 20 + (int)(Math.random()*8);
         } else if (hoursUntilNextWater <=0) {
             setMoving(false);
-
+            System.out.println("Spawning a water resource!");
             // spawn a water resource
             state.notifyWater();
+            state.askForConfirmation();
             hoursUntilNextWater = 20 + (int)(Math.random()*8);
         } else if ((hoursUntilNextFood > 0) && (hoursUntilNextWater > 0)) {
             setMoving(state.getMoveToggleValue()); //Are we moving according to the toggle?
@@ -116,6 +126,23 @@ public class PartyWrapper implements GameCalenderListener {
         hoursUntilNextFood--;
         hoursUntilNextWater--;
 
+    }
+
+    public SupplyCollectPoint getResource() {
+        return resource;
+    }
+
+    public void setResource(SupplyCollectPoint resource) {
+        this.resource = resource;
+    }
+
+    private SupplyCollectPoint resource;
+
+    public void givePartyResources() {
+        if (resource!=null) {
+            resource.collectFrom(party);
+            setResource(null);
+        }
     }
 
     @Override

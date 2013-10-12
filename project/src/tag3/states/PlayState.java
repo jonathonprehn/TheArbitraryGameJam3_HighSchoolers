@@ -7,9 +7,11 @@ import horsentp.input.KeyDownListener;
 import tag3.gamelogic.GameCalender;
 import tag3.gamelogic.PartyWrapper;
 import tag3.gui.*;
-import tag3.gui.GuiComponent;
 import tag3.media.MediaLoader;
-import tag3.party.Party;
+import tag3.party.food.Quality;
+import tag3.party.supplycollection.MeatResource;
+import tag3.party.supplycollection.PlantResource;
+import tag3.party.supplycollection.WaterResource;
 import tag3.utility.GraphicsFactory;
 
 import java.awt.*;
@@ -31,24 +33,35 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     protected ImageButton[] buttons, manageButtons;
     protected TextLabel[] manageText;
     protected ImageToggle[] toggles;
-    private ImageLabel background;
-    private ResourceDialog resourceDialog;
-
     //Actual game stuff now
     protected ImageLabel[] gameLabels;
     protected GameCalender calender;
     protected PartyWrapper partyWrapper;                //Where should the Party go anyway?
+    private ImageLabel background;
+    private ResourceDialog resourceDialog;
     private Font infoFont, headerFont;
     private TextLabel[] quickInfoText, muchInfoText;
     private ImageLabel partyImage;
-
     //Global Logic and managers
-    private boolean paused, managing;
+    private boolean paused;
+    private boolean managing, asking;
+    private boolean pressed;
+
+    public boolean isPressed() {
+        return pressed;
+    }
+
+    public void setPressed(boolean pressed) {
+        this.pressed = pressed;
+        resourceDialog.setVisible(!pressed);
+        toggles[0].setEnabled(pressed);
+        partyWrapper.setMoving(pressed);
+    }
 
     @Override
     public void updateLogic() {
         //System.out.println("Tick");
-        if(!isPaused()) {  //Do logic only if the game is running!
+        if (!isPaused()) {  //Do logic only if the game is running!
 
             // System.out.println("Moving: " + toggles[0].isToggle() + "");
             calender.tickCalender(); //Calender handles the updating of the party (PartyWrapper is a GameCalenderListener)
@@ -56,6 +69,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
             updateInfoText();
             partyImage.setImage(partyWrapper.getCurrentAnimationFrame());
         }
+    }
+
+    public boolean isPaused() {
+        return paused;
     }
 
     public void setPaused(boolean paused) {
@@ -74,23 +91,19 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         buttons[1].setEnabled(!paused);
     }
 
-    public boolean isPaused() {
-        return paused;
-    }
-
     public boolean isManaging() {
         return managing;
     }
 
     public void setManaging(boolean managing) {
         this.managing = managing;
-        for (int i=0; i<manageLabels.length; i++) {
+        for (int i = 0; i < manageLabels.length; i++) {
             if (manageLabels[i] == null) {
                 continue;
             }
             manageLabels[i].setVisible(managing);
         }
-        for (int i=0; i<manageButtons.length; i++) {
+        for (int i = 0; i < manageButtons.length; i++) {
             if (manageLabels[i] == null) {
                 continue;
             }
@@ -103,6 +116,8 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         //Global values
         paused = false;
         managing = false;
+        pressed = false;
+        asking = false;
 
         //Init arrays
         buttons = new ImageButton[5]; //Sleep, manage, resume, quit, and main menu buttons
@@ -118,17 +133,17 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                 MediaLoader.quickLoadImage("play_state_images/sleepDown.png"),
                 0, 0, new SleepButtonListener()
         );
-         buttons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
+        buttons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("play_state_images/manageUp.png"),
                 MediaLoader.quickLoadImage("play_state_images/manageDown.png"),
                 150, 0, new ManageButtonListener()
-         );
+        );
 
         toggles[0] = GraphicsFactory.getFactory().makeLinkedImageToggle(
-                    MediaLoader.quickLoadImage("play_state_images/moving.png"),
-                    MediaLoader.quickLoadImage("play_state_images/notMoving.png"),
-                    300, 0, false, new MovementToggleListener()
-            );
+                MediaLoader.quickLoadImage("play_state_images/moving.png"),
+                MediaLoader.quickLoadImage("play_state_images/notMoving.png"),
+                300, 0, false, new MovementToggleListener()
+        );
         toggles[1] = GraphicsFactory.getFactory().makeLinkedImageToggle(
                 MediaLoader.quickLoadImage("play_state_images/moreInfoOff.png"),
                 MediaLoader.quickLoadImage("play_state_images/moreInfoOn.png"),
@@ -147,26 +162,26 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         background = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 0, 0);
 
         //Init things for the pause menu
-        int centerWidth = (getDisplayer().getDisplayWidth()/2);
-        int centerHeight = (getDisplayer().getDisplayHeight()/2);
-        labels[3] = new ImageLabel(MediaLoader.quickLoadImage("pause_menu_images/pauseBackground.png"), centerWidth-200,centerHeight-250);
+        int centerWidth = (getDisplayer().getDisplayWidth() / 2);
+        int centerHeight = (getDisplayer().getDisplayHeight() / 2);
+        labels[3] = new ImageLabel(MediaLoader.quickLoadImage("pause_menu_images/pauseBackground.png"), centerWidth - 200, centerHeight - 250);
 
         buttons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("pause_menu_images/resumeUp.png"),
                 MediaLoader.quickLoadImage("pause_menu_images/resumeDown.png"),
-                centerWidth-100, centerHeight-200, new ResumeButtonListener()
+                centerWidth - 100, centerHeight - 200, new ResumeButtonListener()
         );
 
         buttons[3] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("pause_menu_images/mainMenuUp.png"),
                 MediaLoader.quickLoadImage("pause_menu_images/mainMenuDown.png"),
-                centerWidth-100, centerHeight-50, new MainMenuButtonListener()
+                centerWidth - 100, centerHeight - 50, new MainMenuButtonListener()
         );
 
         buttons[4] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("pause_menu_images/quitUp.png"),
                 MediaLoader.quickLoadImage("pause_menu_images/quitDown.png"),
-                centerWidth-100, centerHeight+100, new QuitButtonListener()
+                centerWidth - 100, centerHeight + 100, new QuitButtonListener()
         );
 
         labels[3].setVisible(false);
@@ -179,44 +194,44 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         manageButtons = new ImageButton[7]; //Kick out buttons and exit button
         manageText = new TextLabel[12]; //Those 9 info boxes and headers for last 3
 
-        int manageCornerX = (centerWidth-300), manageCornerY = (centerHeight-225);
-        int manageGridCornerX = centerWidth-220, manageGridCornerY = centerHeight-160;
+        int manageCornerX = (centerWidth - 300), manageCornerY = (centerHeight - 225);
+        int manageGridCornerX = centerWidth - 220, manageGridCornerY = centerHeight - 160;
         //Load total box
         BufferedImage totalBox = MediaLoader.quickLoadImage("management_images/totalLabel.png");
 
         manageLabels[0] = new ImageLabel(MediaLoader.quickLoadImage("management_images/managementBackground.png"), manageCornerX, manageCornerY);
-        manageLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("management_images/llamaIcon.png"), centerWidth+160, centerHeight-160);
-        manageLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("management_images/giraffeIcon.png"), centerWidth+160, centerHeight-50);
-        manageLabels[3] = new ImageLabel(MediaLoader.quickLoadImage("management_images/lionIcon.png"), centerWidth+160, centerHeight+60);
-        manageLabels[4] = new ImageLabel(totalBox, centerWidth+50, centerHeight-160);
-        manageLabels[5] = new ImageLabel(totalBox, centerWidth+50, centerHeight-50);
-        manageLabels[6] = new ImageLabel(totalBox, centerWidth+50, centerHeight+60);
+        manageLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("management_images/llamaIcon.png"), centerWidth + 160, centerHeight - 160);
+        manageLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("management_images/giraffeIcon.png"), centerWidth + 160, centerHeight - 50);
+        manageLabels[3] = new ImageLabel(MediaLoader.quickLoadImage("management_images/lionIcon.png"), centerWidth + 160, centerHeight + 60);
+        manageLabels[4] = new ImageLabel(totalBox, centerWidth + 50, centerHeight - 160);
+        manageLabels[5] = new ImageLabel(totalBox, centerWidth + 50, centerHeight - 50);
+        manageLabels[6] = new ImageLabel(totalBox, centerWidth + 50, centerHeight + 60);
 
         //Load images for buttons
         BufferedImage dataDown = MediaLoader.quickLoadImage("management_images/dataButtonDown.png");
         BufferedImage dataUp = MediaLoader.quickLoadImage("management_images/dataButtonUp.png");
 
         manageButtons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
-            dataUp, dataDown, centerWidth-220, centerHeight-160, new KickOutNormalLlama()
+                dataUp, dataDown, centerWidth - 220, centerHeight - 160, new KickOutNormalLlama()
         );
         manageButtons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-85, centerHeight-160, new KickOutDiseasedLlama()
+                dataUp, dataDown, centerWidth - 85, centerHeight - 160, new KickOutDiseasedLlama()
         );
         manageButtons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-220, centerHeight-50, new KickOutNormalGiraffe()
+                dataUp, dataDown, centerWidth - 220, centerHeight - 50, new KickOutNormalGiraffe()
         );
         manageButtons[3] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-85, centerHeight-50, new KickOutDiseasedGiraffe()
+                dataUp, dataDown, centerWidth - 85, centerHeight - 50, new KickOutDiseasedGiraffe()
         );
         manageButtons[4] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-220, centerHeight+60, new KickOutNormalLion()
+                dataUp, dataDown, centerWidth - 220, centerHeight + 60, new KickOutNormalLion()
         );
         manageButtons[5] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-85, centerHeight+60, new KickOutDiseasedLion()
+                dataUp, dataDown, centerWidth - 85, centerHeight + 60, new KickOutDiseasedLion()
         );
         manageButtons[6] = GraphicsFactory.getFactory().makeLinkedImageButton(
-            MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
-            centerWidth+250, centerHeight-225, new ExitManageButton()
+                MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
+                centerWidth + 250, centerHeight - 225, new ExitManageButton()
         );
 
         manageText[0] = makeGiantInfoText("", manageGridCornerX + 30, manageGridCornerY + 60); //Normal Llamas
@@ -228,7 +243,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         manageText[6] = makeGiantInfoText("", manageGridCornerX + 300, manageGridCornerY + 60); //Total Llamas
         manageText[7] = makeGiantInfoText("", manageGridCornerX + 300, manageGridCornerY + 170); //Total Giraffes
         manageText[8] = makeGiantInfoText("", manageGridCornerX + 300, manageGridCornerY + 280); //Total Lions
-        manageText[9] = makeGiantInfoText("Normal", manageGridCornerX+5, manageGridCornerY-10); //"Normal" header
+        manageText[9] = makeGiantInfoText("Normal", manageGridCornerX + 5, manageGridCornerY - 10); //"Normal" header
         manageText[10] = makeGiantInfoText("Diseased", manageGridCornerX + 130, manageGridCornerY - 10); //"Diseased" header
         manageText[11] = makeGiantInfoText("Total", manageGridCornerX + 290, manageGridCornerY - 10); //"Total" header
 
@@ -260,7 +275,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         calender.setMinutesPerHour(1);
         calender.setCounting(false);
         // start with 15 of each animal at the start
-        partyWrapper = new PartyWrapper(15,15,15, calender, this);    //Party initialized here!
+        partyWrapper = new PartyWrapper(15, 15, 15, calender, this);    //Party initialized here!
         calender.addCalenderListener(partyWrapper);
         infoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
         headerFont = new Font(Font.SANS_SERIF, Font.BOLD, 14);
@@ -273,24 +288,24 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
         //Total animal num, total diseased animal num
         // morale, water supplies, food supplies, days since last slept
-        quickInfoText[0] = makeInfoText("Total Animals:", quickInfoCornerX+10, quickInfoCornerY+20);
-        quickInfoText[1] = makeInfoText("Total Diseased Animals:", quickInfoCornerX+130, quickInfoCornerY+20);
-        quickInfoText[2] = makeInfoText("Morale:", quickInfoCornerX+10, quickInfoCornerY+50);
-        quickInfoText[3] = makeInfoText("Food:", quickInfoCornerX+110, quickInfoCornerY+50);
-        quickInfoText[4] = makeInfoText("Water:", quickInfoCornerX+210, quickInfoCornerY+50);
-        quickInfoText[5] = makeInfoText("Days awake:", quickInfoCornerX+10, quickInfoCornerY+80);
+        quickInfoText[0] = makeInfoText("Total Animals:", quickInfoCornerX + 10, quickInfoCornerY + 20);
+        quickInfoText[1] = makeInfoText("Total Diseased Animals:", quickInfoCornerX + 130, quickInfoCornerY + 20);
+        quickInfoText[2] = makeInfoText("Morale:", quickInfoCornerX + 10, quickInfoCornerY + 50);
+        quickInfoText[3] = makeInfoText("Food:", quickInfoCornerX + 110, quickInfoCornerY + 50);
+        quickInfoText[4] = makeInfoText("Water:", quickInfoCornerX + 210, quickInfoCornerY + 50);
+        quickInfoText[5] = makeInfoText("Days awake:", quickInfoCornerX + 10, quickInfoCornerY + 80);
 
         //Giraffe num, lion num, llama num, diseased giraffe num, diseased lion num, diseased llama num
         //Days passed, rate of water consumption, rate of food consumption
-        muchInfoText[0] = makeInfoText("Giraffes:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*1));
-        muchInfoText[1] = makeInfoText("Lions:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*2));
-        muchInfoText[2] = makeInfoText("Llamas:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*3));
-        muchInfoText[3] = makeInfoText("Diseased Giraffes:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*4));
-        muchInfoText[4] = makeInfoText("Diseased Lions:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*5));
-        muchInfoText[5] = makeInfoText("Diseased Llamas:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*6));
-        muchInfoText[6] = makeInfoText("Water drank:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*7));
-        muchInfoText[7] = makeInfoText("Food eaten:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*8));
-        muchInfoText[8] = makeInfoText("Days traveled:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*9));
+        muchInfoText[0] = makeInfoText("Giraffes:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 1));
+        muchInfoText[1] = makeInfoText("Lions:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 2));
+        muchInfoText[2] = makeInfoText("Llamas:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 3));
+        muchInfoText[3] = makeInfoText("Diseased Giraffes:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 4));
+        muchInfoText[4] = makeInfoText("Diseased Lions:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 5));
+        muchInfoText[5] = makeInfoText("Diseased Llamas:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 6));
+        muchInfoText[6] = makeInfoText("Water drank:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 7));
+        muchInfoText[7] = makeInfoText("Food eaten:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 8));
+        muchInfoText[8] = makeInfoText("Days traveled:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 9));
 
         partyImage = new ImageLabel(partyWrapper.getCurrentAnimationFrame(), 300, 150);
 
@@ -303,12 +318,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     //Make sure the text actually shows the correct values
     public void updateInfoText() {
         //Quick info
-        quickInfoText[0].setText("Total Animals: " + (partyWrapper.getRawParty().getNumberOfDiseased()+partyWrapper.getRawParty().getNumberOfNonDiseased()) + "");
+        quickInfoText[0].setText("Total Animals: " + (partyWrapper.getRawParty().getNumberOfDiseased() + partyWrapper.getRawParty().getNumberOfNonDiseased()) + "");
         quickInfoText[1].setText("Total Diseased Animals: " + partyWrapper.getRawParty().getNumberOfDiseased() + "");
         quickInfoText[2].setText("Morale: " + partyWrapper.getRawParty().getMorale() + "");
         quickInfoText[3].setText("Food: " + partyWrapper.getRawParty().getFoodAmount() + "");
         quickInfoText[4].setText("Water: " + partyWrapper.getRawParty().getWaterAmount() + "");
-        quickInfoText[5].setText("Days awake: " + (int)(partyWrapper.getRawParty().getDaysSinceSlept()) + "");
+        quickInfoText[5].setText("Days awake: " + (int) (partyWrapper.getRawParty().getDaysSinceSlept()) + "");
 
         //Much info
         muchInfoText[0].setText("Giraffes: " + partyWrapper.getRawParty().getNumGiraffe() + "");
@@ -328,9 +343,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         manageText[3].setText("" + partyWrapper.getRawParty().getNumDiseasedGiraffe() + ""); //Diseased Giraffes
         manageText[4].setText("" + partyWrapper.getRawParty().getNumLion() + ""); //Normal Lions
         manageText[5].setText("" + partyWrapper.getRawParty().getNumDiseasedLion() + ""); //Diseased Lions
-        manageText[6].setText("" + (partyWrapper.getRawParty().getNumDiseasedLlama()+partyWrapper.getRawParty().getNumLlama()) + ""); //Total Llamas
-        manageText[7].setText("" + (partyWrapper.getRawParty().getNumDiseasedGiraffe()+partyWrapper.getRawParty().getNumGiraffe()) + ""); //Total Giraffes
-        manageText[8].setText("" + (partyWrapper.getRawParty().getNumDiseasedLion()+partyWrapper.getRawParty().getNumLion()) + ""); //Total Lions
+        manageText[6].setText("" + (partyWrapper.getRawParty().getNumDiseasedLlama() + partyWrapper.getRawParty().getNumLlama()) + ""); //Total Llamas
+        manageText[7].setText("" + (partyWrapper.getRawParty().getNumDiseasedGiraffe() + partyWrapper.getRawParty().getNumGiraffe()) + ""); //Total Giraffes
+        manageText[8].setText("" + (partyWrapper.getRawParty().getNumDiseasedLion() + partyWrapper.getRawParty().getNumLion()) + ""); //Total Lions
     }
 
     private TextLabel makeInfoText(String text, int x, int y) {
@@ -352,9 +367,14 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         return l;
     }
 
+    public void askForConfirmation() {
+        asking = true;
+        setPressed(false);
+    }
+
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
-        graphics2D = (Graphics2D)bufferedImage.getGraphics();
+        graphics2D = (Graphics2D) bufferedImage.getGraphics();
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
@@ -371,6 +391,8 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
             bufferedImage = drawMoreTextInfo(bufferedImage, graphics2D); //Much info
         }
 
+        bufferedImage = resourceDialog.render(bufferedImage, graphics2D);
+
         //Draw management window if managing
         if (isManaging()) {
             bufferedImage = drawManageMenu(bufferedImage, graphics2D); //Management window
@@ -385,7 +407,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     //Draw quick info text labels
     private BufferedImage drawQuickTextInfo(BufferedImage bImage, Graphics2D g2d) {
         g2d = (Graphics2D) bImage.getGraphics();
-        for (int i=0; i<quickInfoText.length; i++) {
+        for (int i = 0; i < quickInfoText.length; i++) {
             bImage = quickInfoText[i].render(bImage, g2d);
         }
         return bImage;
@@ -394,7 +416,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     //Draw much info text labels
     private BufferedImage drawMoreTextInfo(BufferedImage bImage, Graphics2D g2d) {
         g2d = (Graphics2D) bImage.getGraphics();
-        for (int i=0; i<muchInfoText.length; i++) {
+        for (int i = 0; i < muchInfoText.length; i++) {
             bImage = muchInfoText[i].render(bImage, g2d);
         }
         return bImage;
@@ -425,19 +447,19 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
     private BufferedImage drawManageMenu(BufferedImage bImage, Graphics2D g2d) {
         g2d = (Graphics2D) bImage.getGraphics();
-        for (int i=0; i<manageLabels.length; i++) {
+        for (int i = 0; i < manageLabels.length; i++) {
             if (manageLabels[i] == null) {
                 continue;
             }
             bImage = manageLabels[i].render(bImage, g2d);
         }
-        for (int j=0; j<manageButtons.length; j++) {
+        for (int j = 0; j < manageButtons.length; j++) {
             if (manageButtons[j] == null) {
                 continue;
             }
             bImage = manageButtons[j].render(bImage, g2d);
         }
-        for (int l=0; l<manageText.length; l++) {
+        for (int l = 0; l < manageText.length; l++) {
             if (manageText[l] == null) {
                 continue;
             }
@@ -448,7 +470,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
     private BufferedImage drawResources(BufferedImage bImage, Graphics2D g2d) {
         g2d = (Graphics2D) bImage.getGraphics();
-        for (int i=0; i<gameLabels.length; i++) {
+        for (int i = 0; i < gameLabels.length; i++) {
             if (gameLabels[i] == null) {
                 continue;
             }
@@ -460,7 +482,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     @Override
     public void reactToKeyDown(KeyEvent keyEvent) {
         //P or Esc for pausing
-        switch(keyEvent.getKeyCode()) {
+        switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_P:
                 togglePaused();
                 break;
@@ -468,7 +490,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                 togglePaused();
                 break;
             case KeyEvent.VK_SPACE:
-                toggles[0].forceToggle();
+                if (toggles[0].isEnabled()) {
+                    toggles[0].forceToggle();
+                }
                 break;
         }
     }
@@ -486,7 +510,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     }
 
     private void hideGameLabels() {
-        for (int i=0; i<gameLabels.length; i++) {
+        for (int i = 0; i < gameLabels.length; i++) {
             if (gameLabels[i] == null) {
                 continue;
             }
@@ -498,14 +522,26 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         hideGameLabels();
         gameLabels[0].setVisible(true);
         gameLabels[1].setVisible(true);
+        partyWrapper.setResource(new WaterResource(
+                (int)((double)((partyWrapper.getRawParty().getConsumeRate()*3)/0.7)),
+                randomFoodQuality()
+        ));
     }
 
     public void notifyRandomFood() {
-        int num = (int)(Math.round(Math.random()*1));
-        if (num==0) {
+        int num = (int) (Math.round(Math.random() * 1));
+        if (num == 0) {
             notifyPlants();
+            partyWrapper.setResource(new PlantResource(
+                    (int)((double)((partyWrapper.getRawParty().getConsumeRate()*3)/0.7)),
+                    randomFoodQuality()
+            ));
         } else {
             notifyMeat();
+            partyWrapper.setResource(new MeatResource(
+                    (int)((double)((partyWrapper.getRawParty().getConsumeRate()*3)/0.7)),
+                    randomFoodQuality()
+            ));
         }
     }
 
@@ -521,9 +557,37 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         gameLabels[5].setVisible(true);
     }
 
+    private Quality randomFoodQuality() {
+        int ran = (int)(Math.random()*4);
+        switch(ran) {
+            case 0:
+                return Quality.DISGUSTING;
+            case 1:
+                return Quality.GOOD;
+            case 2:
+                return Quality.QUESTIONABLE;
+            case 3:
+                return Quality.STRANGE;
+        }
+        return Quality.DISGUSTING;
+    }
+
+    public boolean isAsking() {
+        return asking;
+    }
+
+    public void setAsking(boolean asking) {
+        this.asking = asking;
+    }
+
     @Override
     public void reactToConfirm(boolean c) {
-
+        partyWrapper.setChoseConfirmation(c);
+        setPressed(true);
+        asking = false;
+        if (c) {
+            partyWrapper.givePartyResources();
+        }
     }
 
     class SleepButtonListener implements GenericButtonListener {
@@ -633,32 +697,32 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
     class ResourceDialog implements GuiComponent {
 
-        private ArrayList<ResourceDialogListener> listeners;
         protected boolean visible;
+        private ArrayList<ResourceDialogListener> listeners;
         private ImageLabel background;
         private ImageButton[] buttons;
 
         public ResourceDialog(GameRunner runner) {
-            int boxX = (runner.getDisplayer().getDisplayWidth()/2)-150, boxY = (runner.getDisplayer().getDisplayHeight()/2)-75;
-            background = new ImageLabel(MediaLoader.quickLoadImage("confirm_dialogue/dialogBackground.png"), boxX, boxY);
+            int boxX = (runner.getDisplayer().getDisplayWidth() / 2) - 150, boxY = (runner.getDisplayer().getDisplayHeight() / 2) - 75;
+            background = new ImageLabel(MediaLoader.quickLoadImage("confirm_dialogue/confirmBackground.png"), boxX, boxY);
             buttons = new ImageButton[2];
             //MAKE BUTTONS 100x50
             buttons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
                     MediaLoader.quickLoadImage("confirm_dialogue/yesButtonUp.png"),
                     MediaLoader.quickLoadImage("confirm_dialogue/yesButtonDown.png"),
-                    boxX+50, boxY+75, new YesDialogListener()
+                    boxX + 180, boxY + 120, new YesDialogListener()
             );
 
             buttons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
                     MediaLoader.quickLoadImage("confirm_dialogue/noButtonUp.png"),
                     MediaLoader.quickLoadImage("confirm_dialogue/noButtonDown.png"),
-                    boxX+50, boxY+75, new NoDialogListener()
+                    boxX + 20, boxY + 120, new NoDialogListener()
             );
             listeners = new ArrayList<ResourceDialogListener>();
         }
 
         protected void notifyListeners(boolean confirmation) {
-            for (int i=0; i<listeners.size(); i++) {
+            for (int i = 0; i < listeners.size(); i++) {
                 listeners.get(i).reactToConfirm(confirmation);
             }
         }
@@ -666,9 +730,11 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         public void addResourceListener(ResourceDialogListener rl) {
             listeners.add(rl);
         }
+
         public void removeResourceListener(ResourceDialogListener rl) {
             listeners.remove(rl);
         }
+
         @Override
         public boolean isVisible() {
             return visible;
@@ -677,7 +743,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         @Override
         public void setVisible(boolean visibility) {
             this.visible = visibility;
-            for (int i=0; i<buttons.length; i++) {
+            for (int i = 0; i < buttons.length; i++) {
                 buttons[i].setVisible(visibility);
             }
             background.setVisible(visibility);
@@ -691,7 +757,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         @Override
         public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
             graphics2D = (Graphics2D) bufferedImage.getGraphics();
-
+            if (isVisible()) {
+                bufferedImage = background.render(bufferedImage, graphics2D);
+                for (int i = 0; i < buttons.length; i++) {
+                    bufferedImage = buttons[i].render(bufferedImage, graphics2D);
+                }
+            }
             return bufferedImage;
         }
 
@@ -707,6 +778,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                 setVisible(false);
             }
         }
+
         class NoDialogListener implements GenericButtonListener {
             @Override
             public void buttonPushed() {
@@ -714,6 +786,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                 setVisible(false);
             }
         }
+
         class ExitDialogListener implements GenericButtonListener {
             @Override
             public void buttonPushed() {
