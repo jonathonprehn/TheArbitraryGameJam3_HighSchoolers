@@ -162,6 +162,10 @@ public class Party {
         daysSinceSlept = 0; // all refreshed!
     }
 
+    public void eatSupplies() {
+
+    }
+
     public void randomlyKill() {
         // see if lions die
         for (int i=0; i<this.numDiseasedLion; i++) {
