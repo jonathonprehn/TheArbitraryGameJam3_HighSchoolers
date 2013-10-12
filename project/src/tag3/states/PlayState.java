@@ -463,6 +463,13 @@ public class PlayState extends GameState implements KeyDownListener {
         }
     }
 
+    class PauseButtonListener implements GenericToggleListener {
+        @Override
+        public void toggleChanged(boolean valueSetTo) {
+            setPaused(valueSetTo);
+        }
+    }
+
     class MainMenuButtonListener implements GenericButtonListener {
         @Override
         public void buttonPushed() {
