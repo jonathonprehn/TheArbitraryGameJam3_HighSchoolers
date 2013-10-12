@@ -147,34 +147,34 @@ public class PlayState extends GameState implements KeyDownListener {
         BufferedImage totalBox = MediaLoader.quickLoadImage("management_images/totalLabel.png");
 
         manageLabels[0] = new ImageLabel(MediaLoader.quickLoadImage("management_images/managementBackground.png"), centerWidth-300, centerHeight-225);
-        manageLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("management_images/giraffeIcon.png"), centerWidth+180, centerHeight-140);
-        manageLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("management_images/lionIcon.png"), centerWidth+180, centerHeight-40);
-        manageLabels[3] = new ImageLabel(MediaLoader.quickLoadImage("management_images/llamaIcon.png"), centerWidth+180, centerHeight+100);
-        manageLabels[4] = new ImageLabel(totalBox, centerWidth+50, centerHeight-150);
+        manageLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("management_images/giraffeIcon.png"), centerWidth+160, centerHeight-160);
+        manageLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("management_images/lionIcon.png"), centerWidth+160, centerHeight-50);
+        manageLabels[3] = new ImageLabel(MediaLoader.quickLoadImage("management_images/llamaIcon.png"), centerWidth+160, centerHeight+60);
+        manageLabels[4] = new ImageLabel(totalBox, centerWidth+50, centerHeight-160);
         manageLabels[5] = new ImageLabel(totalBox, centerWidth+50, centerHeight-50);
-        manageLabels[6] = new ImageLabel(totalBox, centerWidth+50, centerHeight+50);
+        manageLabels[6] = new ImageLabel(totalBox, centerWidth+50, centerHeight+60);
 
         //Load images for buttons
         BufferedImage dataDown = MediaLoader.quickLoadImage("management_images/dataButtonDown.png");
         BufferedImage dataUp = MediaLoader.quickLoadImage("management_images/dataButtonUp.png");
 
         manageButtons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
-            dataUp, dataDown, centerWidth-150, centerHeight-150, new KickOutNormalGiraffe()
+            dataUp, dataDown, centerWidth-220, centerHeight-160, new KickOutNormalGiraffe()
         );
         manageButtons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-50, centerHeight-150, new KickOutDiseasedGiraffe()
+                dataUp, dataDown, centerWidth-85, centerHeight-160, new KickOutDiseasedGiraffe()
         );
         manageButtons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-150, centerHeight-50, new KickOutNormalLion()
+                dataUp, dataDown, centerWidth-220, centerHeight-50, new KickOutNormalLion()
         );
         manageButtons[3] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-50, centerHeight-50, new KickOutDiseasedLion()
+                dataUp, dataDown, centerWidth-85, centerHeight-50, new KickOutDiseasedLion()
         );
         manageButtons[4] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-150, centerHeight+50, new KickOutNormalLlama()
+                dataUp, dataDown, centerWidth-220, centerHeight+60, new KickOutNormalLlama()
         );
         manageButtons[5] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-50, centerHeight+50, new KickOutDiseasedLlama()
+                dataUp, dataDown, centerWidth-85, centerHeight+60, new KickOutDiseasedLlama()
         );
         manageButtons[6] = GraphicsFactory.getFactory().makeLinkedImageButton(
             MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
