@@ -212,7 +212,7 @@ public class PlayState extends GameState implements KeyDownListener {
         toggles[2] = GraphicsFactory.getFactory().makeLinkedImageToggle(
                 MediaLoader.quickLoadImage("toggles/pauseOn.png"),
                 MediaLoader.quickLoadImage("toggles/pauseOff.png"),
-                740, 540, false, new PauseToggleListener()
+                740, 520, false, new PauseToggleListener()
         );
         //Graphic User Interface stuff initialed! (Whew!)
 
@@ -263,7 +263,7 @@ public class PlayState extends GameState implements KeyDownListener {
         muchInfoText[7] = makeInfoText("Food eaten:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*8));
         muchInfoText[8] = makeInfoText("Days traveled:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*9));
 
-        partyImage = new ImageLabel(partyWrapper.getCurrentAnimationFrame(), 300, 190);
+        partyImage = new ImageLabel(partyWrapper.getCurrentAnimationFrame(), 300, 150);
 
         //Init input
         getInput().addKeyDownListener(this);
@@ -308,6 +308,7 @@ public class PlayState extends GameState implements KeyDownListener {
         bufferedImage = partyImage.render(bufferedImage, graphics2D); //Draw the party
         bufferedImage = drawWalkingPart(bufferedImage, graphics2D); //UI mostly
         bufferedImage = drawResources(bufferedImage, graphics2D); //Resources and resource spots
+        bufferedImage = toggles[2].render(bufferedImage, graphics2D); //Draw the pause button
 
         //Info text
         bufferedImage = drawQuickTextInfo(bufferedImage, graphics2D); //Quick info
