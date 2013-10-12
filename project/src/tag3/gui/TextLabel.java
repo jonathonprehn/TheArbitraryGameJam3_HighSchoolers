@@ -42,7 +42,16 @@ public class TextLabel implements GuiComponent {
     }
 
     public void setFontSize(int fontSize) {
-        setFont(new Font(font.getFontName(), font.getStyle(), fontSize));
+        String fam;
+        int style;
+        if (font!=null) {
+            fam = font.getFontName();
+             style = font.getStyle();
+        } else {
+            fam = Font.SANS_SERIF;
+            style = Font.PLAIN;
+        }
+        setFont(new Font(fam, style, fontSize));
     }
 
     public Color getTextColor() {

@@ -26,6 +26,7 @@ public class PlayState extends GameState implements KeyDownListener {
     //Graphical User Interface stuff
     protected GuiComponent[] labels, manageLabels;
     protected ImageButton[] buttons, manageButtons;
+    protected TextLabel[] manageText;
     protected ImageToggle[] toggles;
     private ImageLabel background;
 
@@ -33,7 +34,7 @@ public class PlayState extends GameState implements KeyDownListener {
     protected ImageLabel[] gameLabels;
     protected GameCalender calender;
     protected PartyWrapper partyWrapper;                //Where should the Party go anyway?
-    private Font infoFont;
+    private Font infoFont, headerFont;
     private TextLabel[] quickInfoText, muchInfoText;
     private ImageLabel partyImage;
 
@@ -173,14 +174,17 @@ public class PlayState extends GameState implements KeyDownListener {
         //Init things for management menu
         manageLabels = new ImageLabel[7]; //background, 3 icons, 1 image for 3 total boxes
         manageButtons = new ImageButton[7]; //Kick out buttons and exit button
+        manageText = new TextLabel[12]; //Those 9 info boxes and headers for last 3
 
+        int manageCornerX = (centerWidth-300), manageCornerY = (centerHeight-225);
+        int manageGridCornerX = centerWidth-220, manageGridCornerY = centerHeight-160;
         //Load total box
         BufferedImage totalBox = MediaLoader.quickLoadImage("management_images/totalLabel.png");
 
-        manageLabels[0] = new ImageLabel(MediaLoader.quickLoadImage("management_images/managementBackground.png"), centerWidth-300, centerHeight-225);
-        manageLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("management_images/giraffeIcon.png"), centerWidth+160, centerHeight-160);
-        manageLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("management_images/lionIcon.png"), centerWidth+160, centerHeight-50);
-        manageLabels[3] = new ImageLabel(MediaLoader.quickLoadImage("management_images/llamaIcon.png"), centerWidth+160, centerHeight+60);
+        manageLabels[0] = new ImageLabel(MediaLoader.quickLoadImage("management_images/managementBackground.png"), manageCornerX, manageCornerY);
+        manageLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("management_images/llamaIcon.png"), centerWidth+160, centerHeight-160);
+        manageLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("management_images/giraffeIcon.png"), centerWidth+160, centerHeight-50);
+        manageLabels[3] = new ImageLabel(MediaLoader.quickLoadImage("management_images/lionIcon.png"), centerWidth+160, centerHeight+60);
         manageLabels[4] = new ImageLabel(totalBox, centerWidth+50, centerHeight-160);
         manageLabels[5] = new ImageLabel(totalBox, centerWidth+50, centerHeight-50);
         manageLabels[6] = new ImageLabel(totalBox, centerWidth+50, centerHeight+60);
@@ -190,27 +194,40 @@ public class PlayState extends GameState implements KeyDownListener {
         BufferedImage dataUp = MediaLoader.quickLoadImage("management_images/dataButtonUp.png");
 
         manageButtons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
-            dataUp, dataDown, centerWidth-220, centerHeight-160, new KickOutNormalGiraffe()
+            dataUp, dataDown, centerWidth-220, centerHeight-160, new KickOutNormalLlama()
         );
         manageButtons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-85, centerHeight-160, new KickOutDiseasedGiraffe()
+                dataUp, dataDown, centerWidth-85, centerHeight-160, new KickOutDiseasedLlama()
         );
         manageButtons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-220, centerHeight-50, new KickOutNormalLion()
+                dataUp, dataDown, centerWidth-220, centerHeight-50, new KickOutNormalGiraffe()
         );
         manageButtons[3] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-85, centerHeight-50, new KickOutDiseasedLion()
+                dataUp, dataDown, centerWidth-85, centerHeight-50, new KickOutDiseasedGiraffe()
         );
         manageButtons[4] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-220, centerHeight+60, new KickOutNormalLlama()
+                dataUp, dataDown, centerWidth-220, centerHeight+60, new KickOutNormalLion()
         );
         manageButtons[5] = GraphicsFactory.getFactory().makeLinkedImageButton(
-                dataUp, dataDown, centerWidth-85, centerHeight+60, new KickOutDiseasedLlama()
+                dataUp, dataDown, centerWidth-85, centerHeight+60, new KickOutDiseasedLion()
         );
         manageButtons[6] = GraphicsFactory.getFactory().makeLinkedImageButton(
             MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
             centerWidth+250, centerHeight-225, new ExitManageButton()
         );
+
+        manageText[0] = makeGiantInfoText("", manageGridCornerX+30, manageGridCornerY+60); //Normal Llamas
+        manageText[1] = makeGiantInfoText("", manageGridCornerX+180, manageGridCornerY+60); //Diseased Llamas
+        manageText[2] = makeGiantInfoText("", manageGridCornerX+30, manageGridCornerY+170); //Normal Giraffes
+        manageText[3] = makeGiantInfoText("", manageGridCornerX+180, manageGridCornerY+170); //Diseased Giraffes
+        manageText[4] = makeGiantInfoText("", manageGridCornerX+30, manageGridCornerY+280); //Normal Lions
+        manageText[5] = makeGiantInfoText("", manageGridCornerX+180, manageGridCornerY+280); //Diseased Lions
+        manageText[6] = makeGiantInfoText("", manageGridCornerX+300, manageGridCornerY+60); //Total Llamas
+        manageText[7] = makeGiantInfoText("", manageGridCornerX+300, manageGridCornerY+170); //Total Giraffes
+        manageText[8] = makeGiantInfoText("", manageGridCornerX+300, manageGridCornerY+280); //Total Lions
+        manageText[9] = makeGiantInfoText("Normal", manageGridCornerX+5, manageGridCornerY-10); //"Normal" header
+        manageText[10] = makeGiantInfoText("Diseased", manageGridCornerX+130, manageGridCornerY-10); //"Diseased" header
+        manageText[11] = makeGiantInfoText("Total", manageGridCornerX+290, manageGridCornerY-10); //"Total" header
 
         //Pause button
         toggles[2] = GraphicsFactory.getFactory().makeLinkedImageToggle(
@@ -243,6 +260,7 @@ public class PlayState extends GameState implements KeyDownListener {
         partyWrapper = new PartyWrapper(15,15,15, calender, this);    //Party initialized here!
         calender.addCalenderListener(partyWrapper);
         infoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+        headerFont = new Font(Font.SANS_SERIF, Font.BOLD, 14);
 
         //Init info text
         quickInfoText = new TextLabel[6];
@@ -297,11 +315,35 @@ public class PlayState extends GameState implements KeyDownListener {
         muchInfoText[6].setText("Water drank: " + partyWrapper.getRawParty().getConsumeRate() + "");
         muchInfoText[7].setText("Food eaten: " + partyWrapper.getRawParty().getConsumeRate() + "");
         muchInfoText[8].setText("Days traveled: " + partyWrapper.getDaysPassed() + "");
+
+        //Management
+        manageText[0].setText("" + partyWrapper.getRawParty().getNumLlama() + ""); //Normal Llamas
+        manageText[1].setText("" + partyWrapper.getRawParty().getNumDiseasedLlama() + ""); //Diseased Llamas
+        manageText[2].setText("" + partyWrapper.getRawParty().getNumGiraffe() + ""); //Normal Giraffes
+        manageText[3].setText("" + partyWrapper.getRawParty().getNumDiseasedGiraffe() + ""); //Diseased Giraffes
+        manageText[4].setText("" + partyWrapper.getRawParty().getNumLion() + ""); //Normal Lions
+        manageText[5].setText("" + partyWrapper.getRawParty().getNumDiseasedLion() + ""); //Diseased Lions
+        manageText[6].setText("" + (partyWrapper.getRawParty().getNumDiseasedLlama()+partyWrapper.getRawParty().getNumLlama()) + ""); //Total Llamas
+        manageText[7].setText("" + (partyWrapper.getRawParty().getNumDiseasedGiraffe()+partyWrapper.getRawParty().getNumGiraffe()) + ""); //Total Giraffes
+        manageText[8].setText("" + (partyWrapper.getRawParty().getNumDiseasedLion()+partyWrapper.getRawParty().getNumLion()) + ""); //Total Lions
     }
 
     private TextLabel makeInfoText(String text, int x, int y) {
         TextLabel l = new TextLabel(text, x, y);
         l.setFont(infoFont);
+        return l;
+    }
+
+    private TextLabel makeGiantInfoText(String text, int x, int y) {
+        TextLabel l = new TextLabel(text, x, y);
+        l.setFont(infoFont);
+        l.setFontSize(28);
+        return l;
+    }
+
+    private TextLabel makeHeaderText(String text, int x, int y) {
+        TextLabel l = new TextLabel(text, x, y);
+        l.setFont(headerFont);
         return l;
     }
 
@@ -389,6 +431,12 @@ public class PlayState extends GameState implements KeyDownListener {
                 continue;
             }
             bImage = manageButtons[j].render(bImage, g2d);
+        }
+        for (int l=0; l<manageText.length; l++) {
+            if (manageText[l] == null) {
+                continue;
+            }
+            bImage = manageText[l].render(bImage, g2d);
         }
         return bImage;
     }
@@ -507,42 +555,42 @@ public class PlayState extends GameState implements KeyDownListener {
     class KickOutNormalLlama implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            partyWrapper.getRawParty().kickOutLlama();
         }
     }
 
     class KickOutDiseasedLlama implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            partyWrapper.getRawParty().kickOutDiseasedLlama();
         }
     }
 
     class KickOutNormalGiraffe implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            partyWrapper.getRawParty().kickOutGiraffe();
         }
     }
 
     class KickOutDiseasedGiraffe implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            partyWrapper.getRawParty().kickOutDiseasedGiraffe();
         }
     }
 
     class KickOutNormalLion implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            partyWrapper.getRawParty().kickOutLion();
         }
     }
 
     class KickOutDiseasedLion implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            partyWrapper.getRawParty().kickOutDiseasedLion();
         }
     }
 
