@@ -126,10 +126,10 @@ public class PlayState extends GameState implements KeyDownListener {
         );
         quickInfoCornerX = 500;
         quickInfoCornerY = 0;
-        muchInfoCornerX = 500;
+        muchInfoCornerX = 600;
         muchInfoCornerY = 100;
         labels[0] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/quickInfoBackground.png"), quickInfoCornerX, quickInfoCornerY);
-        labels[1] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/muchInfoBackground.png"), 500, 100);
+        labels[1] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/muchInfoBackground.png"), muchInfoCornerX, muchInfoCornerY);
         labels[2] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/distanceBar.png"), 0, 100);
 
         //Special case stuff for game
@@ -228,28 +228,55 @@ public class PlayState extends GameState implements KeyDownListener {
 
         //Init info text
         quickInfoText = new TextLabel[6];
-        muchInfoText = new TextLabel[0];
+        muchInfoText = new TextLabel[9];
+        int xOffsetMuchInfo = 10;
+        int yOffsetMuchInfo = 30;
 
-        //Giraffe num, lion num, llama num, diseased giraffe num, diseased lion num, diseased llama num,
+        //Total animal num, total diseased animal num
         // morale, water supplies, food supplies, days since last slept
         quickInfoText[0] = makeInfoText("Total Animals:", quickInfoCornerX+10, quickInfoCornerY+20);
         quickInfoText[1] = makeInfoText("Total Diseased Animals:", quickInfoCornerX+130, quickInfoCornerY+20);
         quickInfoText[2] = makeInfoText("Morale:", quickInfoCornerX+10, quickInfoCornerY+50);
-        quickInfoText[3] = makeInfoText("Food:", quickInfoCornerX+75, quickInfoCornerY+50);
-        quickInfoText[4] = makeInfoText("Water:", quickInfoCornerX+150, quickInfoCornerY+50);
+        quickInfoText[3] = makeInfoText("Food:", quickInfoCornerX+110, quickInfoCornerY+50);
+        quickInfoText[4] = makeInfoText("Water:", quickInfoCornerX+210, quickInfoCornerY+50);
         quickInfoText[5] = makeInfoText("Days awake:", quickInfoCornerX+10, quickInfoCornerY+80);
+
+        //Giraffe num, lion num, llama num, diseased giraffe num, diseased lion num, diseased llama num
+        //Days passed, rate of water consumption, rate of food consumption
+        muchInfoText[0] = makeInfoText("Giraffes:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*1));
+        muchInfoText[1] = makeInfoText("Lions:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*2));
+        muchInfoText[2] = makeInfoText("Llamas:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*3));
+        muchInfoText[3] = makeInfoText("Diseased Giraffes:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*4));
+        muchInfoText[4] = makeInfoText("Diseased Lions:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*5));
+        muchInfoText[5] = makeInfoText("Diseased Llamas:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*6));
+        muchInfoText[6] = makeInfoText("Water drank:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*7));
+        muchInfoText[7] = makeInfoText("Food eaten:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*8));
+        muchInfoText[8] = makeInfoText("Days traveled:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*9));
+
         //Init input
         getInput().addKeyDownListener(this);
     }
 
     //Make sure the text actually shows the correct values
     public void updateInfoText() {
+        //Quick info
         quickInfoText[0].setText("Total Animals: " + (partyWrapper.getRawParty().getNumberOfDiseased()+partyWrapper.getRawParty().getNumberOfNonDiseased()) + "");
         quickInfoText[1].setText("Total Diseased Animals: " + partyWrapper.getRawParty().getNumberOfDiseased() + "");
         quickInfoText[2].setText("Morale: " + partyWrapper.getRawParty().getMorale() + "");
         quickInfoText[3].setText("Food: " + partyWrapper.getRawParty().getFoodAmount() + "");
         quickInfoText[4].setText("Water: " + partyWrapper.getRawParty().getWaterAmount() + "");
         quickInfoText[5].setText("Days awake: " + partyWrapper.getRawParty().getDaysSinceSlept() + "");
+
+        //Much info
+        muchInfoText[0].setText("Giraffes: " + partyWrapper.getRawParty().getNumGiraffe() + "");
+        muchInfoText[1].setText("Lions: " + partyWrapper.getRawParty().getNumLion() + "");
+        muchInfoText[2].setText("Llamas: " + partyWrapper.getRawParty().getNumLlama() + "");
+        muchInfoText[3].setText("Diseased Giraffes: " + partyWrapper.getRawParty().getNumDiseasedGiraffe() + "");
+        muchInfoText[4].setText("Diseased Lions: " + partyWrapper.getRawParty().getNumDiseasedLion() + "");
+        muchInfoText[5].setText("Diseased Llamas: " + partyWrapper.getRawParty().getNumDiseasedLlama() + "");
+        muchInfoText[6].setText("Water drank: " + partyWrapper.getRawParty().getConsumeRate() + "");
+        muchInfoText[7].setText("Food eaten: " + partyWrapper.getRawParty().getConsumeRate() + "");
+        muchInfoText[8].setText("Days traveled: " + partyWrapper.getDaysPassed() + "");
     }
 
     private TextLabel makeInfoText(String text, int x, int y) {
@@ -265,22 +292,22 @@ public class PlayState extends GameState implements KeyDownListener {
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
         //Draw the game
-        bufferedImage = background.render(bufferedImage, graphics2D);
-        bufferedImage = drawWalkingPart(bufferedImage, graphics2D);
-        bufferedImage = drawResources(bufferedImage, graphics2D);
-
-        bufferedImage = drawQuickTextInfo(bufferedImage, graphics2D);
+        bufferedImage = background.render(bufferedImage, graphics2D); //Game Background
+        bufferedImage = drawWalkingPart(bufferedImage, graphics2D); //UI mostly
+        bufferedImage = drawResources(bufferedImage, graphics2D); //Resources and resource spots
+        //Info text
+        bufferedImage = drawQuickTextInfo(bufferedImage, graphics2D); //Quick info
         if (toggles[1].isToggle()) { //Is more info requested?
-            bufferedImage = drawMoreTextInfo(bufferedImage, graphics2D);
+            bufferedImage = drawMoreTextInfo(bufferedImage, graphics2D); //Much info
         }
 
         //Draw management window if managing
         if (isManaging()) {
-            bufferedImage = drawManageMenu(bufferedImage, graphics2D);
+            bufferedImage = drawManageMenu(bufferedImage, graphics2D); //Management window
         }
         //Draw the pause menu if it is paused
         if (isPaused()) {
-            bufferedImage = drawPauseMenu(bufferedImage, graphics2D);
+            bufferedImage = drawPauseMenu(bufferedImage, graphics2D); //Pause menu
         }
         return bufferedImage;
     }

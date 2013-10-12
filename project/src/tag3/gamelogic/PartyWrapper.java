@@ -13,6 +13,8 @@ import tag3.party.Party;
 //For putting the logic for the party (and the game) in 1 place
 public class PartyWrapper implements GameCalenderListener {
 
+    private int daysPassed;
+
     public Party getRawParty() {
         return party;
     }
@@ -22,6 +24,7 @@ public class PartyWrapper implements GameCalenderListener {
     public PartyWrapper(int numberLion, int numberGiraffe, int numberLlama, GameCalender calender) {
         party = new Party(numberLion, numberGiraffe, numberLion);
         calender.addCalenderListener(this);
+        daysPassed = 0;
     }
 
     @Override
@@ -37,10 +40,15 @@ public class PartyWrapper implements GameCalenderListener {
     @Override
     public void dayPassed() {
         System.out.println("Day passed");
+        daysPassed++;
     }
 
     @Override
     public void weekPassed() {
         System.out.println("Week passed");
+    }
+
+    public int getDaysPassed() {
+        return daysPassed;
     }
 }
