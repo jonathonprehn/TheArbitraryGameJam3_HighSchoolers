@@ -509,6 +509,18 @@ public class Party {
         return numDiseasedLion;
     }
 
+    public int getTotalLlamas() {
+        return (numLlama + numDiseasedLlama);
+    }
+
+    public int getTotalLions() {
+        return (numLion + numDiseasedLion);
+    }
+
+    public int getTotalGiraffes() {
+        return (numGiraffe + numDiseasedGiraffe);
+    }
+
     public double getDaysSinceSlept() {
         return daysSinceSlept;
     }
