@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage;
 public class MainMenuState extends GameState {
 
     private ImageButton[] buttons;
+    private ImageLabel background, credit;
 
     @Override
     public void updateLogic() {
@@ -35,7 +36,7 @@ public class MainMenuState extends GameState {
         int height = getRunner().getDisplayer().getDisplayHeight();
         int buttonWidth = 120;
         int buttonHeight = 60;
-        buttons = new ImageButton[3];
+        buttons = new ImageButton[4];
         //Play button
         buttons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/playButtonUp.png"),
@@ -46,7 +47,7 @@ public class MainMenuState extends GameState {
         buttons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/optionsButtonUp.png"),
                 MediaLoader.quickLoadImage("buttons/optionsButtonDown.png"),
-                (width/2)-(buttonWidth/2), ((height/5)*3)-(buttonHeight/2), new OptionsGame()
+                (width/2)-(buttonWidth/2)-100, ((height/5)*3)-(buttonHeight/2), new OptionsGame()
         );
         //Quit button
         buttons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
@@ -54,6 +55,15 @@ public class MainMenuState extends GameState {
                 MediaLoader.quickLoadImage("buttons/quitButtonDown.png"),
                 (width/2)-(buttonWidth/2), ((height/5)*4)-(buttonHeight/2), new QuitGame()
         );
+        //Help button
+        buttons[3] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                MediaLoader.quickLoadImage("buttons/helpButtonUp.png"),
+                MediaLoader.quickLoadImage("buttons/helpButtonDown.png"),
+                (width/2)-(buttonWidth/2)+100, ((height/5)*3)-(buttonHeight/2), new HelpGame()
+        );
+
+        background = new ImageLabel(MediaLoader.quickLoadImage("main_menu/mainMenuBackground.png"), 0, 0);
+        credit = new ImageLabel(MediaLoader.quickLoadImage("main_menu/credit.png"), 25, 100);
     }
 
     @Override
@@ -61,11 +71,14 @@ public class MainMenuState extends GameState {
         graphics2D = (Graphics2D)bufferedImage.getGraphics();
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
-            for (int i=0; i< buttons.length; i++) {
-                if (buttons[i]!=null) {
-                    bufferedImage = buttons[i].render(bufferedImage, graphics2D);
-                }
+
+        bufferedImage = background.render(bufferedImage, graphics2D);
+        for (int i=0; i< buttons.length; i++) {
+            if (buttons[i]!=null) {
+                bufferedImage = buttons[i].render(bufferedImage, graphics2D);
             }
+        }
+        bufferedImage = credit.render(bufferedImage, graphics2D);
         return bufferedImage;
     }
 
@@ -91,6 +104,14 @@ public class MainMenuState extends GameState {
         @Override
         public void buttonPushed() {
             getRunner().changeState(new LoadingState(new LoadNewState(getRunner(), new OptionsState())));
+        }
+    }
+
+    class HelpGame implements GenericButtonListener {
+
+        @Override
+        public void buttonPushed() {
+            getRunner().changeState(new LoadingState(new LoadNewState(getRunner(), new HelpState())));
         }
     }
 
