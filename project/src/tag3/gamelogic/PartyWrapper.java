@@ -19,6 +19,7 @@ public class PartyWrapper implements GameCalenderListener {
     private int daysPassed;
     private int frame;
     private GameCalender calender;
+    private BufferedImage currentImage;
 
     public boolean isMoving() {
         return moving;
@@ -26,7 +27,6 @@ public class PartyWrapper implements GameCalenderListener {
 
     public void setMoving(boolean moving) {
         this.moving = moving;
-        getRawParty().setIdle(!moving);
         calender.setCounting(moving);
     }
 
@@ -48,18 +48,10 @@ public class PartyWrapper implements GameCalenderListener {
     }
 
     public BufferedImage getCurrentAnimationFrame() {
-        BufferedImage img = null;
-        if (party.isIdle()) {
-            //System.out.println("Party is idle!");
-            img= party.getPartyIdleImage();
-        } else {
-            if (frame==0) {
-                img = party.getPartyImage0();
-            } else {
-                img = party.getPartyImage1();
-            }
+        if (currentImage==null) {
+            updatePartyImage();
         }
-        return img;
+        return currentImage;
     }
 
     @Override
@@ -72,18 +64,32 @@ public class PartyWrapper implements GameCalenderListener {
         //System.out.println("Minute passed");
     }
 
+    public void updatePartyImage() {
+        if (isMoving()) {
+            if (frame==0) {
+                currentImage = party.getPartyImage0();
+                frame = 1;
+            } else {
+                currentImage = party.getPartyImage1();
+                frame = 0;
+            }
+        } else {
+            currentImage = party.getPartyIdleImage();
+        }
+    }
+
     @Override
     public void hourPassed() {
         System.out.println("Hour passed");
+        updatePartyImage();
         if (isMoving()) {
+            party.setIdle(false);
             getRawParty().moveForward();
             System.out.println("Moved forward!");
-            frame++;
-            if (frame>1) {
-                frame = 0;
-            }
-            //System.out.println("We are on frame " + frame + "");
+        } else {
+            party.setIdle(true);
         }
+
     }
 
     @Override
