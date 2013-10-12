@@ -175,23 +175,23 @@ public class Party {
         Point[] lionPositions = new Point[lionsInImage];
         Point[] giraffePositions = new Point[giraffesInImage];
 
-        int width = 400;
-        int height = 350;
+        int width = 500;
+        int height = 400;
 
         while (llamasInImage>0 || lionsInImage>0 || giraffesInImage>0) {
             if (llamasInImage > 0) {
                 llamaPositions[(llamasInImage-1)] =
-                        new Point((int)(Math.random()*(width-150)), 120 + (int)(Math.random()*50));
+                        new Point((int)(Math.random()*(width-150)), height-250 + (int)(Math.random()*50));
                 llamasInImage--;
             }
             if (lionsInImage > 0) {
                 lionPositions[(lionsInImage-1)] =
-                        new Point((int)(Math.random()*(width-150)), 180 + (int)(Math.random()*50));
+                        new Point((int)(Math.random()*(width-200)), height-200 + (int)(Math.random()*50));
                 lionsInImage--;
             }
             if (giraffesInImage > 0) {
                 giraffePositions[(giraffesInImage-1)] =
-                        new Point((int)(Math.random()*(width-150)), 120 + (int)(Math.random()*50));
+                        new Point((int)(Math.random()*(width-150)), height-300 + (int)(Math.random()*50));
                 giraffesInImage--;
             }
         }
