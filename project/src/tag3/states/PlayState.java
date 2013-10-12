@@ -35,6 +35,7 @@ public class PlayState extends GameState implements KeyDownListener {
     protected PartyWrapper partyWrapper;                //Where should the Party go anyway?
     private Font infoFont;
     private TextLabel[] quickInfoText, muchInfoText;
+    private ImageLabel partyImage;
 
     //Global Logic and managers
     boolean paused, managing;
@@ -45,6 +46,7 @@ public class PlayState extends GameState implements KeyDownListener {
         if(!isPaused()) {  //Do logic only if the game is running!
             calender.tickCalender(); //Calender handles the updating of the party (PartyWrapper is a GameCalenderListener)
             updateInfoText();
+            partyImage.setImage(partyWrapper.getCurrentAnimationFrame());
         }
     }
 
@@ -253,6 +255,8 @@ public class PlayState extends GameState implements KeyDownListener {
         muchInfoText[7] = makeInfoText("Food eaten:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*8));
         muchInfoText[8] = makeInfoText("Days traveled:", muchInfoCornerX+xOffsetMuchInfo, muchInfoCornerY+(yOffsetMuchInfo*9));
 
+        partyImage = new ImageLabel(partyWrapper.getCurrentAnimationFrame(), 300, 190);
+
         //Init input
         getInput().addKeyDownListener(this);
     }
@@ -293,8 +297,10 @@ public class PlayState extends GameState implements KeyDownListener {
 
         //Draw the game
         bufferedImage = background.render(bufferedImage, graphics2D); //Game Background
+        bufferedImage = partyImage.render(bufferedImage, graphics2D); //Draw the party
         bufferedImage = drawWalkingPart(bufferedImage, graphics2D); //UI mostly
         bufferedImage = drawResources(bufferedImage, graphics2D); //Resources and resource spots
+
         //Info text
         bufferedImage = drawQuickTextInfo(bufferedImage, graphics2D); //Quick info
         if (toggles[1].isToggle()) { //Is more info requested?

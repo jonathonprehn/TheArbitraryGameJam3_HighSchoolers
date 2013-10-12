@@ -34,14 +34,16 @@ public class PartyWrapper implements GameCalenderListener {
     }
 
     public BufferedImage getCurrentAnimationFrame() {
-        if (true) {
-
+        if (party.isIdle()) {
+            return party.getPartyIdleImage();
         } else {
             switch(frame) {
                 case 0:
                     return party.getPartyImage0();
                 case 1:
                     return party.getPartyImage1();
+                default:
+                    return party.getPartyImage0();
             }
         }
     }
