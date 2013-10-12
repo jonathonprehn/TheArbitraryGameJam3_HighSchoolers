@@ -45,19 +45,18 @@ public class PartyWrapper implements GameCalenderListener {
     }
 
     public BufferedImage getCurrentAnimationFrame() {
+        BufferedImage img = null;
         if (party.isIdle()) {
             //System.out.println("Party is idle!");
-            return party.getPartyIdleImage();
+            img= party.getPartyIdleImage();
         } else {
-            switch(frame) {
-                case 0:
-                    return party.getPartyImage0();
-                case 1:
-                    return party.getPartyImage1();
-                default:
-                    return null;
+            if (frame==0) {
+                img = party.getPartyImage0();
+            } else {
+                img = party.getPartyImage1();
             }
         }
+        return img;
     }
 
     @Override
@@ -80,6 +79,7 @@ public class PartyWrapper implements GameCalenderListener {
             if (frame>1) {
                 frame = 0;
             }
+            //System.out.println("We are on frame " + frame + "");
         }
     }
 
