@@ -19,11 +19,14 @@ import java.awt.image.BufferedImage;
  */
 public class PlayState extends GameState implements KeyDownListener {
 
-    //Graphics and UI
+    //Graphical User Interface stuff
     protected ImageLabel[] labels, manageLabels;
     protected ImageButton[] buttons, manageButtons;
     protected ImageToggle[] toggles;
     private ImageLabel background;
+
+    //Actual game stuff now
+    protected ImageLabel[] gameLabels;
 
     //Global Logic and managers
     boolean paused, managing;
@@ -180,7 +183,21 @@ public class PlayState extends GameState implements KeyDownListener {
             MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
             centerWidth+250, centerHeight-225, new ExitManageButton()
         );
+        //Graphic User Interface stuff initialed! (Whew!)
 
+        //Notifications and resources
+        gameLabels = new ImageLabel[6];
+        //Water
+        gameLabels[0] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/waterNotification.png"), 20, 160);
+        gameLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/waterResource.png"), 20, 300);
+        //Meat
+        gameLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/meatNotification.png"), 20, 160);
+        gameLabels[3] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/meatResource.png"), 20, 300);
+        //Plant
+        gameLabels[4] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/plantNotification.png"), 20, 160);
+        gameLabels[5] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/plantResource.png"), 20, 300);
+
+        hideGameLabels();
         //Init input
         getInput().addKeyDownListener(this);
     }
@@ -194,6 +211,7 @@ public class PlayState extends GameState implements KeyDownListener {
         //Draw the game
         bufferedImage = background.render(bufferedImage, graphics2D);
         bufferedImage = drawWalkingPart(bufferedImage, graphics2D);
+        bufferedImage = drawResources(bufferedImage, graphics2D);
         //Draw management window if managing
         if (isManaging()) {
             bufferedImage = drawManageMenu(bufferedImage, graphics2D);
@@ -239,6 +257,14 @@ public class PlayState extends GameState implements KeyDownListener {
         return bImage;
     }
 
+    private BufferedImage drawResources(BufferedImage bImage, Graphics2D g2d) {
+        g2d = (Graphics2D) bImage.getGraphics();
+        for (int i=0; i<gameLabels.length; i++) {
+            bImage = gameLabels[i].render(bImage, g2d);
+        }
+        return bImage;
+    }
+
     @Override
     public void reactToKeyDown(KeyEvent keyEvent) {
         //P or Esc for pausing
@@ -258,6 +284,30 @@ public class PlayState extends GameState implements KeyDownListener {
         } else {
             setPaused(true);
         }
+    }
+
+    private void hideGameLabels() {
+        for (int i=0; i<gameLabels.length; i++) {
+            gameLabels[i].setVisible(false);
+        }
+    }
+
+    private void notifyWater() {
+        hideGameLabels();
+        gameLabels[0].setVisible(true);
+        gameLabels[1].setVisible(true);
+    }
+
+    private void notifyMeat() {
+        hideGameLabels();
+        gameLabels[2].setVisible(true);
+        gameLabels[3].setVisible(true);
+    }
+
+    private void notifyPlants() {
+        hideGameLabels();
+        gameLabels[4].setVisible(true);
+        gameLabels[5].setVisible(true);
     }
 
     class SleepButtonListener implements GenericButtonListener {
