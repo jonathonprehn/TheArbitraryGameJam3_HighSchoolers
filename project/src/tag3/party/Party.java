@@ -118,8 +118,8 @@ public class Party {
         this.morale = (int)((this.getSize()*0.25) + sleepMod + noFoodMod + noWaterMod
             + temporaryMoraleModifier);
 
-        // 15% diseased animal amount - 1.5% per llama - 1/2 morale percent
-        this.diseaseModifier = (int)(-morale/200.0) + (int)(getNumberOfDiseased()*0.15) - (int)(getNumLlama()*1.5);
+        // 15% diseased animal amount - 1% per llama - 1/2 morale percent
+        this.diseaseModifier = (int)(-morale/2.0) + (int)(getNumberOfDiseased()*0.15) - (int)(getNumLlama());
 
         this.walkingPace = 1 + (morale/100.0);
         if (this.walkingPace < 0.1) {
@@ -128,11 +128,11 @@ public class Party {
 
         // 50% base with each animal adding 2%, each diseased animal subtracting 1% + morale percent
         // minimum 10% collection and hunting rate
-        this.huntingSuccess = 50 + (numLion*2) - (int)(numDiseasedLion) + morale;
+        this.huntingSuccess = 40 + (numLion) - (int)(numDiseasedLion) + (morale/2);
         if (huntingSuccess < 10) {
             huntingSuccess = 10;
         }
-        this.collectingSuccess = 50 + (numGiraffe*2) - (int)(numDiseasedGiraffe) + morale;
+        this.collectingSuccess = 40 + (numGiraffe) - (int)(numDiseasedGiraffe) + (morale/2);
         if (collectingSuccess < 10) {
             collectingSuccess = 10;
         }
@@ -181,25 +181,25 @@ public class Party {
         while (llamasInImage>0 || lionsInImage>0 || giraffesInImage>0) {
             if (llamasInImage > 0) {
                 llamaPositions[(llamasInImage-1)] =
-                        new Point((int)(Math.random()*(width-150)), 250 + (int)(Math.random()*50));
+                        new Point((int)(Math.random()*(width-150)), 120 + (int)(Math.random()*50));
                 llamasInImage--;
             }
             if (lionsInImage > 0) {
                 lionPositions[(lionsInImage-1)] =
-                        new Point((int)(Math.random()*(width-150)), 250 + (int)(Math.random()*50));
+                        new Point((int)(Math.random()*(width-150)), 180 + (int)(Math.random()*50));
                 lionsInImage--;
             }
             if (giraffesInImage > 0) {
                 giraffePositions[(giraffesInImage-1)] =
-                        new Point((int)(Math.random()*(width-150)), 250 + (int)(Math.random()*50));
+                        new Point((int)(Math.random()*(width-150)), 120 + (int)(Math.random()*50));
                 giraffesInImage--;
             }
         }
 
         // idk what the third constructor is supposed to do :<
-        partyImage0 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        partyImage1 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        partyIdleImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        partyImage0 = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
+        partyImage1 = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
+        partyIdleImage = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
 
         Graphics2D pi0 = (Graphics2D) partyImage0.getGraphics();
         Graphics2D pi1 = (Graphics2D) partyImage0.getGraphics();
