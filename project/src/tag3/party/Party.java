@@ -58,10 +58,10 @@ public class Party {
     public void updateVariables() {
         this.diseaseModifier = 5 + (int)(getNumberOfDiseased()*0.10) - (int)(getNumLlama()*2);
 
-        // increases with morale - 15% base chance
-        this.diseaseCureChance = (int)(10*(1+(morale/200.0)));
-        // decreases with morale - 5% base chance
-        this.diseaseKillChance = (int)(3*(1+(-morale/200.0)));
+        // increases with morale - 20% base chance
+        this.diseaseCureChance = (int)(20*(1+(morale/200.0)));
+        // decreases with morale - 2% base chance
+        this.diseaseKillChance = (int)(2*(1+(-morale/200.0)));
 
         int sleepMod = 0;
         if (getDaysSinceSlept() > 3) {
@@ -85,7 +85,7 @@ public class Party {
         }
 
         if (temporaryMoraleModifier > 3 || temporaryMoraleModifier < 3) {
-            // temportary morale decays at a rate of 50% every update cycle
+            // temporary morale decays at a rate of 50% every update cycle
             temporaryMoraleModifier = temporaryMoraleModifier*0.5;
         } else {
             temporaryMoraleModifier = 0;
