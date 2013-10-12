@@ -16,8 +16,19 @@ import java.awt.image.BufferedImage;
 //For putting the logic for the party (and the game) in 1 place
 public class PartyWrapper implements GameCalenderListener {
 
-    private int daysPassed, ticksForAnimation;
-    private int ticksPerAnimationCycle, frame;
+    private int daysPassed;
+    private int frame;
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+        getRawParty().setIdle(!moving);
+    }
+
+    private boolean moving;
     private PlayState state;
 
     public Party getRawParty() {
@@ -28,16 +39,14 @@ public class PartyWrapper implements GameCalenderListener {
 
     public PartyWrapper(int numberLion, int numberGiraffe, int numberLlama, GameCalender calender, PlayState reference) {
         party = new Party(numberLion, numberGiraffe, numberLion);
-        calender.addCalenderListener(this);
         this.state = reference;
         daysPassed = 0;
-        ticksPerAnimationCycle = 10;
-        ticksForAnimation = 0;
         frame = 0;
     }
 
     public BufferedImage getCurrentAnimationFrame() {
         if (party.isIdle()) {
+            //System.out.println("Party is idle!");
             return party.getPartyIdleImage();
         } else {
             switch(frame) {
@@ -46,31 +55,32 @@ public class PartyWrapper implements GameCalenderListener {
                 case 1:
                     return party.getPartyImage1();
                 default:
-                    return party.getPartyImage0();
+                    return null;
             }
         }
     }
 
     @Override
     public void tickPassed() {
-        ticksForAnimation++;
-        if (ticksForAnimation>=ticksPerAnimationCycle) {
-            ticksForAnimation = 0;
-            frame++;
-            if(frame>1) {
-                frame = 0;
-            }
-        }
+        //System.out.println("Calendar tick!");
     }
 
     @Override
     public void minutePassed() {
-        System.out.println("Minute passed");
+        //System.out.println("Minute passed");
     }
 
     @Override
     public void hourPassed() {
         System.out.println("Hour passed");
+        if (isMoving()) {
+            getRawParty().moveForward();
+            System.out.println("Moved forward!");
+            frame++;
+            if (frame>1) {
+                frame = 0;
+            }
+        }
     }
 
     @Override
@@ -81,7 +91,7 @@ public class PartyWrapper implements GameCalenderListener {
 
     @Override
     public void weekPassed() {
-        System.out.println("Week passed");
+        //System.out.println("Week passed");
     }
 
     public int getDaysPassed() {

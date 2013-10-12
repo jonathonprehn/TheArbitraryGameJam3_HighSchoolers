@@ -13,6 +13,7 @@ public class GameCalender {
 
     private int weeks, days, hours, minutes;
     private int ticksPerMinute;
+    private boolean counting;
 
     public int getDaysPerWeek() {
         return daysPerWeek;
@@ -52,6 +53,14 @@ public class GameCalender {
     private int ticks;
     private ArrayList<GameCalenderListener> listeners;
 
+    public boolean isCounting() {
+        return counting;
+    }
+
+    public void setCounting(boolean counting) {
+        this.counting = counting;
+    }
+
     public GameCalender() {
         listeners = new ArrayList<GameCalenderListener>();
         weeks = 0;
@@ -63,6 +72,7 @@ public class GameCalender {
         minutesPerHour = 60;
         hoursPerDay = 24;
         daysPerWeek = 7;
+        counting = true;
     }
 
     public void addCalenderListener(GameCalenderListener gcl) {
@@ -75,6 +85,12 @@ public class GameCalender {
 
     public void clearCalenderListeners() {
         listeners.clear();
+    }
+
+    private void notifyListenersOfTicksPassed() {
+        for (int i=0; i<listeners.size(); i++) {
+            listeners.get(i).tickPassed();
+        }
     }
 
     private void notifyListenersOfMinutePassed() {
@@ -102,23 +118,40 @@ public class GameCalender {
     }
 
     public void tickCalender() {
-        ticks++;
-        //Validate numbers
-        if (ticks>=ticksPerMinute) { //Minute passed!
-            ticks = 0;
-            minutes++;
-            if(minutes>=minutesPerHour) { //Hour passed!
-                minutes = 0;
-                hours++;
-                if(hours>=hoursPerDay) {  //Day passed!
-                    hours = 0;
-                    days++;
-                    if(days>=daysPerWeek) { //Week passed!
-                        days = 0;
-                        weeks++;
+        if (counting) {
+            ticks++;
+            notifyListenersOfTicksPassed();
+            //Validate numbers
+            if (ticks>=ticksPerMinute) { //Minute passed!
+                ticks = 0;
+                minutes++;
+                notifyListenersOfMinutePassed();
+                if(minutes>=minutesPerHour) { //Hour passed!
+                    minutes = 0;
+                    hours++;
+                    notifyListenersOfHourPassed();
+                    if(hours>=hoursPerDay) {  //Day passed!
+                        hours = 0;
+                        days++;
+                        notifyListenersOfDayPassed();
+                        if(days>=daysPerWeek) { //Week passed!
+                            days = 0;
+                            weeks++;
+                            notifyListenersOfWeekPassed();
+                        }
                     }
                 }
             }
         }
+    }
+
+    public void printData() {
+        System.out.println("Counting: " + counting + "");
+        System.out.println("Ticks: " + ticks + "");
+        System.out.println("Minutes: " + minutes + "");
+        System.out.println("Hours: " + hours + "");
+        System.out.println("Days: " + days + "");
+        System.out.println("Weeks: " + weeks + "");
+        System.out.println();
     }
 }

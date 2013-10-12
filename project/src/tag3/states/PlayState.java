@@ -44,7 +44,11 @@ public class PlayState extends GameState implements KeyDownListener {
     public void updateLogic() {
         //System.out.println("Tick");
         if(!isPaused()) {  //Do logic only if the game is running!
+            partyWrapper.setMoving(toggles[0].isToggle()); //Are we moving according to the toggle?
+            calender.setCounting(toggles[0].isToggle());
+            // System.out.println("Moving: " + toggles[0].isToggle() + "");
             calender.tickCalender(); //Calender handles the updating of the party (PartyWrapper is a GameCalenderListener)
+            //calender.printData();
             updateInfoText();
             partyImage.setImage(partyWrapper.getCurrentAnimationFrame());
         }
@@ -232,8 +236,12 @@ public class PlayState extends GameState implements KeyDownListener {
 
         //Init game logic handlers
         calender = new GameCalender();
+        calender.setTicksPerMinute(getTimer().getTPS());
+        calender.setMinutesPerHour(1);
+        calender.setCounting(false);
         // start with 15 of each animal at the start
         partyWrapper = new PartyWrapper(15,15,15, calender, this);    //Party initialized here!
+        calender.addCalenderListener(partyWrapper);
         infoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 
         //Init info text
@@ -277,7 +285,7 @@ public class PlayState extends GameState implements KeyDownListener {
         quickInfoText[2].setText("Morale: " + partyWrapper.getRawParty().getMorale() + "");
         quickInfoText[3].setText("Food: " + partyWrapper.getRawParty().getFoodAmount() + "");
         quickInfoText[4].setText("Water: " + partyWrapper.getRawParty().getWaterAmount() + "");
-        quickInfoText[5].setText("Days awake: " + partyWrapper.getRawParty().getDaysSinceSlept() + "");
+        quickInfoText[5].setText("Days awake: " + (int)(partyWrapper.getRawParty().getDaysSinceSlept()) + "");
 
         //Much info
         muchInfoText[0].setText("Giraffes: " + partyWrapper.getRawParty().getNumGiraffe() + "");
@@ -406,6 +414,9 @@ public class PlayState extends GameState implements KeyDownListener {
             case KeyEvent.VK_ESCAPE:
                 togglePaused();
                 break;
+            case KeyEvent.VK_SPACE:
+                toggles[0].forceToggle();
+                break;
         }
     }
 
@@ -447,7 +458,7 @@ public class PlayState extends GameState implements KeyDownListener {
     class SleepButtonListener implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            partyWrapper.getRawParty().sleep();
         }
     }
 
@@ -545,7 +556,7 @@ public class PlayState extends GameState implements KeyDownListener {
     class MovementToggleListener implements GenericToggleListener {
         @Override
         public void toggleChanged(boolean valueSetTo) {
-
+            partyWrapper.setMoving(valueSetTo);
         }
     }
 }
