@@ -65,7 +65,7 @@ public class BasicGui implements GuiComponent {
 
     @Override
     public void setVisible(boolean visibility) {
-        this.visibility = false;
+        this.visibility = visibility;
     }
 
     @Override
