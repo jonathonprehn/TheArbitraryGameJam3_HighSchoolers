@@ -219,8 +219,17 @@ public class Party {
 
     private void updatePartyImage() {
         int llamasInImage = (int)((numLlama + numDiseasedLlama)/5.0);
+        if (getTotalLlamas() > 0 && llamasInImage==0) {
+            llamasInImage = 1;
+        }
         int lionsInImage = (int)((numLion + numDiseasedLion)/5.0);
+        if (getTotalLions() > 0 && lionsInImage==0) {
+            lionsInImage = 1;
+        }
         int giraffesInImage = (int)((numGiraffe + numDiseasedGiraffe)/5.0);
+        if (getTotalGiraffes() > 0 && giraffesInImage==0) {
+            giraffesInImage = 1;
+        }
 
         Point[] llamaPositions = new Point[llamasInImage];
         Point[] lionPositions = new Point[lionsInImage];
