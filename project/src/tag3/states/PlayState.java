@@ -786,12 +786,5 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                 setVisible(false);
             }
         }
-
-        class ExitDialogListener implements GenericButtonListener {
-            @Override
-            public void buttonPushed() {
-
-            }
-        }
     }
 }
