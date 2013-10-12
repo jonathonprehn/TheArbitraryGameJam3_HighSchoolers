@@ -56,10 +56,10 @@ public class Party {
     }
 
     public void updateVariables() {
-        this.diseaseModifier = 5 + (int)(getNumberOfDiseased()*0.10) - (int)(getNumLlama()*2);
+        this.diseaseModifier = (int)(getNumberOfDiseased()*0.10) - (int)(getNumLlama()*4);
 
         // increases with morale - 20% base chance
-        this.diseaseCureChance = (int)(20*(1+(morale/200.0)));
+        this.diseaseCureChance = (int)(35*(1+(morale/100.0)));
         // decreases with morale - 2% base chance
         this.diseaseKillChance = (int)(2*(1+(-morale/200.0)));
 
@@ -72,16 +72,19 @@ public class Party {
             sleepMod = 15;
         }
 
+        daysWithNoFood = daysWithNoFood + (1/24.0);
+        daysWithNoWater = daysWithNoWater + (1/24.0);
+
+        // -4% morale per day of no food
         int noFoodMod = 0;
         if (foodSupply.size() == 0) {
-            daysWithNoFood = daysWithNoFood + (1/24.0);
-            noFoodMod = -(int)(daysWithNoFood*20.0);
+            noFoodMod = -(int)(daysWithNoFood*4.0);
         }
 
+        // -7% morale per day of no water
         int noWaterMod = 0;
         if (waterSupply.size() == 0) {
-            daysWithNoWater = daysWithNoWater + (1/24.0);
-            noWaterMod = -(int)(daysWithNoWater*35.0);
+            noWaterMod = -(int)(daysWithNoWater*7.0);
         }
 
         if (temporaryMoraleModifier > 3 || temporaryMoraleModifier < 3) {
@@ -99,10 +102,16 @@ public class Party {
             this.walkingPace = 0.1; // minimum walking pace
         }
 
-        // 50% base with each animal adding 2%, each diseased animal subtracting 1.5% + morale percent
-        this.huntingSuccess = 50 + (numLion*2) - (int)(numDiseasedLion*1.5) + morale;
-        this.collectingSuccess = 50 + (numGiraffe*2) - (int)(numDiseasedGiraffe*1.5) + morale;
-
+        // 50% base with each animal adding 2%, each diseased animal subtracting 1% + morale percent
+        // minimum 10% collection and hunting rate
+        this.huntingSuccess = 50 + (numLion*2) - (int)(numDiseasedLion) + morale;
+        if (huntingSuccess < 10) {
+            huntingSuccess = 10;
+        }
+        this.collectingSuccess = 50 + (numGiraffe*2) - (int)(numDiseasedGiraffe) + morale;
+        if (collectingSuccess < 10) {
+            collectingSuccess = 10;
+        }
     }
 
     public int getSize() {
@@ -146,8 +155,7 @@ public class Party {
         updateVariables();
         randomlyKill();
         int beforeDiseasedNum = getNumberOfDiseased();
-        consumeFood();
-        consumeWater();
+        eatSupplies();
         int diseasedThatHour = getNumberOfDiseased() - beforeDiseasedNum;
         System.out.println("In one hour "+diseasedThatHour+" animals were diseased");
         daysSinceSlept = daysSinceSlept + (1/24.0);
@@ -156,14 +164,34 @@ public class Party {
 
     public void sleep() {
         updateVariables();
-        consumeFood();
-        consumeWater();
+        eatSupplies();
         randomlyCure(); // when you sleep some animals have a chance of being cured from a good night's sleep
         daysSinceSlept = 0; // all refreshed!
     }
 
     public void eatSupplies() {
+        if (daysWithNoFood > (8/24.0)) {
+            eatMeals();
+        }
+        if (daysWithNoWater > (8/24.0)) {
+            quenchThirst();
+        }
+    }
 
+    public void quenchThirst() {
+        int suppliesConsumedToday = (int)(this.getSize()/5.0);
+        System.out.println("We needed to eat "+suppliesConsumedToday+" supplies");
+        for (int i=0; i<suppliesConsumedToday; i++) {
+            consumeWater();
+        }
+    }
+
+    public void eatMeals() {
+        int suppliesConsumedToday = (int)(this.getSize()/5.0);
+        System.out.println("We needed to eat "+suppliesConsumedToday+" supplies");
+        for (int i=0; i<suppliesConsumedToday; i++) {
+            consumeFood();
+        }
     }
 
     public void randomlyKill() {
@@ -272,7 +300,7 @@ public class Party {
             for (int i=0; i<this.numLion; i++) {
                 if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
                     this.numLion--;
-                    this.numDiseasedLion--;
+                    this.numDiseasedLion++;
                 }
             }
 
@@ -280,7 +308,7 @@ public class Party {
             for (int i=0; i<this.numGiraffe; i++) {
                 if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
                     this.numGiraffe--;
-                    this.numDiseasedGiraffe--;
+                    this.numDiseasedGiraffe++;
                 }
             }
 
@@ -288,7 +316,7 @@ public class Party {
             for (int i=0; i<this.numLlama; i++) {
                 if (diseasePercent >= 0 && RandomChance.rollForChance(diseasePercent))  {
                     this.numLlama--;
-                    this.numDiseasedLlama--;
+                    this.numDiseasedLlama++;
                 }
             }
 
