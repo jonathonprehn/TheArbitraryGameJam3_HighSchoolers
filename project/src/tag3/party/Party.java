@@ -70,10 +70,12 @@ public class Party {
         this.walkingPace = 1;
         this.distanceTraveled = 0;
         updateVariables();
+        updatePartyImage();
     }
 
     private void updateVariables() {
-        this.diseaseModifier = (int)(getNumberOfDiseased()*0.10) - (int)(getNumLlama()*4);
+        // 10% diseased animal amount - 1.5% per llama
+        this.diseaseModifier = (int)(getNumberOfDiseased()*0.1) - (int)(getNumLlama()*1.5);
 
         // increases with morale - 20% base chance
         this.diseaseCureChance = (int)(35*(1+(morale/100.0)));
