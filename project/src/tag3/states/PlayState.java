@@ -33,14 +33,18 @@ public class PlayState extends GameState implements KeyDownListener {
     protected ImageLabel[] gameLabels;
     protected GameCalender calender;
     protected PartyWrapper partyWrapper;                //Where should the Party go anyway?
+    private Font infoFont;
+    private TextLabel[] quickInfoText, muchInfoText;
 
     //Global Logic and managers
     boolean paused, managing;
 
     @Override
     public void updateLogic() {
+        //System.out.println("Tick");
         if(!isPaused()) {  //Do logic only if the game is running!
             calender.tickCalender(); //Calender handles the updating of the party (PartyWrapper is a GameCalenderListener)
+            updateInfoText();
         }
     }
 
@@ -95,6 +99,9 @@ public class PlayState extends GameState implements KeyDownListener {
         labels = new ImageLabel[4]; //Info bar, quick info, pause background, and much info
         toggles = new ImageToggle[2]; //More info and move toggles
 
+        //Other values
+        int quickInfoCornerX, quickInfoCornerY, muchInfoCornerX, muchInfoCornerY;
+
         //Init things for the walking game cycle
         buttons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("play_state_images/sleepUp.png"),
@@ -117,8 +124,11 @@ public class PlayState extends GameState implements KeyDownListener {
                 MediaLoader.quickLoadImage("play_state_images/moreInfoOff.png"),
                 725, 70, false, new MoreInfoListener()
         );
-
-        labels[0] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/quickInfoBackground.png"), 500, 0);
+        quickInfoCornerX = 500;
+        quickInfoCornerY = 0;
+        muchInfoCornerX = 500;
+        muchInfoCornerY = 100;
+        labels[0] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/quickInfoBackground.png"), quickInfoCornerX, quickInfoCornerY);
         labels[1] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/muchInfoBackground.png"), 500, 100);
         labels[2] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/distanceBar.png"), 0, 100);
 
@@ -214,9 +224,38 @@ public class PlayState extends GameState implements KeyDownListener {
         //Init game logic handlers
         calender = new GameCalender();
         partyWrapper = new PartyWrapper(23,31,20, calender);    //Party initialized here!
+        infoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 
+        //Init info text
+        quickInfoText = new TextLabel[6];
+        muchInfoText = new TextLabel[0];
+
+        //Giraffe num, lion num, llama num, diseased giraffe num, diseased lion num, diseased llama num,
+        // morale, water supplies, food supplies, days since last slept
+        quickInfoText[0] = makeInfoText("Total Animals:", quickInfoCornerX+10, quickInfoCornerY+20);
+        quickInfoText[1] = makeInfoText("Total Diseased Animals:", quickInfoCornerX+130, quickInfoCornerY+20);
+        quickInfoText[2] = makeInfoText("Morale:", quickInfoCornerX+10, quickInfoCornerY+50);
+        quickInfoText[3] = makeInfoText("Food:", quickInfoCornerX+75, quickInfoCornerY+50);
+        quickInfoText[4] = makeInfoText("Water:", quickInfoCornerX+150, quickInfoCornerY+50);
+        quickInfoText[5] = makeInfoText("Days awake:", quickInfoCornerX+10, quickInfoCornerY+80);
         //Init input
         getInput().addKeyDownListener(this);
+    }
+
+    //Make sure the text actually shows the correct values
+    public void updateInfoText() {
+        quickInfoText[0].setText("Total Animals: " + (partyWrapper.getRawParty().getNumberOfDiseased()+partyWrapper.getRawParty().getNumberOfNonDiseased()) + "");
+        quickInfoText[1].setText("Total Diseased Animals: " + partyWrapper.getRawParty().getNumberOfDiseased() + "");
+        quickInfoText[2].setText("Morale: " + partyWrapper.getRawParty().getMorale() + "");
+        quickInfoText[3].setText("Food: " + partyWrapper.getRawParty().getFoodAmount() + "");
+        quickInfoText[4].setText("Water: " + partyWrapper.getRawParty().getWaterAmount() + "");
+        quickInfoText[5].setText("Days awake: " + partyWrapper.getRawParty().getDaysSinceSlept() + "");
+    }
+
+    private TextLabel makeInfoText(String text, int x, int y) {
+        TextLabel l = new TextLabel(text, x, y);
+        l.setFont(infoFont);
+        return l;
     }
 
     @Override
@@ -229,7 +268,11 @@ public class PlayState extends GameState implements KeyDownListener {
         bufferedImage = background.render(bufferedImage, graphics2D);
         bufferedImage = drawWalkingPart(bufferedImage, graphics2D);
         bufferedImage = drawResources(bufferedImage, graphics2D);
-        bufferedImage = drawTextInfo(bufferedImage, graphics2D);
+
+        bufferedImage = drawQuickTextInfo(bufferedImage, graphics2D);
+        if (toggles[1].isToggle()) { //Is more info requested?
+            bufferedImage = drawMoreTextInfo(bufferedImage, graphics2D);
+        }
 
         //Draw management window if managing
         if (isManaging()) {
@@ -242,10 +285,21 @@ public class PlayState extends GameState implements KeyDownListener {
         return bufferedImage;
     }
 
-    //Draw all the text labels that tells the player what is going on
-    private BufferedImage drawTextInfo(BufferedImage bImage, Graphics2D g2d) {
+    //Draw quick info text labels
+    private BufferedImage drawQuickTextInfo(BufferedImage bImage, Graphics2D g2d) {
         g2d = (Graphics2D) bImage.getGraphics();
+        for (int i=0; i<quickInfoText.length; i++) {
+            bImage = quickInfoText[i].render(bImage, g2d);
+        }
+        return bImage;
+    }
 
+    //Draw much info text labels
+    private BufferedImage drawMoreTextInfo(BufferedImage bImage, Graphics2D g2d) {
+        g2d = (Graphics2D) bImage.getGraphics();
+        for (int i=0; i<muchInfoText.length; i++) {
+            bImage = muchInfoText[i].render(bImage, g2d);
+        }
         return bImage;
     }
 

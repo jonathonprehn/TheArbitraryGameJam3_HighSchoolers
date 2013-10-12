@@ -26,6 +26,7 @@ public class TextLabel implements GuiComponent {
         this.x = x; this.y = y;
         textColor = Color.BLACK;
         font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+        visible = true;
     }
 
     public String getText() {
