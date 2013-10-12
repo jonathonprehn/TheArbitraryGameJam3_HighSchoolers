@@ -15,5 +15,7 @@ public class MainStartUp {
         runner.startGame();    ///Don't forget to change the state!
         runner.setDebugging(true);
         runner.changeState(new MainMenuState());
+        //For final version
+        //Run the program with "javaw" instead of "java" (How to do that?)
     }
 }

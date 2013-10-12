@@ -14,6 +14,9 @@ import java.awt.image.BufferedImage;
  */
 public class PlayState extends GameState {
 
+    //Graphics and UI
+
+
     @Override
     public void updateLogic() {
 
@@ -29,6 +32,8 @@ public class PlayState extends GameState {
         graphics2D = (Graphics2D)bufferedImage.getGraphics();
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
+
+
 
         return bufferedImage;
     }
