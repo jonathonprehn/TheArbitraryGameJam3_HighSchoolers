@@ -2,9 +2,12 @@ package tag3.states;
 
 import horsentp.gamelogic.GameState;
 import horsentp.input.KeyDownListener;
+import tag3.gamelogic.GameCalender;
+import tag3.gamelogic.PartyWrapper;
 import tag3.gui.*;
 import tag3.gui.GuiComponent;
 import tag3.media.MediaLoader;
+import tag3.party.Party;
 import tag3.utility.GraphicsFactory;
 
 import java.awt.*;
@@ -28,6 +31,8 @@ public class PlayState extends GameState implements KeyDownListener {
 
     //Actual game stuff now
     protected ImageLabel[] gameLabels;
+    protected GameCalender calender;
+    protected PartyWrapper partyWrapper;                //Where should the Party go anyway?
 
     //Global Logic and managers
     boolean paused, managing;
@@ -35,7 +40,7 @@ public class PlayState extends GameState implements KeyDownListener {
     @Override
     public void updateLogic() {
         if(!isPaused()) {  //Do logic only if the game is running!
-
+            calender.tickCalender(); //Calender handles the updating of the party (PartyWrapper is a GameCalenderListener)
         }
     }
 
@@ -205,6 +210,11 @@ public class PlayState extends GameState implements KeyDownListener {
         gameLabels[5] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/plantResource.png"), 20, 300);
 
         hideGameLabels();
+
+        //Init game logic handlers
+        calender = new GameCalender();
+        partyWrapper = new PartyWrapper(23,31,20, calender);    //Party initialized here!
+
         //Init input
         getInput().addKeyDownListener(this);
     }
