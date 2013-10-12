@@ -386,8 +386,18 @@ public class Party {
         return morale;
     }
 
-    public BufferedImage getPartyImage() {
-        return partyImage;
+    public BufferedImage getPartyImage0() {
+        if (partyImage0==null) {
+            updatePartyImage();
+        }
+        return partyImage0;
+    }
+
+    public BufferedImage getPartyImage1() {
+        if (partyImage1==null) {
+            updatePartyImage();
+        }
+        return partyImage1;
     }
 
     public int getHuntingSuccess() {
