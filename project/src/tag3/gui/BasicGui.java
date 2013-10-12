@@ -40,6 +40,9 @@ public class BasicGui implements GuiComponent {
 
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
+        if (!visibility) {
+            return bufferedImage;
+        }
         for (GuiComponent component : guiComponents.values()) {
             if (component == null) { continue;}
             BufferedImage bImage = component.render(bufferedImage, graphics2D);
