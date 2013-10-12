@@ -35,8 +35,16 @@ public class ImageButton implements Displayable , MouseDownListener, MouseMoveLi
         this.visible = visible;
     }
 
-    private boolean visible;
+    private boolean visible, enabled;
     private ArrayList<GenericButtonListener> listeners;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public ImageButton(BufferedImage upImage, BufferedImage downImage, InputBridge input, int x, int y) {
         this.upImage = upImage;
@@ -48,6 +56,7 @@ public class ImageButton implements Displayable , MouseDownListener, MouseMoveLi
         input.addMouseMoveListener(this);
         hovering = false;
         visible = true;
+        enabled = true;
     }
 
 
@@ -110,7 +119,7 @@ public class ImageButton implements Displayable , MouseDownListener, MouseMoveLi
 
     @Override
     public void reactToMouseMove(MouseEvent mouseEvent) {
-        if (hoverPoint(mouseEvent.getX(), mouseEvent.getY()) && isVisible()) {
+        if (hoverPoint(mouseEvent.getX(), mouseEvent.getY()) && isVisible() && isEnabled()) {
             hovering = true;
         } else {
             hovering = false;

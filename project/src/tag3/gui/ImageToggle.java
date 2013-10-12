@@ -28,7 +28,15 @@ public class ImageToggle implements Displayable, MouseDownListener {
         return toggle;
     }
 
-    private boolean toggle;
+    private boolean toggle, enabled;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public boolean isVisible() {
         return visible;
@@ -49,6 +57,7 @@ public class ImageToggle implements Displayable, MouseDownListener {
         toggle = defaultValue;
         listeners = new ArrayList<GenericToggleListener>();
         visible = true;
+        enabled = true;
     }
 
     public void addToggleListener(GenericToggleListener gtl) {
@@ -102,7 +111,7 @@ public class ImageToggle implements Displayable, MouseDownListener {
 
     @Override
     public void reactToMouseDown(MouseEvent mouseEvent) {
-        if(hoverPoint(mouseEvent.getX(), mouseEvent.getY()) && isVisible()) {
+        if(hoverPoint(mouseEvent.getX(), mouseEvent.getY()) && isVisible() && isEnabled()) {
             if(toggle) {
                 toggle = false;
             } else {
