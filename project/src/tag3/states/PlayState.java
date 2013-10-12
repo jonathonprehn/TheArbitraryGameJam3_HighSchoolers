@@ -38,6 +38,10 @@ public class PlayState extends GameState implements KeyDownListener {
     private TextLabel[] quickInfoText, muchInfoText;
     private ImageLabel partyImage;
 
+    // timers for finding stuff
+    private int hoursUntilNextFood = 24;
+    private int hoursUntilNextWater = 20;
+
     //Global Logic and managers
     boolean paused, managing;
 
@@ -45,8 +49,28 @@ public class PlayState extends GameState implements KeyDownListener {
     public void updateLogic() {
         //System.out.println("Tick");
         if(!isPaused()) {  //Do logic only if the game is running!
-            partyWrapper.setMoving(toggles[0].isToggle()); //Are we moving according to the toggle?
-            calender.setCounting(toggles[0].isToggle());
+            if (hoursUntilNextFood <= 0) {
+                partyWrapper.setMoving(false);
+
+                // spawn a food resource
+
+                hoursUntilNextFood= 20 + (int)(Math.random()*8);
+            } else if (hoursUntilNextWater <=0) {
+                partyWrapper.setMoving(false);
+
+                // spawn a water resource
+
+                hoursUntilNextWater = 20 + (int)(Math.random()*8);
+            } else (hoursUntilNextFood > 0 && hoursUntilNextWater > 0) {
+                partyWrapper.setMoving(toggles[0].isToggle()); //Are we moving according to the toggle?
+            }
+
+            // if currentFoundResource!=null
+            // ask player if they want to collect it
+
+            hoursUntilNextFood--;
+            hoursUntilNextWater--;
+
             // System.out.println("Moving: " + toggles[0].isToggle() + "");
             calender.tickCalender(); //Calender handles the updating of the party (PartyWrapper is a GameCalenderListener)
             //calender.printData();

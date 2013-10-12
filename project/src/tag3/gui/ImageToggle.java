@@ -95,6 +95,11 @@ public class ImageToggle implements GuiComponent, MouseDownListener {
         notifyListeners();
     }
 
+    public void forceSetToggle(boolean toggleIt) {
+        toggle = toggleIt;
+        notifyListeners();
+    }
+
     private BufferedImage getUsingImage() {
         if (toggle) {
             return trueImage;

@@ -18,6 +18,7 @@ public class PartyWrapper implements GameCalenderListener {
 
     private int daysPassed;
     private int frame;
+    private GameCalender calender;
 
     public boolean isMoving() {
         return moving;
@@ -26,6 +27,7 @@ public class PartyWrapper implements GameCalenderListener {
     public void setMoving(boolean moving) {
         this.moving = moving;
         getRawParty().setIdle(!moving);
+        calender.setCounting(moving);
     }
 
     private boolean moving;
@@ -42,6 +44,7 @@ public class PartyWrapper implements GameCalenderListener {
         this.state = reference;
         daysPassed = 0;
         frame = 0;
+        this.calender = calender;
     }
 
     public BufferedImage getCurrentAnimationFrame() {

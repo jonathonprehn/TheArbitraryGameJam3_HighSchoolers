@@ -298,7 +298,6 @@ public class Party {
 
     public void sleep() {
         updateVariables();
-        eatSupplies();
         randomlyCure(); // when you sleep some animals have a chance of being cured from a good night's sleep
         daysSinceSlept = 0; // all refreshed!
     }
