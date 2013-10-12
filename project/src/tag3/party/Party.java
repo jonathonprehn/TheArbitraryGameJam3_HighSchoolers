@@ -1,9 +1,11 @@
 package tag3.party;
 
+import tag3.media.MediaLoader;
 import tag3.party.food.Food;
 import tag3.party.food.Water;
 import tag3.utility.RandomChance;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,20 @@ public class Party {
     // the current image of the party (changes as party grows and shrinks)
     private BufferedImage partyImage0;
     private BufferedImage partyImage1;
+
+    private BufferedImage[] llamaImages = {
+            MediaLoader.quickLoadImage("animals/llama0.png"),
+            MediaLoader.quickLoadImage("animals/llama1.png")
+    };
+    private BufferedImage[] lionImages = {
+            MediaLoader.quickLoadImage("animals/lion0.png"),
+            MediaLoader.quickLoadImage("animals/lion1.png")
+    };
+    private BufferedImage[] giraffeImages = {
+            MediaLoader.quickLoadImage("animals/giraffe0.png"),
+            MediaLoader.quickLoadImage("animals/giraffe1.png")
+    };
+
     // a percentage number between -100 and 100 on how much morale the party has
     private int morale;
     private double daysSinceSlept;
@@ -144,7 +160,80 @@ public class Party {
     }
 
     private void updatePartyImage() {
+        int llamasInImage = (int)((numLlama + numDiseasedLlama)/5.0);
+        int lionsInImage = (int)((numLion + numDiseasedLion)/5.0);
+        int giraffesInImage = (int)((numGiraffe + numDiseasedGiraffe)/5.0);
 
+        Point[] llamaPositions = new Point[llamasInImage];
+        Point[] lionPositions = new Point[lionsInImage];
+        Point[] giraffePositions = new Point[giraffesInImage];
+
+        int width = 400;
+        int height = 350;
+
+        while (llamasInImage>0 || lionsInImage>0 || giraffesInImage>0) {
+            if (llamasInImage > 0) {
+                llamaPositions[(llamasInImage-1)] =
+                        new Point((int)(Math.random()*(width-150)), 250 + (int)(Math.random()*50));
+                llamasInImage--;
+            }
+            if (lionsInImage > 0) {
+                lionPositions[(lionsInImage-1)] =
+                        new Point((int)(Math.random()*(width-150)), 250 + (int)(Math.random()*50));
+                lionsInImage--;
+            }
+            if (giraffesInImage > 0) {
+                giraffePositions[(giraffesInImage-1)] =
+                        new Point((int)(Math.random()*(width-150)), 250 + (int)(Math.random()*50));
+                giraffesInImage--;
+            }
+        }
+
+        // idk what the third constructor is supposed to do :<
+        partyImage0 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        partyImage1 = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+
+        Graphics2D pi0 = (Graphics2D) partyImage0.getGraphics();
+        Graphics2D pi1 = (Graphics2D) partyImage0.getGraphics();
+
+        byte num1, num2;
+
+        for (int i=0; i<llamaPositions.length; i++) {
+            if (RandomChance.randomBoolean()) {
+                num1 = 1;
+                num2 = 0;
+            } else {
+                num1 = 0;
+                num2 = 1;
+            }
+            pi0.drawImage(llamaImages[num1], (int)llamaPositions[i].getX(), (int)llamaPositions[i].getY(), null);
+            pi1.drawImage(llamaImages[num2], (int)llamaPositions[i].getX(), (int)llamaPositions[i].getY(), null);
+        }
+
+        for (int i=0; i<lionPositions.length; i++) {
+            if (RandomChance.randomBoolean()) {
+                num1 = 1;
+                num2 = 0;
+            } else {
+                num1 = 0;
+                num2 = 1;
+            }
+            pi0.drawImage(lionImages[num1], (int)lionPositions[i].getX(), (int)lionPositions[i].getY(), null);
+            pi1.drawImage(lionImages[num2], (int)lionPositions[i].getX(), (int)lionPositions[i].getY(), null);
+        }
+
+        for (int i=0; i<giraffePositions.length; i++) {
+            if (RandomChance.randomBoolean()) {
+                num1 = 1;
+                num2 = 0;
+            } else {
+                num1 = 0;
+                num2 = 1;
+            }
+            pi0.drawImage(giraffeImages[num1], (int)giraffePositions[i].getX(), (int)giraffePositions[i].getY(), null);
+            pi1.drawImage(giraffeImages[num2], (int)giraffePositions[i].getX(), (int)giraffePositions[i].getY(), null);
+        }
     }
 
     /**

@@ -21,4 +21,7 @@ public class RandomChance {
             return false;
         }
     }
+    public static boolean randomBoolean() {
+        return (Math.random() > 0.5);
+    }
 }

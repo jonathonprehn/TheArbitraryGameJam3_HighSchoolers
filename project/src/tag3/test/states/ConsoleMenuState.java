@@ -6,6 +6,9 @@ import tag3.party.food.Quality;
 import tag3.party.supplycollection.MeatResource;
 import tag3.states.MainMenuState;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Starbuck
@@ -15,8 +18,8 @@ import tag3.states.MainMenuState;
  */
 public class ConsoleMenuState extends MainMenuState {
     Party party = null;
-
     int timesRan = 0;
+
     @Override
     public void initState() {
         party = new Party(23,31,20);
@@ -46,4 +49,5 @@ public class ConsoleMenuState extends MainMenuState {
         try { Thread.sleep(200); } catch(Exception e) {}
         super.updateLogic();
     }
+
 }
