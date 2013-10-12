@@ -72,7 +72,7 @@ public class Party {
         updateVariables();
     }
 
-    public void updateVariables() {
+    private void updateVariables() {
         this.diseaseModifier = (int)(getNumberOfDiseased()*0.10) - (int)(getNumLlama()*4);
 
         // increases with morale - 20% base chance
@@ -259,7 +259,7 @@ public class Party {
         daysSinceSlept = 0; // all refreshed!
     }
 
-    public void eatSupplies() {
+    private void eatSupplies() {
         // The party eats food and drinks water every 8 hours
         if (daysWithNoFood > (8/24.0)) {
             eatMeals();
@@ -269,7 +269,7 @@ public class Party {
         }
     }
 
-    public void quenchThirst() {
+    private void quenchThirst() {
         // each 5 animals eat 1 supply
         int suppliesConsumedToday = getConsumeRate();
         System.out.println("We needed to eat "+suppliesConsumedToday+" supplies");
@@ -278,7 +278,7 @@ public class Party {
         }
     }
 
-    public void eatMeals() {
+    private void eatMeals() {
         int suppliesConsumedToday = getConsumeRate();
         System.out.println("We needed to eat "+suppliesConsumedToday+" supplies");
         for (int i=0; i<suppliesConsumedToday; i++) {
@@ -290,7 +290,7 @@ public class Party {
         return (int)(this.getSize()/5.0);
     }
 
-    public void randomlyKill() {
+    private void randomlyKill() {
         // see if lions die
         for (int i=0; i<this.numDiseasedLion; i++) {
             if (RandomChance.rollForChance(diseaseKillChance))  {
@@ -316,7 +316,7 @@ public class Party {
         }
     }
 
-    public void randomlyCure() {
+    private void randomlyCure() {
         // see if lions gets cured
         for (int i=0; i<this.numLion; i++) {
             if (RandomChance.rollForChance(diseaseCureChance))  {
@@ -342,7 +342,7 @@ public class Party {
         }
     }
 
-    public void consumeFood() {
+    private void consumeFood() {
         if (foodSupply.size() > 0) {
             Food eatenFood = foodSupply.get(foodSupply.size()-1)  ;
             int diseasePercent = eatenFood.getDiseasePercentMod() + diseaseModifier;
@@ -384,7 +384,7 @@ public class Party {
         }
     }
 
-    public void consumeWater() {
+    private void consumeWater() {
         if (waterSupply.size() > 0) {
             Water drinkedWater = waterSupply.get(waterSupply.size()-1);
             int diseasePercent = drinkedWater.getDiseasePercentMod() + diseaseModifier;
