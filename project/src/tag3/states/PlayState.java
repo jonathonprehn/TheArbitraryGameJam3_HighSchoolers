@@ -141,7 +141,7 @@ public class PlayState extends GameState implements KeyDownListener {
 
         //Init things for management menu
         manageLabels = new ImageLabel[7]; //background, 3 icons, 1 image for 3 total boxes
-        manageButtons = new ImageButton[6]; //Kick out buttons
+        manageButtons = new ImageButton[7]; //Kick out buttons and exit button
 
         //Load total box
         BufferedImage totalBox = MediaLoader.quickLoadImage("management_images/totalLabel.png");
@@ -175,6 +175,10 @@ public class PlayState extends GameState implements KeyDownListener {
         );
         manageButtons[5] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 dataUp, dataDown, centerWidth-50, centerHeight+50, new KickOutDiseasedLlama()
+        );
+        manageButtons[6] = GraphicsFactory.getFactory().makeLinkedImageButton(
+            MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
+            centerWidth+250, centerHeight-225, new ExitManageButton()
         );
 
         //Init input
@@ -267,6 +271,13 @@ public class PlayState extends GameState implements KeyDownListener {
         @Override
         public void buttonPushed() {
             setManaging(true);
+        }
+    }
+
+    class ExitManageButton implements GenericButtonListener {
+        @Override
+        public void buttonPushed() {
+            setManaging(false);
         }
     }
 
