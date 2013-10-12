@@ -287,10 +287,16 @@ public class Party {
      */
     public void moveForward() {
         updateVariables();
+        int beforePopulation = getSize();
         randomlyKill();
+        // update the party if people died
+        if (beforePopulation!=getSize()) {
+            updatePartyImage();
+        }
         int beforeDiseasedNum = getNumberOfDiseased();
         eatSupplies();
         int diseasedThatHour = getNumberOfDiseased() - beforeDiseasedNum;
+
         System.out.println("In one hour "+diseasedThatHour+" animals were diseased");
         daysSinceSlept = daysSinceSlept + (1/24.0);
         distanceTraveled = distanceTraveled + walkingPace;
