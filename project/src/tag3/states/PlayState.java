@@ -61,7 +61,7 @@ public class PlayState extends GameState implements KeyDownListener {
                 // spawn a water resource
 
                 hoursUntilNextWater = 20 + (int)(Math.random()*8);
-            } else (hoursUntilNextFood > 0 && hoursUntilNextWater > 0) {
+            } else if ((hoursUntilNextFood > 0) && (hoursUntilNextWater > 0)) {
                 partyWrapper.setMoving(toggles[0].isToggle()); //Are we moving according to the toggle?
             }
 
