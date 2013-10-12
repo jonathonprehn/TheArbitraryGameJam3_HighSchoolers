@@ -1,6 +1,7 @@
 package tag3.gamelogic;
 
 import tag3.party.Party;
+import tag3.states.PlayState;
 
 import java.awt.image.BufferedImage;
 
@@ -17,6 +18,7 @@ public class PartyWrapper implements GameCalenderListener {
 
     private int daysPassed, ticksForAnimation;
     private int ticksPerAnimationCycle, frame;
+    private PlayState state;
 
     public Party getRawParty() {
         return party;
@@ -24,9 +26,10 @@ public class PartyWrapper implements GameCalenderListener {
 
     private Party party;
 
-    public PartyWrapper(int numberLion, int numberGiraffe, int numberLlama, GameCalender calender) {
+    public PartyWrapper(int numberLion, int numberGiraffe, int numberLlama, GameCalender calender, PlayState reference) {
         party = new Party(numberLion, numberGiraffe, numberLion);
         calender.addCalenderListener(this);
+        this.state = reference;
         daysPassed = 0;
         ticksPerAnimationCycle = 10;
         ticksForAnimation = 0;
