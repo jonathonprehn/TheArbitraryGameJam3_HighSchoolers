@@ -99,7 +99,7 @@ public class PlayState extends GameState implements KeyDownListener {
         //Init arrays
         buttons = new ImageButton[5]; //Sleep, manage, resume, quit, and main menu buttons
         labels = new ImageLabel[4]; //Info bar, quick info, pause background, and much info
-        toggles = new ImageToggle[2]; //More info and move toggles
+        toggles = new ImageToggle[3]; //More info, pause and move toggles
 
         //Other values
         int quickInfoCornerX, quickInfoCornerY, muchInfoCornerX, muchInfoCornerY;
@@ -206,6 +206,13 @@ public class PlayState extends GameState implements KeyDownListener {
         manageButtons[6] = GraphicsFactory.getFactory().makeLinkedImageButton(
             MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
             centerWidth+250, centerHeight-225, new ExitManageButton()
+        );
+
+        //Pause button
+        toggles[2] = GraphicsFactory.getFactory().makeLinkedImageToggle(
+                MediaLoader.quickLoadImage("toggles/pauseOn.png"),
+                MediaLoader.quickLoadImage("toggles/pauseOff.png"),
+                740, 540, false, new PauseToggleListener()
         );
         //Graphic User Interface stuff initialed! (Whew!)
 
@@ -464,7 +471,7 @@ public class PlayState extends GameState implements KeyDownListener {
         }
     }
 
-    class PauseButtonListener implements GenericToggleListener {
+    class PauseToggleListener implements GenericToggleListener {
         @Override
         public void toggleChanged(boolean valueSetTo) {
             setPaused(valueSetTo);
