@@ -41,6 +41,14 @@ public class PlayState extends GameState implements KeyDownListener {
         buttons[3].setVisible(paused);
         buttons[4].setVisible(paused);
         labels[3].setVisible(paused);
+        buttons[2].setEnabled(paused);
+        buttons[3].setEnabled(paused);
+        buttons[4].setEnabled(paused);
+
+        toggles[0].setEnabled(!paused);
+        toggles[1].setEnabled(!paused);
+        buttons[0].setEnabled(!paused);
+        buttons[1].setEnabled(!paused);
     }
 
     public boolean isPaused() {
