@@ -260,6 +260,7 @@ public class Party {
     }
 
     public void eatSupplies() {
+        // The party eats food and drinks water every 8 hours
         if (daysWithNoFood > (8/24.0)) {
             eatMeals();
         }
@@ -269,7 +270,8 @@ public class Party {
     }
 
     public void quenchThirst() {
-        int suppliesConsumedToday = (int)(this.getSize()/5.0);
+        // each 5 animals eat 1 supply
+        int suppliesConsumedToday = getConsumeRate();
         System.out.println("We needed to eat "+suppliesConsumedToday+" supplies");
         for (int i=0; i<suppliesConsumedToday; i++) {
             consumeWater();
@@ -277,11 +279,15 @@ public class Party {
     }
 
     public void eatMeals() {
-        int suppliesConsumedToday = (int)(this.getSize()/5.0);
+        int suppliesConsumedToday = getConsumeRate();
         System.out.println("We needed to eat "+suppliesConsumedToday+" supplies");
         for (int i=0; i<suppliesConsumedToday; i++) {
             consumeFood();
         }
+    }
+
+    public int getConsumeRate() {
+        return (int)(this.getSize()/5.0);
     }
 
     public void randomlyKill() {
