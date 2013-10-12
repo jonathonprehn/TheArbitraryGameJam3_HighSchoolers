@@ -1,6 +1,7 @@
 package tag3.states;
 
 import horsentp.gamelogic.EmptyGameState;
+import horsentp.gamelogic.GameRunner;
 import horsentp.gamelogic.GameState;
 import tag3.gui.GenericButtonListener;
 import tag3.gui.ImageButton;
@@ -72,7 +73,7 @@ public class MainMenuState extends GameState {
 
         @Override
         public void buttonPushed() {
-            getRunner().changeState(new PlayState());
+            getRunner().changeState(new LoadingState(new LoadNewState(getRunner(), new PlayState())));
         }
     }
 
@@ -89,7 +90,20 @@ public class MainMenuState extends GameState {
 
         @Override
         public void buttonPushed() {
-            getRunner().changeState(new OptionsState());
+            getRunner().changeState(new LoadingState(new LoadNewState(getRunner(), new OptionsState())));
+        }
+    }
+
+    class LoadNewState implements LoadStateCommand {
+        private GameRunner runner;
+        private GameState state;
+        public LoadNewState(GameRunner runner, GameState state) {
+            this.runner = runner;
+            this.state = state;
+        }
+        @Override
+        public void doForLoading() {
+            runner.changeState(state);
         }
     }
 }
