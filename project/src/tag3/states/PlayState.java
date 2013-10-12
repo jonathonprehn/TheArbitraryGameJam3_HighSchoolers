@@ -20,13 +20,13 @@ import java.awt.image.BufferedImage;
 public class PlayState extends GameState implements KeyDownListener {
 
     //Graphics and UI
-    protected ImageLabel[] labels;
-    protected ImageButton[] buttons;
+    protected ImageLabel[] labels, manageLabels;
+    protected ImageButton[] buttons, manageButtons;
     protected ImageToggle[] toggles;
     private ImageLabel background;
 
     //Global Logic and managers
-    boolean paused;
+    boolean paused, managing;
 
     @Override
     public void updateLogic() {
@@ -55,10 +55,25 @@ public class PlayState extends GameState implements KeyDownListener {
         return paused;
     }
 
+    public boolean isManaging() {
+        return managing;
+    }
+
+    public void setManaging(boolean managing) {
+        this.managing = managing;
+        for (int i=0; i<manageLabels.length; i++) {
+            manageLabels[i].setVisible(managing);
+        }
+        for (int i=0; i<manageButtons.length; i++) {
+            manageButtons[i].setVisible(managing);
+        }
+    }
+
     @Override
     public void initState() {
         //Global values
         paused = false;
+        managing = false;
 
         //Init arrays
         buttons = new ImageButton[5]; //Sleep, manage, resume, quit, and main menu buttons
@@ -92,7 +107,7 @@ public class PlayState extends GameState implements KeyDownListener {
         labels[1] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/muchInfoBackground.png"), 500, 100);
         labels[2] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/distanceBar.png"), 0, 100);
 
-        //Special case stuff
+        //Special case stuff for game
         labels[1].setVisible(false);
         background = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 0, 0);
 
@@ -124,6 +139,44 @@ public class PlayState extends GameState implements KeyDownListener {
         buttons[3].setVisible(false);
         buttons[4].setVisible(false);
 
+        //Init things for management menu
+        manageLabels = new ImageLabel[7]; //background, 3 icons, 1 image for 3 total boxes
+        manageButtons = new ImageButton[6]; //Kick out buttons
+
+        //Load total box
+        BufferedImage totalBox = MediaLoader.quickLoadImage("management_images/totalLabel.png");
+
+        manageLabels[0] = new ImageLabel(MediaLoader.quickLoadImage("management_images/managementBackground.png"), centerWidth-300, centerHeight-225);
+        manageLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("management_images/giraffeIcon.png"), centerWidth+180, centerHeight-140);
+        manageLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("management_images/lionIcon.png"), centerWidth+180, centerHeight-40);
+        manageLabels[3] = new ImageLabel(MediaLoader.quickLoadImage("management_images/llamaIcon.png"), centerWidth+180, centerHeight+100);
+        manageLabels[4] = new ImageLabel(totalBox, centerWidth+50, centerHeight-150);
+        manageLabels[5] = new ImageLabel(totalBox, centerWidth+50, centerHeight-50);
+        manageLabels[6] = new ImageLabel(totalBox, centerWidth+50, centerHeight+50);
+
+        //Load images for buttons
+        BufferedImage dataDown = MediaLoader.quickLoadImage("management_images/dataButtonDown.png");
+        BufferedImage dataUp = MediaLoader.quickLoadImage("management_images/dataButtonUp.png");
+
+        manageButtons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
+            dataUp, dataDown, centerWidth-150, centerHeight-150, new KickOutNormalGiraffe()
+        );
+        manageButtons[1] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                dataUp, dataDown, centerWidth-50, centerHeight-150, new KickOutDiseasedGiraffe()
+        );
+        manageButtons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                dataUp, dataDown, centerWidth-150, centerHeight-50, new KickOutNormalLion()
+        );
+        manageButtons[3] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                dataUp, dataDown, centerWidth-50, centerHeight-50, new KickOutDiseasedLion()
+        );
+        manageButtons[4] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                dataUp, dataDown, centerWidth-150, centerHeight+50, new KickOutNormalLlama()
+        );
+        manageButtons[5] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                dataUp, dataDown, centerWidth-50, centerHeight+50, new KickOutDiseasedLlama()
+        );
+
         //Init input
         getInput().addKeyDownListener(this);
     }
@@ -137,6 +190,10 @@ public class PlayState extends GameState implements KeyDownListener {
         //Draw the game
         bufferedImage = background.render(bufferedImage, graphics2D);
         bufferedImage = drawWalkingPart(bufferedImage, graphics2D);
+        //Draw management window if managing
+        if (isManaging()) {
+            bufferedImage = drawManageMenu(bufferedImage, graphics2D);
+        }
         //Draw the pause menu if it is paused
         if (isPaused()) {
             bufferedImage = drawPauseMenu(bufferedImage, graphics2D);
@@ -164,6 +221,17 @@ public class PlayState extends GameState implements KeyDownListener {
         bImage = buttons[2].render(bImage, g2d);
         bImage = buttons[3].render(bImage, g2d);
         bImage = buttons[4].render(bImage, g2d);
+        return bImage;
+    }
+
+    private BufferedImage drawManageMenu(BufferedImage bImage, Graphics2D g2d) {
+        g2d = (Graphics2D) bImage.getGraphics();
+        for (int i=0; i<manageLabels.length; i++) {
+            bImage = manageLabels[i].render(bImage, g2d);
+        }
+        for (int j=0; j<manageButtons.length; j++) {
+            bImage = manageButtons[j].render(bImage, g2d);
+        }
         return bImage;
     }
 
@@ -198,7 +266,7 @@ public class PlayState extends GameState implements KeyDownListener {
     class ManageButtonListener implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            setManaging(true);
         }
     }
 
@@ -220,6 +288,48 @@ public class PlayState extends GameState implements KeyDownListener {
         @Override
         public void buttonPushed() {
             getRunner().exitGame();
+        }
+    }
+
+    class KickOutNormalLlama implements GenericButtonListener {
+        @Override
+        public void buttonPushed() {
+
+        }
+    }
+
+    class KickOutDiseasedLlama implements GenericButtonListener {
+        @Override
+        public void buttonPushed() {
+
+        }
+    }
+
+    class KickOutNormalGiraffe implements GenericButtonListener {
+        @Override
+        public void buttonPushed() {
+
+        }
+    }
+
+    class KickOutDiseasedGiraffe implements GenericButtonListener {
+        @Override
+        public void buttonPushed() {
+
+        }
+    }
+
+    class KickOutNormalLion implements GenericButtonListener {
+        @Override
+        public void buttonPushed() {
+
+        }
+    }
+
+    class KickOutDiseasedLion implements GenericButtonListener {
+        @Override
+        public void buttonPushed() {
+
         }
     }
 
