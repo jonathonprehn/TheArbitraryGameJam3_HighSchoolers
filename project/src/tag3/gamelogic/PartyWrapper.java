@@ -2,6 +2,8 @@ package tag3.gamelogic;
 
 import tag3.party.Party;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Jonathon
@@ -13,7 +15,8 @@ import tag3.party.Party;
 //For putting the logic for the party (and the game) in 1 place
 public class PartyWrapper implements GameCalenderListener {
 
-    private int daysPassed;
+    private int daysPassed, ticksForAnimation;
+    private int ticksPerAnimationCycle, frame;
 
     public Party getRawParty() {
         return party;
@@ -25,6 +28,31 @@ public class PartyWrapper implements GameCalenderListener {
         party = new Party(numberLion, numberGiraffe, numberLion);
         calender.addCalenderListener(this);
         daysPassed = 0;
+        ticksPerAnimationCycle = 10;
+        ticksForAnimation = 0;
+        frame = 0;
+    }
+
+    public BufferedImage getCurrentAnimationFrame() {
+
+        switch(frame) {
+            case 0:
+                return party.getPartyImage0();
+            case 1:
+                return party.getPartyImage1();
+        }
+    }
+
+    @Override
+    public void tickPassed() {
+        ticksForAnimation++;
+        if (ticksForAnimation>=ticksPerAnimationCycle) {
+            ticksForAnimation = 0;
+            frame++;
+            if(frame>1) {
+                frame = 0;
+            }
+        }
     }
 
     @Override

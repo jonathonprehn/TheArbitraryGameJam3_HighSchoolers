@@ -9,6 +9,7 @@ package tag3.gamelogic;
  */
 
 public interface GameCalenderListener {
+    public void tickPassed();
     public void minutePassed();
     public void hourPassed();
     public void dayPassed();
