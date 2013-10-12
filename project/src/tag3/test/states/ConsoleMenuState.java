@@ -1,6 +1,9 @@
 package tag3.test.states;
 
 import tag3.party.Party;
+import tag3.party.food.Food;
+import tag3.party.food.Quality;
+import tag3.party.supplycollection.MeatResource;
 import tag3.states.MainMenuState;
 
 /**
@@ -16,7 +19,9 @@ public class ConsoleMenuState extends MainMenuState {
     int timesRan = 0;
     @Override
     public void initState() {
-        party = new Party(23,1,33);
+        party = new Party(23,31,20);
+        MeatResource prey = new MeatResource(30, Quality.DISGUSTING);
+        prey.collectFrom(party);
         super.initState();
     }
 
@@ -33,10 +38,12 @@ public class ConsoleMenuState extends MainMenuState {
         System.out.println("Walking pace: " + party.getWalkingPace());
         System.out.println("Moral: " + party.getMorale());
         System.out.println("Distance traveled: " + party.getDistanceTraveled());
+        System.out.println("Num of animals: " + party.getSize());
         System.out.println("Num of diseased animals: " + party.getNumberOfDiseased());
         System.out.println(""); // empty space
         party.moveForward();
         timesRan++;
+        try { Thread.sleep(200); } catch(Exception e) {}
         super.updateLogic();
     }
 }
