@@ -62,6 +62,8 @@ public class Party {
 
     private double temporaryMoraleModifier = 0;
 
+    private boolean idle;
+
     public Party(int numberLion, int numberGiraffe, int numberLlama) {
         this.numLion = numberLion;
         this.numGiraffe = numberGiraffe;
@@ -70,6 +72,7 @@ public class Party {
         this.daysSinceSlept = 0;
         this.walkingPace = 1;
         this.distanceTraveled = 0;
+        this.idle = true;
         updateVariables();
         updatePartyImage();
     }
@@ -524,5 +527,13 @@ public class Party {
 
     public double getDaysWithNoWater() {
         return daysWithNoWater;
+    }
+
+    public boolean isIdle() {
+        return idle;
+    }
+
+    public void setIdle(boolean idle) {
+        this.idle = idle;
     }
 }
