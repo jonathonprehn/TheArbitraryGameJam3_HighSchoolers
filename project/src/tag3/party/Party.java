@@ -31,7 +31,8 @@ public class Party {
     private int numLion, numGiraffe, numLlama;
     private int numDiseasedLion, numDiseasedGiraffe, numDiseasedLlama;
     // the current image of the party (changes as party grows and shrinks)
-    private BufferedImage partyImage;
+    private BufferedImage partyImage0;
+    private BufferedImage partyImage1;
     // a percentage number between -100 and 100 on how much morale the party has
     private int morale;
     private double daysSinceSlept;
