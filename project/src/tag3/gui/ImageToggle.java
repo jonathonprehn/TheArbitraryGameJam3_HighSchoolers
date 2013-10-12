@@ -29,6 +29,16 @@ public class ImageToggle implements Displayable, MouseDownListener {
     }
 
     private boolean toggle;
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    private boolean visible;
     private ArrayList<GenericToggleListener> listeners;
 
     public ImageToggle(BufferedImage trueImage, BufferedImage falseImage, InputBridge bridge, int x, int y, boolean defaultValue) {
@@ -38,6 +48,7 @@ public class ImageToggle implements Displayable, MouseDownListener {
         rect = new Rectangle(x, y, trueImage.getWidth(), trueImage.getHeight());
         toggle = defaultValue;
         listeners = new ArrayList<GenericToggleListener>();
+        visible = true;
     }
 
     public void addToggleListener(GenericToggleListener gtl) {
@@ -55,7 +66,9 @@ public class ImageToggle implements Displayable, MouseDownListener {
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
         graphics2D = (Graphics2D) bufferedImage.getGraphics();
-        graphics2D.drawImage(getUsingImage(), x, y, null);
+        if (isVisible()) {
+            graphics2D.drawImage(getUsingImage(), x, y, null);
+        }
         return bufferedImage;
     }
 
@@ -89,7 +102,7 @@ public class ImageToggle implements Displayable, MouseDownListener {
 
     @Override
     public void reactToMouseDown(MouseEvent mouseEvent) {
-        if(hoverPoint(mouseEvent.getX(), mouseEvent.getY())) {
+        if(hoverPoint(mouseEvent.getX(), mouseEvent.getY()) && isVisible()) {
             if(toggle) {
                 toggle = false;
             } else {

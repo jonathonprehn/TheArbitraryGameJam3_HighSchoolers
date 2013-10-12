@@ -26,6 +26,16 @@ public class ImageButton implements Displayable , MouseDownListener, MouseMoveLi
     private Rectangle rect;
     private int x, y;
     private boolean hovering;
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    private boolean visible;
     private ArrayList<GenericButtonListener> listeners;
 
     public ImageButton(BufferedImage upImage, BufferedImage downImage, InputBridge input, int x, int y) {
@@ -37,13 +47,16 @@ public class ImageButton implements Displayable , MouseDownListener, MouseMoveLi
         input.addMouseDownListener(this);
         input.addMouseMoveListener(this);
         hovering = false;
+        visible = true;
     }
 
 
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
         graphics2D = (Graphics2D) bufferedImage.getGraphics();
-        graphics2D.drawImage(getUsingImage(), this.x, this.y, null);
+        if (isVisible()) {
+            graphics2D.drawImage(getUsingImage(), this.x, this.y, null);
+        }
         return bufferedImage;
     }
 
@@ -90,14 +103,14 @@ public class ImageButton implements Displayable , MouseDownListener, MouseMoveLi
 
     @Override
     public void reactToMouseDown(MouseEvent mouseEvent) {
-        if (hovering) {
+        if (hovering && isVisible()) {
             notifyListeners();
         }
     }
 
     @Override
     public void reactToMouseMove(MouseEvent mouseEvent) {
-        if (hoverPoint(mouseEvent.getX(), mouseEvent.getY())) {
+        if (hoverPoint(mouseEvent.getX(), mouseEvent.getY()) && isVisible()) {
             hovering = true;
         } else {
             hovering = false;
