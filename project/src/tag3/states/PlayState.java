@@ -37,6 +37,10 @@ public class PlayState extends GameState implements KeyDownListener {
 
     public void setPaused(boolean paused) {
         this.paused = paused;
+        buttons[2].setVisible(paused);
+        buttons[3].setVisible(paused);
+        buttons[4].setVisible(paused);
+        labels[3].setVisible(paused);
     }
 
     public boolean isPaused() {
@@ -87,12 +91,12 @@ public class PlayState extends GameState implements KeyDownListener {
         //Init things for the pause menu
         int centerWidth = (getDisplayer().getDisplayWidth()/2);
         int centerHeight = (getDisplayer().getDisplayHeight()/2);
-        labels[3] = new ImageLabel(MediaLoader.quickLoadImage("pause_menu_images/pauseBackground.png"), centerWidth-150,centerHeight-200);
+        labels[3] = new ImageLabel(MediaLoader.quickLoadImage("pause_menu_images/pauseBackground.png"), centerWidth-200,centerHeight-250);
 
         buttons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("pause_menu_images/resumeUp.png"),
                 MediaLoader.quickLoadImage("pause_menu_images/resumeDown.png"),
-                centerWidth-100, centerHeight-150, new ResumeButtonListener()
+                centerWidth-100, centerHeight-200, new ResumeButtonListener()
         );
 
         buttons[3] = GraphicsFactory.getFactory().makeLinkedImageButton(
@@ -193,21 +197,21 @@ public class PlayState extends GameState implements KeyDownListener {
     class ResumeButtonListener implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            setPaused(false);
         }
     }
 
     class MainMenuButtonListener implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            getRunner().changeState(new MainMenuState());
         }
     }
 
     class QuitButtonListener implements GenericButtonListener {
         @Override
         public void buttonPushed() {
-
+            getRunner().exitGame();
         }
     }
 
