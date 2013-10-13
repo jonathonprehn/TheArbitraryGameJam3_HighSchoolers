@@ -96,16 +96,15 @@ public class GameCalender {
     }
 
     public static GameCalender getFromDays(double days) {
-        int weeks = (int)Math.floor(days / 7);
-        days = days - (weeks * 7);
-        int theDays = (int)Math.floor(days);
-        days = days - (theDays);
-        int hours = (int)Math.floor(days/24);
-        GameCalender calender = new GameCalender();
-        calender.weeks = weeks;
-        calender.days = theDays;
-        calender.hours = hours;
-        return calender;
+        double hours = days * 24;
+        int realWeeks = (int)Math.floor(hours / (24 * 7));
+        int realDays = (int)Math.floor((hours / 24) - (realWeeks * 7));
+        int realHours = (int)Math.floor((hours) - (realDays * 24));
+        GameCalender calendar = new GameCalender();
+        calendar.weeks = realWeeks;
+        calendar.days = realDays;
+        calendar.hours = realHours;
+        return calendar;
     }
 
     public void addCalenderListener(GameCalenderListener gcl) {
