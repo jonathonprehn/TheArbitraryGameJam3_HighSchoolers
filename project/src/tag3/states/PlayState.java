@@ -296,7 +296,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
         //Init game logic handlers
         calender = new GameCalender();
-        calender.setTicksPerMinute(getTimer().getTPS());
+        calender.setTicksPerMinute(getTimer().getTPS() / 20);
         calender.setMinutesPerHour(1);
         calender.setCounting(false);
         // start with 15 of each animal at the start
