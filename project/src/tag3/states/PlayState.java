@@ -680,7 +680,6 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     public void notifyWater() {
         hideGameLabels();
         gameLabels[0].setVisible(true);
-        gameLabels[1].setVisible(true);
         partyWrapper.setResource(new WaterResource(
                 (int)((double)((partyWrapper.getRawParty().getConsumeRate()*3)/0.7)),
                 randomFoodQuality()
@@ -706,14 +705,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
     public void notifyMeat() {
         hideGameLabels();
-        gameLabels[2].setVisible(true);
-        gameLabels[3].setVisible(true);
+        gameLabels[1].setVisible(true);
     }
 
     public void notifyPlants() {
         hideGameLabels();
-        gameLabels[4].setVisible(true);
-        gameLabels[5].setVisible(true);
+        gameLabels[2].setVisible(true);
     }
 
     public Quality randomFoodQuality() {
