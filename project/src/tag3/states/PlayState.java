@@ -4,6 +4,7 @@ import horsentp.display.DisplayLink;
 import horsentp.gamelogic.GameRunner;
 import horsentp.gamelogic.GameState;
 import horsentp.input.KeyDownListener;
+import tag3.MainStartUp;
 import tag3.gamelogic.ConfirmCommand;
 import tag3.gamelogic.GameCalender;
 import tag3.gamelogic.PartyWrapper;
@@ -299,7 +300,17 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         // start with 15 of each animal at the start
         partyWrapper = new PartyWrapper(15, 15, 15, calender, this);    //Party initialized here!
         calender.addCalenderListener(partyWrapper);
-        infoFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+        //Import the info font!
+        String fontPath = "fonts/Forgotte.ttf";
+        try {
+        infoFont = Font.createFont(Font.TRUETYPE_FONT,
+                MainStartUp.class.getResource("assets/" + fontPath).openStream()
+                );
+            infoFont = infoFont.deriveFont(15.0f);
+            System.out.println("Loaded font: " + fontPath + "");
+        } catch(Exception e) {
+            System.out.println("Unable to load Font: " + fontPath + "");
+        }
         headerFont = new Font(Font.SANS_SERIF, Font.BOLD, 14);
 
         //Init info text
@@ -315,7 +326,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         quickInfoText[2] = makeInfoText("Morale:", quickInfoCornerX + 10, quickInfoCornerY + 50);
         quickInfoText[3] = makeInfoText("Food:", quickInfoCornerX + 110, quickInfoCornerY + 50);
         quickInfoText[4] = makeInfoText("Water:", quickInfoCornerX + 210, quickInfoCornerY + 50);
-        quickInfoText[5] = makeInfoText("Days awake:", quickInfoCornerX + 10, quickInfoCornerY + 80);
+        quickInfoText[5] = makeInfoText("Days awake:", quickInfoCornerX + 6, quickInfoCornerY + 80);
 
         //Giraffe num, lion num, llama num, diseased giraffe num, diseased lion num, diseased llama num
         //Days passed, rate of water consumption, rate of food consumption
