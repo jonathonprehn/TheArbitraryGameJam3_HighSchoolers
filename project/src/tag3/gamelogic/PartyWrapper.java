@@ -1,5 +1,7 @@
 package tag3.gamelogic;
 
+import tag3.gamelogic.encounters.RandomEncounter;
+import tag3.gamelogic.encounters.TestDeathEncounter;
 import tag3.media.MediaLoader;
 import tag3.party.Party;
 import tag3.party.food.Food;
@@ -11,6 +13,8 @@ import tag3.states.PlayState;
 import tag3.utility.RandomChance;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,7 +46,7 @@ public class PartyWrapper implements GameCalenderListener {
     private GameCalender calender;
     private BufferedImage currentImage;
     private boolean choseConfirmation;
-    private ConfirmCommand[] randomEncounters;
+    private List<RandomEncounter> randomEncounters = new ArrayList<RandomEncounter>();
 
     private int distanceFromWyoming = 500;
 
@@ -85,6 +89,7 @@ public class PartyWrapper implements GameCalenderListener {
         for (int i=0; i<startWater; i++) {
             party.addWater(new Water(Quality.GOOD));
         }
+        randomEncounters.add(new TestDeathEncounter());
     }
 
     public BufferedImage getCurrentAnimationFrame() {
@@ -195,24 +200,24 @@ public class PartyWrapper implements GameCalenderListener {
         }
 
         //Code for random encounters!
-        int encounterPercentChance = 10;
-        boolean encountering = RandomChance.rollForChance(encounterPercentChance);
-        if (encountering) {
-            doRandomEncounter();
-        }
+        doRandomEncounter();
     }
 
     private void initRandomEncounters() {
-        randomEncounters = new ConfirmCommand[0]; //Encounters?
-
+        if (randomEncounters == null) {
+            randomEncounters = new ArrayList<RandomEncounter>();
+        } else {
+            randomEncounters.clear();
+        }
     }
 
     public void doRandomEncounter() {
-        int ran = (int)Math.floor(Math.random() * randomEncounters.length);
-        try {
-            state.askForConfirmation(randomEncounters[ran]);
-        } catch(Exception e) {
-
+        double randomChance = Math.random();
+        for (RandomEncounter randomEncounter : randomEncounters) {
+            if (randomEncounter.getChancePerTick() >= (randomChance * 100)) {
+                randomEncounter.handleEncounter(this, state);
+                return;
+            }
         }
     }
 
