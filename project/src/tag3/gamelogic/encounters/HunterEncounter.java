@@ -66,6 +66,7 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
 
         public synchronized void setComplete() {
             complete = true;
+            partyWrapper.setMoving(false);
         }
 
         @Override
@@ -136,6 +137,7 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
                         // Get their wits about them.
                     } catch (InterruptedException e) {
                     }
+                    partyWrapper.setMoving(false);
                     gameState.setAsking(false);
                     gameState.setPressed(true);
                     dialog.setComplete();
