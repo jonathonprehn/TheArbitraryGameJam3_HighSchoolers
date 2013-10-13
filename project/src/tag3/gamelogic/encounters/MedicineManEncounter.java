@@ -16,7 +16,7 @@ import tag3.states.PlayState;
 public class MedicineManEncounter implements RandomEncounter {
     @Override
     public double getChancePerHour() {
-        return 15;
+        return 10;
     }
 
     @Override

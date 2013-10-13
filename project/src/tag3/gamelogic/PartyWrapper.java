@@ -223,71 +223,71 @@ public class PartyWrapper implements GameCalenderListener {
         // ask player if they want to collect it
 
         hoursUntilNextFood--;
-        hoursUntilNextWater--;
+hoursUntilNextWater--;
 
-        if (party.getSize() <= 0) {
-            state.getRunner().changeState(new GameOverState("You have run out of animals."));
-        }
+if (party.getSize() <= 0) {
+        state.getRunner().changeState(new GameOverState("You have run out of animals."));
+}
 
         //Code for random encounters!
         doRandomEncounter();
-    }
-
-    private void initRandomEncounters() {
-        if (randomEncounters == null) {
-            randomEncounters = new ArrayList<RandomEncounter>();
-        } else {
-            randomEncounters.clear();
-        }
-        randomEncounters.add(new MedicineManEncounter());
-        randomEncounters.add(new LionTradeEncounter());
-        randomEncounters.add(new HunterEncounter());
-    }
-
-    public void doRandomEncounter() {
-        double randomChance = Math.random();
-        for (RandomEncounter randomEncounter : randomEncounters) {
-            if (randomEncounter.getChancePerHour() >= (randomChance * 100)) {
-                randomEncounter.handleEncounter(this, state);
-                return;
-            }
-        }
-    }
-
-    public SupplyCollectPoint getResource() {
-        return resource;
-    }
-
-    public void setResource(SupplyCollectPoint resource) {
-        this.resource = resource;
-    }
-
-    private SupplyCollectPoint resource;
-
-    public void givePartyResources() {
-        if (resource!=null) {
-            resource.collectFrom(party);
-            setResource(null);
-        }
-    }
-
-    public int getDistanceFromWyoming() {
-        return distanceFromWyoming;
-    }
-
-    @Override
-    public void dayPassed() {
-        System.out.println("Day passed");
-        daysPassed++;
-    }
-
-    @Override
-    public void weekPassed() {
-        //System.out.println("Week passed");
-    }
-
-    public int getDaysPassed() {
-        return daysPassed;
-    }
-
 }
+
+private void initRandomEncounters() {
+        if (randomEncounters == null) {
+        randomEncounters = new ArrayList<RandomEncounter>();
+} else {
+        randomEncounters.clear();
+}
+        randomEncounters.add(new MedicineManEncounter());
+randomEncounters.add(new LionTradeEncounter());
+randomEncounters.add(new HunterEncounter());
+}
+
+public void doRandomEncounter() {
+        double randomChance = Math.random();
+for (RandomEncounter randomEncounter : randomEncounters) {
+        if (randomEncounter.getChancePerHour() >= (randomChance * 100)) {
+        randomEncounter.handleEncounter(this, state);
+return;
+}
+        }
+        }
+
+public SupplyCollectPoint getResource() {
+        return resource;
+}
+
+public void setResource(SupplyCollectPoint resource) {
+        this.resource = resource;
+}
+
+private SupplyCollectPoint resource;
+
+public void givePartyResources() {
+        if (resource!=null) {
+        resource.collectFrom(party);
+setResource(null);
+}
+        }
+
+public int getDistanceFromWyoming() {
+        return distanceFromWyoming;
+}
+
+@Override
+public void dayPassed() {
+        System.out.println("Day passed");
+daysPassed++;
+}
+
+@Override
+public void weekPassed() {
+        //System.out.println("Week passed");
+        }
+
+public int getDaysPassed() {
+        return daysPassed;
+}
+
+        }
