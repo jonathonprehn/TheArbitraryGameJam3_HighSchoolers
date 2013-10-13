@@ -95,6 +95,19 @@ public class GameCalender {
         counting = true;
     }
 
+    public static GameCalender getFromDays(double days) {
+        int weeks = (int)Math.floor(days / 7);
+        days = days - (weeks * 7);
+        int theDays = (int)Math.floor(days);
+        days = days - (theDays);
+        int hours = (int)Math.floor(days/24);
+        GameCalender calender = new GameCalender();
+        calender.weeks = weeks;
+        calender.days = theDays;
+        calender.hours = hours;
+        return calender;
+    }
+
     public void addCalenderListener(GameCalenderListener gcl) {
         listeners.add(gcl);
     }

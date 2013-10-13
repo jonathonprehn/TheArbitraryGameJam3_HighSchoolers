@@ -360,7 +360,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         quickInfoText[2].setText("Morale: " + partyWrapper.getRawParty().getMorale() + "%");
         quickInfoText[3].setText("Food: " + partyWrapper.getRawParty().getFoodAmount() + "");
         quickInfoText[4].setText("Water: " + partyWrapper.getRawParty().getWaterAmount() + "");
-        quickInfoText[5].setText("Days awake: " + (int) (partyWrapper.getRawParty().getDaysSinceSlept()) + "");
+        quickInfoText[5].setText("Time awake: " + GameCalender.getFromDays(partyWrapper.getRawParty().getDaysSinceSlept()).getTimeDisplay(GameCalender.DisplayPrecision.HOURS) + "");
 
         //Much info
         muchInfoText[0].setText("Giraffes: " + partyWrapper.getRawParty().getNumGiraffe() + "");
@@ -371,7 +371,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         muchInfoText[5].setText("Diseased Llamas: " + partyWrapper.getRawParty().getNumDiseasedLlama() + "");
         muchInfoText[6].setText("Water drank: " + partyWrapper.getRawParty().getConsumeRate() + "");
         muchInfoText[7].setText("Food eaten: " + partyWrapper.getRawParty().getConsumeRate() + "");
-        muchInfoText[8].setText("Days traveled: " + partyWrapper.getDaysPassed() + "");
+        muchInfoText[8].setText("Time traveled: " + calender.getTimeDisplay(GameCalender.DisplayPrecision.HOURS) + "");
 
         //Management
         manageText[0].setText("" + partyWrapper.getRawParty().getNumLlama() + ""); //Normal Llamas
