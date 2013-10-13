@@ -103,11 +103,15 @@ public class Party {
             noWaterMod = -(int)(daysWithNoWater*20.0);
         }
 
-        if (temporaryMoraleModifier > 3) {
-            temporaryMoraleModifier = temporaryMoraleModifier-3;
-        } else if (temporaryMoraleModifier < 3) {
-            temporaryMoraleModifier = temporaryMoraleModifier+3;
-        } else {
+        if (temporaryMoraleModifier > 20) {
+            temporaryMoraleModifier = temporaryMoraleModifier-20;
+        } else if (temporaryMoraleModifier < -20) {
+            temporaryMoraleModifier = temporaryMoraleModifier+20;
+        } else if ((temporaryMoraleModifier < 20) && (temporaryMoraleModifier > -20)){
+            // in this range it just degrades by 75%
+            temporaryMoraleModifier = temporaryMoraleModifier*0.75;
+        }
+        if ((temporaryMoraleModifier < 3) && (temporaryMoraleModifier > -3)) {
             temporaryMoraleModifier = 0;
         }
 
