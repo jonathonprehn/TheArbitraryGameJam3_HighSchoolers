@@ -12,27 +12,37 @@ import tag3.states.PlayState;
  * To change this template use File | Settings | File Templates.
  */
 public class LionTradeEncounter implements RandomEncounter {
+
+    int lionAmount;
+    boolean accepted;
+
     @Override
     public double getChancePerHour() {
         return 100;
     }
 
     @Override
-    public void handleEncounter(PartyWrapper partyWrapper, PlayState gameState) {
+    public void handleEncounter(final PartyWrapper partyWrapper, final PlayState gameState) {
         gameState.askForConfirmation(new ConfirmCommand() {
             @Override
             public void preCommandAction() {
-                //To change body of implemented methods use File | Settings | File Templates.
+                lionAmount = 10+(int)(Math.random()*5);
+                accepted = false;
+
+                gameState.setOtherResourceDialogText("A party of "+lionAmount+" lions offer to join you if");
+                gameState.setResourceDialogText("you let them eat half of your healthy llamas");
             }
 
             @Override
             public void onYes() {
-                //To change body of implemented methods use File | Settings | File Templates.
+                accepted = true;
+                partyWrapper.getRawParty().quietRemoveLlama((int)(partyWrapper.getRawParty().getNumLlama()/2.0));
+                partyWrapper.getRawParty().quietAddLion(lionAmount);
             }
 
             @Override
             public void onNo() {
-                //To change body of implemented methods use File | Settings | File Templates.
+                accepted = false;
             }
 
             @Override
@@ -42,7 +52,13 @@ public class LionTradeEncounter implements RandomEncounter {
 
             @Override
             public String afterChoiceText() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+                String message;
+                if (accepted) {
+                    message = "You have gained "+lionAmount+" lions";
+                } else {
+                    message = "You have refused their offer";
+                }
+                return message;
             }
         });
     }
