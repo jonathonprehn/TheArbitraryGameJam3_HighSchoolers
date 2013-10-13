@@ -99,6 +99,8 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         toggles[1].setEnabled(!paused);
         buttons[0].setEnabled(!paused);
         buttons[1].setEnabled(!paused);
+
+        toggles[2].forceSetToggleQuietly(paused);
     }
 
     public boolean isManaging() {
@@ -161,7 +163,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         );
         quickInfoCornerX = 500;
         quickInfoCornerY = 0;
-        muchInfoCornerX = 600;
+        muchInfoCornerX = 500;
         muchInfoCornerY = 100;
         labels[0] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/quickInfoBackground.png"), quickInfoCornerX, quickInfoCornerY);
         labels[1] = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/muchInfoBackground.png"), muchInfoCornerX, muchInfoCornerY);
@@ -202,7 +204,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         //Init things for management menu
         manageLabels = new ImageLabel[7]; //background, 3 icons, 1 image for 3 total boxes
         manageButtons = new ImageButton[7]; //Kick out buttons and exit button
-        manageText = new TextLabel[12]; //Those 9 info boxes and headers for last 3
+        manageText = new TextLabel[13]; //Those 9 info boxes and headers for last 3
 
         int manageCornerX = (centerWidth - 300), manageCornerY = (centerHeight - 225);
         int manageGridCornerX = centerWidth - 220, manageGridCornerY = centerHeight - 160;
@@ -293,7 +295,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         //Init info text
         quickInfoText = new TextLabel[6];
         muchInfoText = new TextLabel[9];
-        int xOffsetMuchInfo = 40;
+        int xOffsetMuchInfo = 20;
         int yOffsetMuchInfo = 30;
 
         //Total animal num, total diseased animal num
@@ -332,7 +334,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         )
         );
         sleepIndicator.addComponent(new ImageLabel(MediaLoader.quickLoadImage("sleep_dialog/sleepBackground.png"), centerWidth-150, centerHeight-100));
-        sleepIndicator.addComponent("label", makeInfoText("Sleep  Text", centerWidth-100, centerHeight));
+        sleepIndicator.addComponent("label", makeInfoText("Sleep  Text", centerWidth - 100, centerHeight));
         sleepIndicator.addComponent("label2", makeInfoText("Sleep  Text 2", centerWidth-100, centerHeight+30));
         sleepIndicator.forceEndTimer();
 
@@ -691,7 +693,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
             partyWrapper.setMoving(false);
             toggles[0].forceSetToggle(false);
             ((TextLabel)sleepIndicator.getComponent("label")).setText("You have slept for 8 hours.");
-            ((TextLabel)sleepIndicator.getComponent("label2")).setText("You have gotten " + deltaMoral + " moral.");
+            ((TextLabel)sleepIndicator.getComponent("label2")).setText("You have gained " + deltaMoral + " moral.");
         }
     }
 
