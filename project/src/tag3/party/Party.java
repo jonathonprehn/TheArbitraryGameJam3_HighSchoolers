@@ -91,13 +91,13 @@ public class Party {
         daysWithNoFood = daysWithNoFood + (1/24.0);
         daysWithNoWater = daysWithNoWater + (1/24.0);
 
-        // -4% morale per day of no food
+        // -8% morale per day of no food
         int noFoodMod = 0;
         if (foodSupply.size() == 0) {
             noFoodMod = -(int)(daysWithNoFood*8.0);
         }
 
-        // -7% morale per day of no water
+        // -20% morale per day of no water
         int noWaterMod = 0;
         if (waterSupply.size() == 0) {
             noWaterMod = -(int)(daysWithNoWater*20.0);
@@ -115,21 +115,21 @@ public class Party {
             temporaryMoraleModifier = 0;
         }
 
-        this.morale = (int)((this.getSize()*0.25) + sleepMod + noFoodMod + noWaterMod
+        this.morale = (int)((this.getNumberOfNonDiseased()*0.3) + sleepMod + noFoodMod + noWaterMod
             + temporaryMoraleModifier);
 
-        // 15% diseased animal amount - 1% per llama - 1/2 morale percent
-        this.diseaseModifier = (int)(-morale/2.0) + (int)(getNumberOfDiseased()*0.15) - (int)(getNumLlama());
+        // 15% diseased animal amount - 1% per llama - 1/4 morale percent
+        this.diseaseModifier = (int)(-morale/4.0) + (int)(getNumberOfDiseased()*0.15) - (int)(getNumLlama());
 
-        this.walkingPace = 1 + (morale/100.0) - (getNumberOfDiseased()/100.0);
+        this.walkingPace = 1.5 + (morale/100.0) - (getNumberOfDiseased()/100.0);
         if (this.walkingPace < 0.1) {
             this.walkingPace = 0.1; // minimum walking pace
         }
 
         // increases with morale - 15% base chance
-        this.diseaseCureChance = (int)(15*(1+(morale/100.0)));
+        this.diseaseCureChance = (int)(25*(1+(morale/150.0)));
         // decreases/increases with morale - 5% base chance
-        this.diseaseKillChance = (int)(5*(1+(-morale/100.0)));
+        this.diseaseKillChance = (int)(3*(1+(-morale/100.0)));
 
         // 50% base with each animal adding 2%, each diseased animal subtracting 1% + morale percent
         // minimum 10% collection and hunting rate
