@@ -392,6 +392,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                         public void buttonPushed() {
                             postConfirmBox.setVisible(false);
                             toggles[0].setEnabled(true);
+                            toggles[0].forceSetToggle(true);
                             partyWrapper.setMoving(true);
                             calender.setCounting(true);
                         }
