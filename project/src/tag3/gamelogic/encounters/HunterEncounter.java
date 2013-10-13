@@ -20,6 +20,7 @@ public class HunterEncounter implements RandomEncounter {
             @Override
             public void preCommandAction() {
                 gameState.setResourceDialogText("Hunters have appeared!");
+                gameState.setOtherResourceDialogText("");
             }
 
             @Override
