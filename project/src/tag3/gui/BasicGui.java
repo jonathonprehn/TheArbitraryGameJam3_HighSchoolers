@@ -18,11 +18,19 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class BasicGui implements GuiComponent {
-    private Map<String, GuiComponent> guiComponents = new HashMap<String, GuiComponent>();
-    private boolean visibility = true;
+    private Map<String, GuiComponent> guiComponents;
+    private int unNamedCounter;
+    private boolean visibility;
+
+    public BasicGui() {
+        unNamedCounter = 0;
+        visibility = true;
+        guiComponents = new HashMap<String, GuiComponent>();
+    }
 
     public void addComponent(GuiComponent component) {
-        this.guiComponents.put(null, component);
+        this.guiComponents.put("unnamed" + unNamedCounter + "", component);
+        unNamedCounter++;
     }
 
     public void addComponent(String name, GuiComponent component) {
@@ -74,5 +82,9 @@ public class BasicGui implements GuiComponent {
             if (component == null) {continue;}
             component.updateComponent();
         }
+    }
+
+    public int getComponentCount() {
+        return guiComponents.size();
     }
 }

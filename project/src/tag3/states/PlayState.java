@@ -320,11 +320,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         partyImage = new ImageLabel(partyWrapper.getCurrentAnimationFrame(), 300, 170);
 
         //Init the "You have slept" GUI
-        sleepIndicator = new TemporaryBasicGui(2, getTimer());
-        sleepIndicator.addComponent(new ImageLabel(MediaLoader.quickLoadImage("sleep_dialog/sleepBackground.png"), centerWidth-150, centerHeight-100));
+        sleepIndicator = new TemporaryBasicGui(6, getTimer());
         sleepIndicator.addComponent(GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
-                centerWidth + 100, centerHeight - 50, new GenericButtonListener() {
+                centerWidth + 100, centerHeight - 100, new GenericButtonListener() {
             @Override
             public void buttonPushed() {
                 sleepIndicator.forceEndTimer();
@@ -332,8 +331,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         }
         )
         );
-        sleepIndicator.addComponent("label", new TextLabel("Sleep  Text", centerHeight, centerHeight));
+        sleepIndicator.addComponent(new ImageLabel(MediaLoader.quickLoadImage("sleep_dialog/sleepBackground.png"), centerWidth-150, centerHeight-100));
+        sleepIndicator.addComponent("label", makeInfoText("Sleep  Text", centerWidth-100, centerHeight));
+        sleepIndicator.addComponent("label2", makeInfoText("Sleep  Text 2", centerWidth-100, centerHeight+30));
         sleepIndicator.forceEndTimer();
+
+        System.out.println("The sleep indicator sees " + sleepIndicator.getComponentCount() + " components!");
 
         //Init input
         getInput().addKeyDownListener(this);
@@ -474,7 +477,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         }
         //Draw sleep indicator (won't draw if it isn't visible)
         bufferedImage = sleepIndicator.render(bufferedImage, graphics2D);
-
+        if (sleepIndicator.isVisible()) {
+            bufferedImage = sleepIndicator.getComponent("label").render(bufferedImage, graphics2D);
+            bufferedImage = sleepIndicator.getComponent("label2").render(bufferedImage, graphics2D);
+        }
         //Draw the pause menu if it is paused (Make sure this is last)
         if (isPaused()) {
             bufferedImage = drawPauseMenu(bufferedImage, graphics2D); //Pause menu
@@ -672,8 +678,16 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     class SleepButtonListener implements GenericButtonListener {
         @Override
         public void buttonPushed() {
+            int beforeMoral = partyWrapper.getRawParty().getMorale();
+            int afterMoral;
             partyWrapper.getRawParty().sleep();
+            afterMoral = partyWrapper.getRawParty().getMorale();
+            int deltaMoral = afterMoral-beforeMoral;
             sleepIndicator.resetTimer();
+            partyWrapper.setMoving(false);
+            toggles[0].forceSetToggle(false);
+            ((TextLabel)sleepIndicator.getComponent("label")).setText("You have slept for 8 hours.");
+            ((TextLabel)sleepIndicator.getComponent("label2")).setText("You have gotten " + deltaMoral + " moral.");
         }
     }
 
