@@ -2,6 +2,9 @@ package tag3.gamelogic;
 
 import tag3.media.MediaLoader;
 import tag3.party.Party;
+import tag3.party.food.Food;
+import tag3.party.food.Quality;
+import tag3.party.food.Water;
 import tag3.party.supplycollection.SupplyCollectPoint;
 import tag3.states.PlayState;
 
@@ -59,6 +62,15 @@ public class PartyWrapper implements GameCalenderListener {
         daysPassed = 0;
         frame = 0;
         this.calender = calender;
+
+        int startFood = 20;
+        int startWater = 15;
+        for (int i=0; i<startFood; i++) {
+            party.addFood(new Food(Quality.GOOD));
+        }
+        for (int i=0; i<startWater; i++) {
+            party.addWater(new Water(Quality.GOOD));
+        }
     }
 
     public BufferedImage getCurrentAnimationFrame() {

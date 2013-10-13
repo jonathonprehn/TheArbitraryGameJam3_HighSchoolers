@@ -35,9 +35,7 @@ public class TemporaryBasicGui extends BasicGui {
 
     @Override
     public void setVisible(boolean visibility) {
-        if (ticksAlive<goalTicks) {
-            super.setVisible(visibility);
-        }
+        super.setVisible(visibility);
     }
 
     @Override
