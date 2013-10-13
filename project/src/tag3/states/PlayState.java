@@ -335,6 +335,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         getInput().addKeyDownListener(this);
         resourceDialog = new ResourceDialog(getRunner());
         resourceDialog.addResourceListener(this);
+
+        //Init sounds
+
     }
 
     //Make sure the text actually shows the correct values

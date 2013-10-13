@@ -23,7 +23,7 @@ public class MediaLoader {
         sounds = new HashMap<String, AudioClip>();
     }
 
-    public void permanentLoadImage(String path, String name) {
+    public static void permanentLoadImage(String path, String name) {
         BufferedImage img = quickLoadImage(path);
         if (img!=null) {
             images.put(name, img);
@@ -32,7 +32,7 @@ public class MediaLoader {
         }
     }
 
-    public void permanentLoadSound(String path, String name) {
+    public static void permanentLoadSound(String path, String name) {
         AudioClip clip = quickLoadSound(path);
         if (clip!=null) {
             sounds.put(name, clip);
