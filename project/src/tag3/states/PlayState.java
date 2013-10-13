@@ -444,6 +444,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
     public void askForConfirmation(ConfirmCommand cc) {
         partyWrapper.setMoving(false);
+        toggles[0].forceSetToggle(false);
         partyWrapper.setCurrentDecision(cc);
         cc.preCommandAction();
         if (cc.isAChoice()) {
@@ -722,6 +723,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         } else {
             partyWrapper.getCurrentDecision().onNo();
         }
+        toggles[0].setEnabled(true);
         hideGameLabels();
     }
 
