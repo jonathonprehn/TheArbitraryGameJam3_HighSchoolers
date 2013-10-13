@@ -20,6 +20,7 @@ import tag3.utility.GraphicsFactory;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -302,15 +303,14 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         partyWrapper = new PartyWrapper(15, 15, 15, calender, this);    //Party initialized here!
         calender.addCalenderListener(partyWrapper);
         //Import the info font!
-        String fontPath = "fonts/ERASMD.ttf";
+        String fontPath = "fonts/ERASMD.TTF";
         try {
-            infoFont = Font.createFont(Font.TRUETYPE_FONT,
-                    MainStartUp.class.getResource("assets/" + fontPath).openStream()
-            );
+            infoFont = Font.createFont(Font.TRUETYPE_FONT, MainStartUp.class.getResourceAsStream("assets/" + fontPath));
             infoFont = infoFont.deriveFont(13.0f);
             System.out.println("Loaded font: " + fontPath + "");
         } catch(Exception e) {
             System.out.println("Unable to load Font: " + fontPath + "");
+            e.printStackTrace();
         }
         headerFont = infoFont.deriveFont(15.0f);
 
@@ -383,7 +383,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         //Init post-confirm dialog box display thing
         postConfirmBox = new BasicGui();
         postConfirmBox.addComponent(new ImageLabel(MediaLoader.quickLoadImage("confirm_dialogue/postConfirmBox.png"), centerWidth-150, centerHeight-50));
-        postConfirmBox.addComponent("text", makeInfoText("", centerWidth-140, centerHeight));
+        postConfirmBox.addComponent("text", makeInfoText("", centerWidth - 140, centerHeight));
         postConfirmBox.addComponent("xButton",
                 GraphicsFactory.getFactory().makeLinkedImageButton(
                         MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xUp.png"),
