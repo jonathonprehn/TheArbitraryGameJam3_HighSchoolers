@@ -1,6 +1,7 @@
 package tag3.gamelogic;
 
 import tag3.gamelogic.encounters.HunterEncounter;
+import tag3.gamelogic.encounters.LionTradeEncounter;
 import tag3.gamelogic.encounters.MedicineManEncounter;
 import tag3.gamelogic.encounters.RandomEncounter;
 import tag3.media.MediaLoader;
@@ -239,6 +240,7 @@ public class PartyWrapper implements GameCalenderListener {
             randomEncounters.clear();
         }
         randomEncounters.add(new MedicineManEncounter());
+        randomEncounters.add(new LionTradeEncounter());
         randomEncounters.add(new HunterEncounter());
     }
 
