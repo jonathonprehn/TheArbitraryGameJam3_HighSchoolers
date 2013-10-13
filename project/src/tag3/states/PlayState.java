@@ -621,6 +621,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                     toggles[0].forceToggle();
                 }
                 break;
+            case KeyEvent.VK_SHIFT:
+
+                break;
         }
     }
 
