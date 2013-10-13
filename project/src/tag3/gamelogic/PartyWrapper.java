@@ -159,6 +159,8 @@ public class PartyWrapper implements GameCalenderListener {
                 public void onNo() {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
+
+                public boolean isAChoice() { return true; }
             });
 
             hoursUntilNextFood= 20 + (int)(Math.random()*8);
@@ -182,6 +184,8 @@ public class PartyWrapper implements GameCalenderListener {
                 public void onNo() {
                     //To change body of implemented methods use File | Settings | File Templates.
                 }
+
+                public boolean isAChoice() { return true; }
             });
             hoursUntilNextWater = 20 + (int)(Math.random()*8);
         } else if ((hoursUntilNextFood > 0) && (hoursUntilNextWater > 0)) {

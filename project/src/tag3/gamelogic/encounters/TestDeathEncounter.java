@@ -33,6 +33,8 @@ public class TestDeathEncounter implements RandomEncounter {
             public void onNo() {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
+
+            public boolean isAChoice() { return false; }
         });
     }
 }
