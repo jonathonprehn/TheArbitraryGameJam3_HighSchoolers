@@ -158,11 +158,15 @@ public class PartyWrapper implements GameCalenderListener {
                 public void onYes() {
                     givePartyResources();
                     text = "Your party took the food.";
+                    state.setResourceDialogText("");
+                    state.setOtherResourceDialogText("");
                 }
 
                 @Override
                 public void onNo() {
                     text = "Your party ignored the food.";
+                    state.setResourceDialogText("");
+                    state.setOtherResourceDialogText("");
                 }
 
                 public boolean isAChoice() { return true; }
@@ -191,11 +195,15 @@ public class PartyWrapper implements GameCalenderListener {
                 public void onYes() {
                     givePartyResources();
                     text = "Your party drank the water.";
+                    state.setResourceDialogText("");
+                    state.setOtherResourceDialogText("");
                 }
 
                 @Override
                 public void onNo() {
                     text = "Your party ignored the water.";
+                    state.setResourceDialogText("");
+                    state.setOtherResourceDialogText("");
                 }
 
                 public boolean isAChoice() { return true; }
