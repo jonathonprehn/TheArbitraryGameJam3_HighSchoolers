@@ -48,7 +48,6 @@ public class MedicineManEncounter implements RandomEncounter {
                 } else {
                     postChoiceText = "You don't have enough supplies!";
                 }
-                partyWrapper.setMoving(false);
                 gameState.setResourceDialogText("");
                 gameState.setOtherResourceDialogText("");
             }

@@ -39,6 +39,11 @@ public class LionTradeEncounter implements RandomEncounter {
             public boolean isAChoice() {
                 return true;  //To change body of implemented methods use File | Settings | File Templates.
             }
+
+            @Override
+            public String afterChoiceText() {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            }
         });
     }
 }

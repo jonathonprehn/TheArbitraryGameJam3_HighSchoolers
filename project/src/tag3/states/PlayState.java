@@ -382,6 +382,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
         //Init post-confirm dialog box display thing
         postConfirmBox = new BasicGui();
+        postConfirmBox.addComponent(new ImageLabel(MediaLoader.quickLoadImage("confirm_dialogue/postConfirmBox.png"), centerWidth-150, centerHeight-50));
         postConfirmBox.addComponent("text", makeInfoText("", centerWidth-140, centerHeight));
         postConfirmBox.addComponent("xButton",
                 GraphicsFactory.getFactory().makeLinkedImageButton(
@@ -391,11 +392,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                         public void buttonPushed() {
                             postConfirmBox.setVisible(false);
                             toggles[0].setEnabled(true);
+                            partyWrapper.setMoving(true);
+                            calender.setCounting(true);
                         }
                     }
                 )
         );
-        postConfirmBox.addComponent(new Image(MediaLoader.quickLoadImage(""), centerWidth-150, centerHeight-50));
         postConfirmBox.setVisible(false);
 
         //Init sounds
@@ -468,6 +470,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
     public void askForConfirmation(ConfirmCommand cc) {
         partyWrapper.setMoving(false);
+        calender.setCounting(false);
         toggles[0].forceSetToggle(false);
         partyWrapper.setCurrentDecision(cc);
         cc.preCommandAction();
@@ -530,7 +533,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         bufferedImage = toggles[2].render(bufferedImage, graphics2D); //Draw the pause button
         bufferedImage = partyDistanceIcon.render(bufferedImage, graphics2D);
         bufferedImage = postConfirmBox.render(bufferedImage, graphics2D);
-
+        if (postConfirmBox.isVisible()) {
+            bufferedImage = postConfirmBox.getComponent("xButton").render(bufferedImage, graphics2D);
+            bufferedImage = postConfirmBox.getComponent("text").render(bufferedImage, graphics2D);
+        }
         //Info text
         bufferedImage = drawQuickTextInfo(bufferedImage, graphics2D); //Quick info
         if (toggles[1].isToggle()) { //Is more info requested?
@@ -751,6 +757,8 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         } else {
             partyWrapper.getCurrentDecision().onNo();
         }
+        calender.setCounting(false); //GOtta keep time stopped until further notice
+        partyWrapper.setMoving(false);
         //Make a dialog that displays what happened
         showPostConfirmBox(partyWrapper.getCurrentDecision().afterChoiceText());
 
