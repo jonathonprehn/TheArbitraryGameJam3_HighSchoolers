@@ -746,6 +746,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     class MainMenuButtonListener implements GenericButtonListener {
         @Override
         public void buttonPushed() {
+            //Stop all sounds
+            MediaLoader.getLoadedSound("walking").stop();
+            //Change state
             getRunner().changeState(new MainMenuState());
         }
     }
