@@ -130,7 +130,6 @@ public class PartyWrapper implements GameCalenderListener {
 
     @Override
     public void hourPassed() {
-        boolean foundFood = false;
         //System.out.println("Hour passed");
         updatePartyImage();
         if (isMoving()) {
@@ -145,7 +144,6 @@ public class PartyWrapper implements GameCalenderListener {
             setMoving(false);
             System.out.println("Spawning a food resource!");
             // spawn a food resource
-            foundFood = true;
             state.notifyRandomFood();
 
             state.askForConfirmation(new ConfirmCommand() {  //The confirmation for wanting water...
@@ -185,7 +183,6 @@ public class PartyWrapper implements GameCalenderListener {
             setMoving(false);
             System.out.println("Spawning a water resource!");
             // spawn a water resource
-            foundFood = true;
             state.notifyWater();
             state.askForConfirmation(new ConfirmCommand() {  //The confirmation for wanting water...
 
@@ -226,16 +223,14 @@ public class PartyWrapper implements GameCalenderListener {
         // ask player if they want to collect it
 
         hoursUntilNextFood--;
-        hoursUntilNextWater--;
+hoursUntilNextWater--;
 
-        if (party.getSize() <= 0) {
-                state.getRunner().changeState(new GameOverState("You have run out of animals."));
-        }
+if (party.getSize() <= 0) {
+        state.getRunner().changeState(new GameOverState("You have run out of animals."));
+}
 
         //Code for random encounters!
-        if (!foundFood) {
-            doRandomEncounter();
-        }
+        doRandomEncounter();
 }
 
 private void initRandomEncounters() {
@@ -249,20 +244,15 @@ randomEncounters.add(new LionTradeEncounter());
 randomEncounters.add(new HunterEncounter());
 }
 
-/*public void doRandomEncounter() {
-        double randomChance = Math.random();
-        for (RandomEncounter randomEncounter : randomEncounters) {
-            if (randomEncounter.getChancePerHour() >= (randomChance * 100)) {
-                randomEncounter.handleEncounter(this, state);
-                return;
-            }
-        }
-}*/
-
-//Gonna try to redo randomizer to make it more random
 public void doRandomEncounter() {
-
+        double randomChance = Math.random();
+for (RandomEncounter randomEncounter : randomEncounters) {
+        if (randomEncounter.getChancePerHour() >= (randomChance * 100)) {
+        randomEncounter.handleEncounter(this, state);
+return;
 }
+        }
+        }
 
 public SupplyCollectPoint getResource() {
         return resource;
