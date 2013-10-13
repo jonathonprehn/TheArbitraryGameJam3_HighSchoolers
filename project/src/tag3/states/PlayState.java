@@ -301,12 +301,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         partyWrapper = new PartyWrapper(15, 15, 15, calender, this);    //Party initialized here!
         calender.addCalenderListener(partyWrapper);
         //Import the info font!
-        String fontPath = "fonts/Forgotte.ttf";
+        String fontPath = "fonts/ERASMD.ttf";
         try {
         infoFont = Font.createFont(Font.TRUETYPE_FONT,
                 MainStartUp.class.getResource("assets/" + fontPath).openStream()
                 );
-            infoFont = infoFont.deriveFont(15.0f);
+            infoFont = infoFont.deriveFont(13.0f);
             System.out.println("Loaded font: " + fontPath + "");
         } catch(Exception e) {
             System.out.println("Unable to load Font: " + fontPath + "");
