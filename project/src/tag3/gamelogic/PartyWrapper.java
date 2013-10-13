@@ -244,7 +244,7 @@ public class PartyWrapper implements GameCalenderListener {
         randomEncounters.add(new HunterEncounter());
     }
 
-    public void doRandomEncounter() {
+    /*public void doRandomEncounter() {
         double randomChance = Math.random();
         for (RandomEncounter randomEncounter : randomEncounters) {
             if (randomEncounter.getChancePerHour() >= (randomChance * 100)) {
@@ -252,6 +252,10 @@ public class PartyWrapper implements GameCalenderListener {
                 return;
             }
         }
+    }*/
+
+    public void doRandomEncounter() {
+
     }
 
     public SupplyCollectPoint getResource() {
