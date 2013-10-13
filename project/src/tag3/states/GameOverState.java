@@ -24,6 +24,11 @@ public class GameOverState extends GameState implements KeyDownListener, MouseDo
         gameOverText = new TextLabel(reason, 400-(reason.length()*7), 300);
     }
 
+<<<<<<< HEAD
+=======
+    // FILL ME!
+
+>>>>>>> 92d32d64547bf3317cb3f9cac4c7fd5e8238712a
     @Override
     public void updateLogic() {
 
@@ -41,6 +46,7 @@ public class GameOverState extends GameState implements KeyDownListener, MouseDo
 
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
+<<<<<<< HEAD
         graphics2D = (Graphics2D) bufferedImage.getGraphics();
         bufferedImage = background.render(bufferedImage, graphics2D);
         bufferedImage = gameOverText.render(bufferedImage, graphics2D);
@@ -55,5 +61,8 @@ public class GameOverState extends GameState implements KeyDownListener, MouseDo
     @Override
     public void reactToKeyDown(KeyEvent keyEvent) {
         getRunner().changeState(new MainMenuState());
+=======
+        return bufferedImage;
+>>>>>>> 92d32d64547bf3317cb3f9cac4c7fd5e8238712a
     }
 }

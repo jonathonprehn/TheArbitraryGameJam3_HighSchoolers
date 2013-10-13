@@ -797,6 +797,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         }
     }
 
+    public void setState(GameState state) {
+        getRunner().changeState(state);
+    }
+
     class ResourceDialog implements GuiComponent {
 
         protected boolean visible;

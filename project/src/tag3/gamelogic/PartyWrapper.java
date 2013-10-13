@@ -6,6 +6,7 @@ import tag3.party.food.Food;
 import tag3.party.food.Quality;
 import tag3.party.food.Water;
 import tag3.party.supplycollection.SupplyCollectPoint;
+import tag3.states.GameOverState;
 import tag3.states.PlayState;
 
 import java.awt.image.BufferedImage;
@@ -148,7 +149,7 @@ public class PartyWrapper implements GameCalenderListener {
         hoursUntilNextWater--;
 
         if (party.getSize() <= 0) {
-
+            state.getRunner().changeState(new GameOverState());
         }
 
     }
