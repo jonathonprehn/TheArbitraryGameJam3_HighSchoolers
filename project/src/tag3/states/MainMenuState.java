@@ -6,6 +6,7 @@ import horsentp.gamelogic.GameState;
 import tag3.gui.GenericButtonListener;
 import tag3.gui.ImageButton;
 import tag3.gui.ImageLabel;
+import tag3.gui.ScrollingBackground;
 import tag3.media.MediaLoader;
 import tag3.utility.GraphicsFactory;
 
@@ -22,11 +23,14 @@ import java.awt.image.BufferedImage;
 public class MainMenuState extends GameState {
 
     private ImageButton[] buttons;
-    private ImageLabel background, credit;
+    private ImageLabel credit;
+    private ScrollingBackground[] backgrounds;
 
     @Override
     public void updateLogic() {
-
+        for (int i=0; i<backgrounds.length; i++) {
+            backgrounds[i].updateComponent();
+        }
     }
 
     @Override
@@ -62,17 +66,29 @@ public class MainMenuState extends GameState {
                 (width/2)-(buttonWidth/2)+100, ((height/5)*3)-(buttonHeight/2), new HelpGame()
         );
 
-        background = new ImageLabel(MediaLoader.quickLoadImage("main_menu/mainMenuBackground.png"), 0, 0);
+        //Init scrolling backgrounds
+        backgrounds = new ScrollingBackground[4];
+
+        backgrounds[3] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 0.8f);
+        backgrounds[2] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/treeBackground.png"), 0.3f);
+        backgrounds[1] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/hillBackground.png"), 0.15f);
+        backgrounds[0] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/cloudBackground.png"), 0.08f);
+        backgrounds[0].setVerticalOffset(-80);
+        for (int i=0; i<backgrounds.length; i++) {
+            backgrounds[i].setScrolling(true);
+        }
         credit = new ImageLabel(MediaLoader.quickLoadImage("main_menu/credit.png"), 25, 100);
     }
 
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
         graphics2D = (Graphics2D)bufferedImage.getGraphics();
-        graphics2D.setColor(Color.BLACK);
+        graphics2D.setColor(new Color(110, 210, 230));
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
-        bufferedImage = background.render(bufferedImage, graphics2D);
+        for (int i=0; i<backgrounds.length; i++) {
+            bufferedImage = backgrounds[i].render(bufferedImage, graphics2D);
+        }
         for (int i=0; i< buttons.length; i++) {
             if (buttons[i]!=null) {
                 bufferedImage = buttons[i].render(bufferedImage, graphics2D);
