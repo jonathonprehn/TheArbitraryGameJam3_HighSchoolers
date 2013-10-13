@@ -759,6 +759,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         }
         calender.setCounting(false); //GOtta keep time stopped until further notice
         partyWrapper.setMoving(false);
+        MediaLoader.getLoadedSound("walking").stop();
         //Make a dialog that displays what happened
         showPostConfirmBox(partyWrapper.getCurrentDecision().afterChoiceText());
 

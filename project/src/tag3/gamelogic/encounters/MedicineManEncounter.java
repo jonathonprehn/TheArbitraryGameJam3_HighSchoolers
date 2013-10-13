@@ -21,51 +21,62 @@ public class MedicineManEncounter implements RandomEncounter {
 
     @Override
     public void handleEncounter(final PartyWrapper partyWrapper, final PlayState gameState) {
-        gameState.askForConfirmation(new ConfirmCommand() {
-            @Override
-            public void preCommandAction() {
-                gameState.setResourceDialogText("You have run into a wise old man, he offers");
-                gameState.setOtherResourceDialogText("to heal your sick for some supplies.");
+        gameState.askForConfirmation(new MedicineManCommand(gameState, partyWrapper));
+    }
+
+    class MedicineManCommand implements ConfirmCommand {
+        @Override
+        public void preCommandAction() {
+            gameState.setResourceDialogText("You have run into a wise old man, he offers");
+            gameState.setOtherResourceDialogText("to heal your sick for some supplies.");
+        }
+
+        private String postChoiceText;
+
+        private PlayState gameState;
+        private PartyWrapper partyWrapper;
+
+        public MedicineManCommand(PlayState gameState, PartyWrapper partyWrapper) {
+            postChoiceText = "";
+            this.gameState = gameState;
+            this.partyWrapper = partyWrapper;
+        }
+
+        @Override
+        public void onYes() {
+            if (partyWrapper.getRawParty().getFoodAmount()>=20 && partyWrapper.getRawParty().getWaterAmount()>=20) {
+                partyWrapper.getRawParty().removeFood(20);
+                partyWrapper.getRawParty().removeWater(20);
+                int dg = partyWrapper.getRawParty().getNumDiseasedGiraffe();
+                int dll = partyWrapper.getRawParty().getNumDiseasedLlama();
+                int dl = partyWrapper.getRawParty().getNumDiseasedLion();
+                partyWrapper.getRawParty().quietRemoveDiseasedLlama(dll);
+                partyWrapper.getRawParty().quietRemoveDiseasedLion(dl);
+                partyWrapper.getRawParty().quietRemoveDiseasedGiraffe(dg);
+                partyWrapper.getRawParty().quietAddGiraffe(dg);
+                partyWrapper.getRawParty().quietAddLlama(dll);
+                partyWrapper.getRawParty().quietAddLion(dl);
+                postChoiceText = "He has healed your sick!";
+            } else {
+                postChoiceText = "You don't have enough supplies!";
             }
+            gameState.setResourceDialogText("");
+            gameState.setOtherResourceDialogText("");
+        }
 
-            private String postChoiceText = "";
+        @Override
+        public void onNo() {
 
-            @Override
-            public void onYes() {
-                if (partyWrapper.getRawParty().getFoodAmount()>=20 && partyWrapper.getRawParty().getWaterAmount()>=20) {
-                    partyWrapper.getRawParty().removeFood(20);
-                    partyWrapper.getRawParty().removeWater(20);
-                    int dg = partyWrapper.getRawParty().getNumDiseasedGiraffe();
-                    int dll = partyWrapper.getRawParty().getNumDiseasedLlama();
-                    int dl = partyWrapper.getRawParty().getNumDiseasedLion();
-                    partyWrapper.getRawParty().quietRemoveDiseasedLlama(dll);
-                    partyWrapper.getRawParty().quietRemoveDiseasedLion(dl);
-                    partyWrapper.getRawParty().quietRemoveDiseasedGiraffe(dg);
-                    partyWrapper.getRawParty().quietAddGiraffe(dg);
-                    partyWrapper.getRawParty().quietAddLlama(dll);
-                    partyWrapper.getRawParty().quietAddLion(dl);
-                    postChoiceText = "He has healed your sick!";
-                } else {
-                    postChoiceText = "You don't have enough supplies!";
-                }
-                gameState.setResourceDialogText("");
-                gameState.setOtherResourceDialogText("");
-            }
+        }
 
-            @Override
-            public void onNo() {
+        @Override
+        public boolean isAChoice() {
+            return true;
+        }
 
-            }
-
-            @Override
-            public boolean isAChoice() {
-                return true;
-            }
-
-            @Override
-            public String afterChoiceText() {
-                return postChoiceText;
-            }
-        });
+        @Override
+        public String afterChoiceText() {
+            return postChoiceText;
+        }
     }
 }
