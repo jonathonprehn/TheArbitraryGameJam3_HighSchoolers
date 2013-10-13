@@ -8,6 +8,7 @@ import tag3.party.food.Water;
 import tag3.party.supplycollection.SupplyCollectPoint;
 import tag3.states.GameOverState;
 import tag3.states.PlayState;
+import tag3.utility.RandomChance;
 
 import java.awt.image.BufferedImage;
 
@@ -41,6 +42,7 @@ public class PartyWrapper implements GameCalenderListener {
     private GameCalender calender;
     private BufferedImage currentImage;
     private boolean choseConfirmation;
+    private ConfirmCommand[] randomEncounters;
 
     private int distanceFromWyoming = 500;
 
@@ -189,9 +191,29 @@ public class PartyWrapper implements GameCalenderListener {
         hoursUntilNextWater--;
 
         if (party.getSize() <= 0) {
-            state.getRunner().changeState(new GameOverState(""));
+            state.getRunner().changeState(new GameOverState("You have run out of animals."));
         }
 
+        //Code for random encounters!
+        int encounterPercentChance = 10;
+        boolean encountering = RandomChance.rollForChance(encounterPercentChance);
+        if (encountering) {
+            doRandomEncounter();
+        }
+    }
+
+    private void initRandomEncounters() {
+        randomEncounters = new ConfirmCommand[0]; //Encounters?
+
+    }
+
+    public void doRandomEncounter() {
+        int ran = (int)Math.floor(Math.random() * randomEncounters.length);
+        try {
+            state.askForConfirmation(randomEncounters[ran]);
+        } catch(Exception e) {
+
+        }
     }
 
     public SupplyCollectPoint getResource() {
