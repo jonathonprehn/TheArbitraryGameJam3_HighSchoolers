@@ -53,7 +53,7 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
             gameState.getInput().addKeyUpListener(this);
 
             Timer timer = new Timer();
-            timer.schedule(new CheckForCompletion(this), 1000);
+            timer.schedule(new CheckForCompletion(this), 2000);
         }
 
         @Override
