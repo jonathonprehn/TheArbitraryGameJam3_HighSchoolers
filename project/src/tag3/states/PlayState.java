@@ -4,6 +4,7 @@ import horsentp.display.DisplayLink;
 import horsentp.gamelogic.GameRunner;
 import horsentp.gamelogic.GameState;
 import horsentp.input.KeyDownListener;
+import tag3.gamelogic.ConfirmCommand;
 import tag3.gamelogic.GameCalender;
 import tag3.gamelogic.PartyWrapper;
 import tag3.gui.*;
@@ -38,6 +39,11 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     protected ImageLabel[] gameLabels;
     protected GameCalender calender;
     protected PartyWrapper partyWrapper;                //Where should the Party go anyway?
+
+    public ResourceDialog getResourceDialog() {
+        return resourceDialog;
+    }
+
     private ResourceDialog resourceDialog;
     private Font infoFont, headerFont;
     private TextLabel[] quickInfoText, muchInfoText;
@@ -421,8 +427,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         return l;
     }
 
-    public void askForConfirmation() {
-        resourceDialog.setText("You have found " + qualityToText(partyWrapper.getResource().getQuality()) + " " + resourceTypeToText(partyWrapper.getResource()) + ".");
+    public void askForConfirmation(ConfirmCommand cc) {
+        partyWrapper.setCurrentDecision(cc);
+        cc.preCommandAction();
         asking = true;
         setPressed(false);
     }
@@ -434,7 +441,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         backgrounds[0].setScrolling(true);
     }
 
-    private String qualityToText(Quality qual) {
+    public String qualityToText(Quality qual) {
         switch (qual) {
             case GOOD:
                 return "good";
@@ -449,7 +456,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         }
     }
 
-    private String resourceTypeToText(SupplyCollectPoint scp) {
+    public String resourceTypeToText(SupplyCollectPoint scp) {
         if (scp instanceof WaterResource) {
             return "water";
         }
@@ -656,7 +663,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         gameLabels[5].setVisible(true);
     }
 
-    private Quality randomFoodQuality() {
+    public Quality randomFoodQuality() {
         int ran = (int)(Math.random()*4);
         switch(ran) {
             case 0:
@@ -685,7 +692,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         setPressed(true);
         asking = false;
         if (c) {
-            partyWrapper.givePartyResources();
+            partyWrapper.getCurrentDecision().onYes();
+        } else {
+            partyWrapper.getCurrentDecision().onNo();
         }
         hideGameLabels();
     }
@@ -806,6 +815,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
     public void setState(GameState state) {
         getRunner().changeState(state);
+    }
+
+    public void setResourceDialogText(String text) {
+        resourceDialog.setText(text);
     }
 
     class ResourceDialog implements GuiComponent {

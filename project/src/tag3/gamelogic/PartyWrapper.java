@@ -26,6 +26,16 @@ public class PartyWrapper implements GameCalenderListener {
     private int hoursUntilNextFood = 24;
     private int hoursUntilNextWater = 20;
 
+    public ConfirmCommand getCurrentDecision() {
+        return currentDecision;
+    }
+
+    public void setCurrentDecision(ConfirmCommand currentDecision) {
+        this.currentDecision = currentDecision;
+    }
+
+    private ConfirmCommand currentDecision;
+
     private int daysPassed;
     private int frame;
     private GameCalender calender;
@@ -128,7 +138,22 @@ public class PartyWrapper implements GameCalenderListener {
             // spawn a food resource
             state.notifyRandomFood();
 
-            state.askForConfirmation();
+            state.askForConfirmation(new ConfirmCommand() {  //The confirmation for wanting water...
+                @Override
+                public void preCommandAction() {
+                    state.setResourceDialogText("You have found " + state.qualityToText(getResource().getQuality()) + " " + state.resourceTypeToText(getResource()) + ".");
+                }
+
+                @Override
+                public void onYes() {
+                    givePartyResources();
+                }
+
+                @Override
+                public void onNo() {
+                    //To change body of implemented methods use File | Settings | File Templates.
+                }
+            });
 
             hoursUntilNextFood= 20 + (int)(Math.random()*8);
         } else if (hoursUntilNextWater <=0) {
@@ -136,7 +161,22 @@ public class PartyWrapper implements GameCalenderListener {
             System.out.println("Spawning a water resource!");
             // spawn a water resource
             state.notifyWater();
-            state.askForConfirmation();
+            state.askForConfirmation(new ConfirmCommand() {  //The confirmation for wanting water...
+                @Override
+                public void preCommandAction() {
+                    state.setResourceDialogText("You have found " + state.qualityToText(getResource().getQuality()) + " " + state.resourceTypeToText(getResource()) + ".");
+                }
+
+                @Override
+                public void onYes() {
+                    givePartyResources();
+                }
+
+                @Override
+                public void onNo() {
+                    //To change body of implemented methods use File | Settings | File Templates.
+                }
+            });
             hoursUntilNextWater = 20 + (int)(Math.random()*8);
         } else if ((hoursUntilNextFood > 0) && (hoursUntilNextWater > 0)) {
             setMoving(state.getMoveToggleValue()); //Are we moving according to the toggle?
