@@ -11,7 +11,27 @@ import java.util.ArrayList;
  */
 public class GameCalender {
 
-    private int weeks, days, hours, minutes;
+    private int weeks;
+
+    public int getDays() {
+        return days;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public int getWeeks() {
+        return weeks;
+    }
+
+    private int days;
+    private int hours;
+    private int minutes;
     private int ticksPerMinute;
     private boolean counting;
 

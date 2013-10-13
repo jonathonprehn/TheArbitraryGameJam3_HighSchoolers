@@ -38,13 +38,13 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     protected ImageLabel[] gameLabels;
     protected GameCalender calender;
     protected PartyWrapper partyWrapper;                //Where should the Party go anyway?
-    private ImageLabel background;
     private ResourceDialog resourceDialog;
     private Font infoFont, headerFont;
     private TextLabel[] quickInfoText, muchInfoText;
     private ImageLabel partyImage;
     private ImageLabel partyDistanceIcon;
     protected TemporaryBasicGui sleepIndicator;
+    protected ScrollingBackground[] backgrounds;
 
     //Global Logic and managers
     private boolean paused;
@@ -66,6 +66,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     public void updateLogic() {
         //System.out.println("Tick");
         if (!isPaused()) {  //Do logic only if the game is running!
+            //Update background scrolling
+            for (int i=0; i<backgrounds.length; i++) {
+                backgrounds[i].updateComponent();
+            }
             // System.out.println("Moving: " + toggles[0].isToggle() + "");
             calender.tickCalender(); //Calender handles the updating of the party (PartyWrapper is a GameCalenderListener)
             sleepIndicator.updateComponent(); //Update the sleep indicator GUI (It can update even if it exist)
@@ -166,7 +170,6 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
         //Special case stuff for game
         labels[1].setVisible(false);
-        background = new ImageLabel(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 0, 0);
 
         //Init things for the pause menu
         int centerWidth = (getDisplayer().getDisplayWidth() / 2);
@@ -337,6 +340,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         resourceDialog = new ResourceDialog(getRunner());
         resourceDialog.addResourceListener(this);
 
+        //Init scrolling backgrounds
+        backgrounds = new ScrollingBackground[1];
+        backgrounds[0] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 1);
+
         //Init sounds
         MediaLoader.permanentLoadSound("walking_sound.wav", "walking");
     }
@@ -434,7 +441,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
         //Draw the game
-        bufferedImage = background.render(bufferedImage, graphics2D); //Game Background
+        for (int i=0; i<backgrounds.length; i++) {
+            bufferedImage = backgrounds[i].render(bufferedImage, graphics2D); //Game Background
+        }
         bufferedImage = partyImage.render(bufferedImage, graphics2D); //Draw the party
         bufferedImage = drawWalkingPart(bufferedImage, graphics2D); //UI mostly
         bufferedImage = drawResources(bufferedImage, graphics2D); //Resources and resource spots

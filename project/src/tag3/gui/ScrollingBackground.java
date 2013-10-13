@@ -41,6 +41,7 @@ public class ScrollingBackground implements GuiComponent {
         this.img = new ImageLabel(scrollImage, 0, 0);
         this.scrollOffset = 0;
         this.scrollSpeed = scrollSpeed;
+        visible = true;
     }
 
     @Override
