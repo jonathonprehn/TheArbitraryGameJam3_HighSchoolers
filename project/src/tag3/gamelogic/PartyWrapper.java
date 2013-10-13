@@ -130,6 +130,7 @@ public class PartyWrapper implements GameCalenderListener {
 
     @Override
     public void hourPassed() {
+        boolean eventHappened = false;
         //System.out.println("Hour passed");
         updatePartyImage();
         if (isMoving()) {
@@ -140,7 +141,7 @@ public class PartyWrapper implements GameCalenderListener {
             party.setIdle(true);
         }
 
-        if (hoursUntilNextFood <= 0) {
+        if (!eventHappened && hoursUntilNextFood <= 0) {
             setMoving(false);
             System.out.println("Spawning a food resource!");
             // spawn a food resource
@@ -179,7 +180,8 @@ public class PartyWrapper implements GameCalenderListener {
             });
 
             hoursUntilNextFood= 20 + (int)(Math.random()*8);
-        } else if (hoursUntilNextWater <=0) {
+            eventHappened = true;
+        } else if (!eventHappened && hoursUntilNextWater <=0) {
             setMoving(false);
             System.out.println("Spawning a water resource!");
             // spawn a water resource
@@ -215,6 +217,7 @@ public class PartyWrapper implements GameCalenderListener {
                 }
             });
             hoursUntilNextWater = 20 + (int)(Math.random()*8);
+            eventHappened = true;
         } else if ((hoursUntilNextFood > 0) && (hoursUntilNextWater > 0)) {
             setMoving(state.getMoveToggleValue()); //Are we moving according to the toggle?
         }
@@ -225,8 +228,10 @@ public class PartyWrapper implements GameCalenderListener {
         hoursUntilNextFood--;
         hoursUntilNextWater--;
 
-        //Code for random encounters!
-        doRandomEncounter();
+        //If you didn't have any event that time yet then see if random encounter happens
+        if (!eventHappened) {
+            doRandomEncounter();
+        }
 
         if (party.getSize() <= 0) {
             state.getRunner().changeState(new GameOverState("You have run out of animals."));
