@@ -149,7 +149,7 @@ public class PartyWrapper implements GameCalenderListener {
         hoursUntilNextWater--;
 
         if (party.getSize() <= 0) {
-            state.getRunner().changeState(new GameOverState());
+            state.getRunner().changeState(new GameOverState(""));
         }
 
     }
