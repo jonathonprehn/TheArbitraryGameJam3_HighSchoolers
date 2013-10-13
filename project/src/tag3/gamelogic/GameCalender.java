@@ -146,12 +146,47 @@ public class GameCalender {
     }
 
     public void printData() {
-        System.out.println("Counting: " + counting + "");
-        System.out.println("Ticks: " + ticks + "");
-        System.out.println("Minutes: " + minutes + "");
-        System.out.println("Hours: " + hours + "");
-        System.out.println("Days: " + days + "");
-        System.out.println("Weeks: " + weeks + "");
+        System.out.println(toString());
         System.out.println();
+    }
+
+    @Override
+    public String toString() {
+        return ("Counting: " + counting + "") +
+        ("Ticks: " + ticks + "") +
+        ("Minutes: " + minutes + "")+
+        ("Hours: " + hours + "") +
+        ("Days: " + days + "") +
+        ("Weeks: " + weeks + "");
+    }
+
+    public String getTimeDisplay(DisplayPrecision precision) {
+        String timeDisplay = "";
+        switch (precision) {
+            case TICKS:
+                timeDisplay += ticks + " Ticks " + minutes + " Minutes " + hours + " Hours " + days + " Days " + weeks + " Weeks." ;
+                break;
+            case MINUTES:
+                timeDisplay += minutes + " Minutes " + hours + " Hours " + days + " Days " + weeks + " Weeks." ;
+                break;
+            case HOURS:
+                timeDisplay += hours + " Hours " + days + " Days " + weeks + " Weeks." ;
+                break;
+            case DAYS:
+                timeDisplay += days + " Days " + weeks + " Weeks." ;
+                break;
+            case WEEKS:
+                timeDisplay += weeks + " Weeks." ;
+                break;
+        }
+        return timeDisplay;
+    }
+
+    public enum DisplayPrecision {
+        TICKS,
+        MINUTES,
+        HOURS,
+        DAYS,
+        WEEKS
     }
 }
