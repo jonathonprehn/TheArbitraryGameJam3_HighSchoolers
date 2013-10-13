@@ -44,6 +44,8 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     private TextLabel[] quickInfoText, muchInfoText;
     private ImageLabel partyImage;
     private ImageLabel partyDistanceIcon;
+    protected TemporaryBasicGui sleepIndicator;
+
     //Global Logic and managers
     private boolean paused;
     private boolean managing, asking;
@@ -64,9 +66,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     public void updateLogic() {
         //System.out.println("Tick");
         if (!isPaused()) {  //Do logic only if the game is running!
-
             // System.out.println("Moving: " + toggles[0].isToggle() + "");
             calender.tickCalender(); //Calender handles the updating of the party (PartyWrapper is a GameCalenderListener)
+            sleepIndicator.updateComponent(); //Update the sleep indicator GUI (It can update even if it exist)
             //calender.printData();
             updateInfoText();
             partyImage.setImage(partyWrapper.getCurrentAnimationFrame());
@@ -314,6 +316,20 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
         partyImage = new ImageLabel(partyWrapper.getCurrentAnimationFrame(), 300, 150);
 
+        //Init the "You have slept" GUI
+        sleepIndicator = new TemporaryBasicGui(3, getTimer());
+        sleepIndicator.addComponent(new ImageLabel(MediaLoader.quickLoadImage("sleep_dialog/sleepBackground.png"), centerWidth-150, centerHeight-100));
+        sleepIndicator.addComponent(GraphicsFactory.getFactory().makeLinkedImageButton(
+                MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
+                centerWidth+100, centerHeight-50, new GenericButtonListener() {
+                    @Override
+                    public void buttonPushed() {
+                        sleepIndicator.forceEndTimer();
+                    }
+                }
+            )
+        );
+
         //Init input
         getInput().addKeyDownListener(this);
         resourceDialog = new ResourceDialog(getRunner());
@@ -325,7 +341,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         //Quick info
         quickInfoText[0].setText("Total Animals: " + (partyWrapper.getRawParty().getNumberOfDiseased() + partyWrapper.getRawParty().getNumberOfNonDiseased()) + "");
         quickInfoText[1].setText("Total Diseased Animals: " + partyWrapper.getRawParty().getNumberOfDiseased() + "");
-        quickInfoText[2].setText("Morale: " + partyWrapper.getRawParty().getMorale() + "");
+        quickInfoText[2].setText("Morale: " + partyWrapper.getRawParty().getMorale() + "%");
         quickInfoText[3].setText("Food: " + partyWrapper.getRawParty().getFoodAmount() + "");
         quickInfoText[4].setText("Water: " + partyWrapper.getRawParty().getWaterAmount() + "");
         quickInfoText[5].setText("Days awake: " + (int) (partyWrapper.getRawParty().getDaysSinceSlept()) + "");
@@ -630,6 +646,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         @Override
         public void buttonPushed() {
             partyWrapper.getRawParty().sleep();
+            sleepIndicator.resetTimer();
         }
     }
 

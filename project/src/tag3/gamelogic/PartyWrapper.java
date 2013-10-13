@@ -165,4 +165,5 @@ public class PartyWrapper implements GameCalenderListener {
     public int getDaysPassed() {
         return daysPassed;
     }
+
 }

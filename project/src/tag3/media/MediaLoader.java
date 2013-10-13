@@ -71,4 +71,8 @@ public class MediaLoader {
             return null;
         }
     }
+
+    public static void quickPlaySound(String name) {
+        getLoadedSound(name).play();
+    }
 }
