@@ -23,7 +23,7 @@ import java.awt.image.BufferedImage;
 public class MainMenuState extends GameState {
 
     private ImageButton[] buttons;
-    private ImageLabel credit;
+    private ImageLabel credit, title;
     private ScrollingBackground[] backgrounds;
 
     @Override
@@ -77,6 +77,7 @@ public class MainMenuState extends GameState {
         for (int i=0; i<backgrounds.length; i++) {
             backgrounds[i].setScrolling(true);
         }
+        title = new ImageLabel(MediaLoader.quickLoadImage("main_menu/title.png"), 0, 0);
         credit = new ImageLabel(MediaLoader.quickLoadImage("main_menu/credit.png"), 25, 100);
     }
 
@@ -95,6 +96,7 @@ public class MainMenuState extends GameState {
             }
         }
         bufferedImage = credit.render(bufferedImage, graphics2D);
+        bufferedImage = title.render(bufferedImage, graphics2D);
         return bufferedImage;
     }
 
