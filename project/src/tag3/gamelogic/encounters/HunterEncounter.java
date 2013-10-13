@@ -27,7 +27,7 @@ public class HunterEncounter implements RandomEncounter {
                 gameState.setAsking(true);
                 gameState.setPressed(false);
                 gameState.setResourceDialogText("You have lost half your party!");
-                Future
+                //Future             //I am not sure if that should be there or not
             }
 
             @Override
@@ -36,6 +36,8 @@ public class HunterEncounter implements RandomEncounter {
                 gameState.setPressed(true);
                 gameState.setResourceDialogText("You have lost half your party!!!");
             }
+
+            public boolean isAChoice() { return false; }
         });
     }
 }

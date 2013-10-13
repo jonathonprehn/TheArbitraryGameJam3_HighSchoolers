@@ -22,6 +22,7 @@ public class TestDeathEncounter implements RandomEncounter {
             @Override
             public void preCommandAction() {
                 gameState.setResourceDialogText("You can die, yes or no?");
+                gameState.setOtherResourceDialogText("");
             }
 
             @Override
