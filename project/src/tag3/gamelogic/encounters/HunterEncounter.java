@@ -79,6 +79,7 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
             public void preCommandAction() {
                 gameState.setResourceDialogText("Hunters have appeared!");
                 gameState.setOtherResourceDialogText("");
+<<<<<<< HEAD
 >>>>>>> 0390dad4338e3f71317adcd4fa8883213e9802aa
             }
             if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -103,6 +104,8 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
             } else {
                 spaceLastUp = true;
                 remainingToggles--;
+=======
+>>>>>>> 0390dad4338e3f71317adcd4fa8883213e9802aa
             }
         }
 
@@ -119,6 +122,9 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
                 gameState.setPressed(false);
                 gameState.setResourceDialogText("You have lost half your party!");
                 //Future             //I am not sure if that should be there or not
+<<<<<<< HEAD
+>>>>>>> 0390dad4338e3f71317adcd4fa8883213e9802aa
+=======
 >>>>>>> 0390dad4338e3f71317adcd4fa8883213e9802aa
             }
 
@@ -134,8 +140,11 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
                 }
             }
 <<<<<<< HEAD
+<<<<<<< HEAD
         }
 =======
+=======
+>>>>>>> 0390dad4338e3f71317adcd4fa8883213e9802aa
 
             public boolean isAChoice() { return false; }
         });
