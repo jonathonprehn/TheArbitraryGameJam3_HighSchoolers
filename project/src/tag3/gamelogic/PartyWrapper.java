@@ -225,12 +225,12 @@ public class PartyWrapper implements GameCalenderListener {
         hoursUntilNextFood--;
         hoursUntilNextWater--;
 
+        //Code for random encounters!
+        doRandomEncounter();
+
         if (party.getSize() <= 0) {
             state.getRunner().changeState(new GameOverState("You have run out of animals."));
         }
-
-        //Code for random encounters!
-        doRandomEncounter();
     }
 
     private void initRandomEncounters() {
