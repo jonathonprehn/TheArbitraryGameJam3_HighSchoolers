@@ -334,6 +334,66 @@ public class Party {
         distanceTraveled = distanceTraveled + walkingPace;
     }
 
+    public void removeWater(int amount) {
+        for (int i=amount; i>0; i--) {
+            waterSupply.remove(i);
+        }
+    }
+
+    public void quietAddLlama(int amount) {
+        this.numLlama =+ amount;
+    }
+
+    public void quietAddGiraffe(int amount) {
+        this.numGiraffe =+ amount;
+    }
+
+    public void quietAddLion(int amount) {
+        this.numLion =+ amount;
+    }
+
+    public void quietAddDiseasedLlama(int amount) {
+        this.numDiseasedLlama =+ amount;
+    }
+
+    public void quietAddDiseasedGiraffe(int amount) {
+        this.numDiseasedGiraffe =+ amount;
+    }
+
+    public void quietAddDiseasedLion(int amount) {
+        this.numDiseasedLion =+ amount;
+    }
+
+    public void quietRemoveLlama(int amount) {
+        this.numLlama =- amount;
+    }
+
+    public void quietRemoveGiraffe(int amount) {
+        this.numGiraffe =- amount;
+    }
+
+    public void quietRemoveLion(int amount) {
+        this.numLion =- amount;
+    }
+
+    public void quietRemoveDiseasedLlama(int amount) {
+        this.numDiseasedLlama =- amount;
+    }
+
+    public void quietRemoveDiseasedGiraffe(int amount) {
+        this.numDiseasedGiraffe =- amount;
+    }
+
+    public void quietRemoveDiseasedLion(int amount) {
+        this.numDiseasedLion =- amount;
+    }
+
+    public void removeFood(int amount) {
+        for (int i=amount; i>0; i--) {
+            foodSupply.remove(i);
+        }
+    }
+
     public void sleep() {
         updateVariables();
         randomlyCure(); // when you sleep some animals have a chance of being cured from a good night's sleep
