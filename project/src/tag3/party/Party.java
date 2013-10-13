@@ -91,13 +91,13 @@ public class Party {
         daysWithNoFood = daysWithNoFood + (1/24.0);
         daysWithNoWater = daysWithNoWater + (1/24.0);
 
-        // -4% morale per day of no food
+        // -8% morale per day of no food
         int noFoodMod = 0;
         if (foodSupply.size() == 0) {
             noFoodMod = -(int)(daysWithNoFood*8.0);
         }
 
-        // -7% morale per day of no water
+        // -20% morale per day of no water
         int noWaterMod = 0;
         if (waterSupply.size() == 0) {
             noWaterMod = -(int)(daysWithNoWater*20.0);
@@ -127,7 +127,7 @@ public class Party {
         }
 
         // increases with morale - 15% base chance
-        this.diseaseCureChance = (int)(25*(1+(morale/100.0)));
+        this.diseaseCureChance = (int)(25*(1+(morale/150.0)));
         // decreases/increases with morale - 5% base chance
         this.diseaseKillChance = (int)(3*(1+(-morale/100.0)));
 
