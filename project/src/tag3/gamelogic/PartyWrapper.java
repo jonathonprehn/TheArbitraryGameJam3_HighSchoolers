@@ -179,6 +179,7 @@ public class PartyWrapper implements GameCalenderListener {
             });
 
             hoursUntilNextFood= 20 + (int)(Math.random()*8);
+            return;
         } else if (hoursUntilNextWater <=0) {
             setMoving(false);
             System.out.println("Spawning a water resource!");
@@ -215,6 +216,7 @@ public class PartyWrapper implements GameCalenderListener {
                 }
             });
             hoursUntilNextWater = 20 + (int)(Math.random()*8);
+            return;
         } else if ((hoursUntilNextFood > 0) && (hoursUntilNextWater > 0)) {
             setMoving(state.getMoveToggleValue()); //Are we moving according to the toggle?
         }
@@ -227,11 +229,11 @@ public class PartyWrapper implements GameCalenderListener {
         // ask player if they want to collect it
 
         hoursUntilNextFood--;
-hoursUntilNextWater--;
+        hoursUntilNextWater--;
 
-if (party.getSize() <= 0) {
-        state.getRunner().changeState(new GameOverState("You have run out of animals."));
-}
+        if (party.getSize() <= 0) {
+                state.getRunner().changeState(new GameOverState("You have run out of animals."));
+        }
 
         //Code for random encounters!
 }

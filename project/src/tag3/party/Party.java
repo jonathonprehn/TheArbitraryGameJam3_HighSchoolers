@@ -127,17 +127,17 @@ public class Party {
         }
 
         // increases with morale - 15% base chance
-        this.diseaseCureChance = (int)(15*(1+(morale/100.0)));
+        this.diseaseCureChance = (int)(20*(1+(morale/100.0)));
         // decreases/increases with morale - 5% base chance
-        this.diseaseKillChance = (int)(5*(1+(-morale/100.0)));
+        this.diseaseKillChance = (int)(2*(1+(-morale/100.0)));
 
         // 50% base with each animal adding 2%, each diseased animal subtracting 1% + morale percent
         // minimum 10% collection and hunting rate
-        this.huntingSuccess = 40 + (numLion) - (int)(numDiseasedLion) + (morale/2);
+        this.huntingSuccess = 50 + (numLion) - (int)(numDiseasedLion) + (morale/2);
         if (huntingSuccess < 10) {
             huntingSuccess = 10;
         }
-        this.collectingSuccess = 40 + (numGiraffe) - (int)(numDiseasedGiraffe) + (morale/2);
+        this.collectingSuccess = 50 + (numGiraffe) - (int)(numDiseasedGiraffe) + (morale/2);
         if (collectingSuccess < 10) {
             collectingSuccess = 10;
         }
