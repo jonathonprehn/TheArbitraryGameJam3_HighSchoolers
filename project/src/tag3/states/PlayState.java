@@ -317,7 +317,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         partyImage = new ImageLabel(partyWrapper.getCurrentAnimationFrame(), 300, 150);
 
         //Init the "You have slept" GUI
-        sleepIndicator = new TemporaryBasicGui(3, getTimer());
+        sleepIndicator = new TemporaryBasicGui(2, getTimer());
         sleepIndicator.addComponent(new ImageLabel(MediaLoader.quickLoadImage("sleep_dialog/sleepBackground.png"), centerWidth-150, centerHeight-100));
         sleepIndicator.addComponent(GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
@@ -330,6 +330,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         )
         );
         sleepIndicator.addComponent("label", new TextLabel("Sleep  Text", centerHeight, centerHeight));
+        sleepIndicator.forceEndTimer();
 
         //Init input
         getInput().addKeyDownListener(this);
@@ -452,7 +453,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         if (isManaging()) {
             bufferedImage = drawManageMenu(bufferedImage, graphics2D); //Management window
         }
-        //Draw the pause menu if it is paused
+        //Draw sleep indicator (won't draw if it isn't visible)
+        bufferedImage = sleepIndicator.render(bufferedImage, graphics2D);
+
+        //Draw the pause menu if it is paused (Make sure this is last)
         if (isPaused()) {
             bufferedImage = drawPauseMenu(bufferedImage, graphics2D); //Pause menu
         }
