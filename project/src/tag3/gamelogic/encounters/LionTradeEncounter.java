@@ -18,7 +18,7 @@ public class LionTradeEncounter implements RandomEncounter {
 
     @Override
     public double getChancePerHour() {
-        return 100;
+        return 6;
     }
 
     @Override
