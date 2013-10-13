@@ -197,16 +197,16 @@ public class GameCalender {
         String timeDisplay = "";
         switch (precision) {
             case TICKS:
-                timeDisplay += ticks + " Ticks " + minutes + " Minutes " + hours + " Hours " + days + " Days " + weeks + " Weeks." ;
+                timeDisplay += weeks + " Weeks " + days + " Days " + hours + " Hours " + minutes + " Minutes " + ticks + " Ticks." ;
                 break;
             case MINUTES:
-                timeDisplay += minutes + " Minutes " + hours + " Hours " + days + " Days " + weeks + " Weeks." ;
+                timeDisplay += weeks + " Weeks " + days + " Days " + hours + " Hours " + minutes + " Minutes.";
                 break;
             case HOURS:
-                timeDisplay += hours + " Hours " + days + " Days " + weeks + " Weeks." ;
+                timeDisplay += weeks + " Weeks " + days + " Days " + hours + " Hours.";
                 break;
             case DAYS:
-                timeDisplay += days + " Days " + weeks + " Weeks." ;
+                timeDisplay += weeks + " Weeks " + days + " Days.";
                 break;
             case WEEKS:
                 timeDisplay += weeks + " Weeks." ;
