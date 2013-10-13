@@ -78,7 +78,7 @@ public class MainMenuState extends GameState {
             backgrounds[i].setScrolling(true);
         }
         title = new ImageLabel(MediaLoader.quickLoadImage("main_menu/title.png"), 0, 0);
-        credit = new ImageLabel(MediaLoader.quickLoadImage("main_menu/credit.png"), 25, 100);
+        credit = new ImageLabel(MediaLoader.quickLoadImage("main_menu/credit.png"), 25, 80);
     }
 
     @Override
