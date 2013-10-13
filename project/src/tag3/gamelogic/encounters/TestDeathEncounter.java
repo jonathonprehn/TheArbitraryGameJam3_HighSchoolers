@@ -12,7 +12,7 @@ import tag3.states.PlayState;
 public class TestDeathEncounter implements RandomEncounter {
 
     @Override
-    public double getChancePerTick() {
+    public double getChancePerHour() {
         return 100;
     }
 

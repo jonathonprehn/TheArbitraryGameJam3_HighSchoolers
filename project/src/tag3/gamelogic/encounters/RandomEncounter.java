@@ -13,7 +13,7 @@ public interface RandomEncounter {
      * This will be triggered if the random number is less than your chosen number. 100 means it will run every time.
      * @return The chance expressed as a percent.
      */
-    public double getChancePerTick();
+    public double getChancePerHour();
 
     /**
      * Runs the random encounter.
