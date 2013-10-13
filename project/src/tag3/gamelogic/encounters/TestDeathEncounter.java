@@ -36,6 +36,11 @@ public class TestDeathEncounter implements RandomEncounter {
             }
 
             public boolean isAChoice() { return false; }
+
+            @Override
+            public String afterChoiceText() {
+                return "";
+            }
         });
     }
 }

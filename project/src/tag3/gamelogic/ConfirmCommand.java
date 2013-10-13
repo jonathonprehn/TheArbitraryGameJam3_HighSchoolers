@@ -13,4 +13,5 @@ public interface ConfirmCommand {
     public void onNo();
     //If it is not a choice, then it only invokes the "onYes" command
     public boolean isAChoice();
+    public String afterChoiceText();
 }

@@ -1,9 +1,8 @@
 package tag3.gamelogic;
 
 import tag3.gamelogic.encounters.HunterEncounter;
-import tag3.gamelogic.encounters.MedicineMainEncounter;
+import tag3.gamelogic.encounters.MedicineManEncounter;
 import tag3.gamelogic.encounters.RandomEncounter;
-import tag3.gamelogic.encounters.TestDeathEncounter;
 import tag3.media.MediaLoader;
 import tag3.party.Party;
 import tag3.party.food.Food;
@@ -147,6 +146,9 @@ public class PartyWrapper implements GameCalenderListener {
             state.notifyRandomFood();
 
             state.askForConfirmation(new ConfirmCommand() {  //The confirmation for wanting water...
+
+                private String text = "";
+
                 @Override
                 public void preCommandAction() {
                     state.setResourceDialogText("You have found " + state.qualityToText(getResource().getQuality()) + " " + state.resourceTypeToText(getResource()) + ".");
@@ -155,14 +157,20 @@ public class PartyWrapper implements GameCalenderListener {
                 @Override
                 public void onYes() {
                     givePartyResources();
+                    text = "Your party took the food.";
                 }
 
                 @Override
                 public void onNo() {
-                    //To change body of implemented methods use File | Settings | File Templates.
+                    text = "Your party ignored the food.";
                 }
 
                 public boolean isAChoice() { return true; }
+
+                @Override
+                public String afterChoiceText() {
+                    return text;
+                }
             });
 
             hoursUntilNextFood= 20 + (int)(Math.random()*8);
@@ -172,6 +180,8 @@ public class PartyWrapper implements GameCalenderListener {
             // spawn a water resource
             state.notifyWater();
             state.askForConfirmation(new ConfirmCommand() {  //The confirmation for wanting water...
+
+                private String text = "";
                 @Override
                 public void preCommandAction() {
                     state.setResourceDialogText("You have found " + state.qualityToText(getResource().getQuality()) + " " + state.resourceTypeToText(getResource()) + ".");
@@ -180,14 +190,20 @@ public class PartyWrapper implements GameCalenderListener {
                 @Override
                 public void onYes() {
                     givePartyResources();
+                    text = "Your party drank the water.";
                 }
 
                 @Override
                 public void onNo() {
-                    //To change body of implemented methods use File | Settings | File Templates.
+                    text = "Your party ignored the water.";
                 }
 
                 public boolean isAChoice() { return true; }
+
+                @Override
+                public String afterChoiceText() {
+                    return text;
+                }
             });
             hoursUntilNextWater = 20 + (int)(Math.random()*8);
         } else if ((hoursUntilNextFood > 0) && (hoursUntilNextWater > 0)) {
@@ -214,7 +230,7 @@ public class PartyWrapper implements GameCalenderListener {
         } else {
             randomEncounters.clear();
         }
-        randomEncounters.add(new MedicineMainEncounter());
+        randomEncounters.add(new MedicineManEncounter());
         randomEncounters.add(new HunterEncounter());
     }
 

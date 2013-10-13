@@ -130,6 +130,11 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
                         public boolean isAChoice() {
                             return false;
                         }
+
+                        @Override
+                        public String afterChoiceText() {
+                            return "";
+                        }
                     });
                     try {
                         Thread.sleep(500);
@@ -147,5 +152,10 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
         }
 
         public boolean isAChoice() { return false; }
+
+        @Override
+        public String afterChoiceText() {
+            return "";
+        }
     }
 }

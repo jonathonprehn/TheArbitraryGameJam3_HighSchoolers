@@ -13,7 +13,7 @@ import tag3.states.PlayState;
  * Time: 4:13 PM
  * To change this template use File | Settings | File Templates.
  */
-public class MedicineMainEncounter implements RandomEncounter {
+public class MedicineManEncounter implements RandomEncounter {
     @Override
     public double getChancePerHour() {
         return 15;
@@ -27,6 +27,8 @@ public class MedicineMainEncounter implements RandomEncounter {
                 gameState.setResourceDialogText("You have run into a wise old man, he offers");
                 gameState.setOtherResourceDialogText("to heal your sick for some supplies.");
             }
+
+            private String postChoiceText = "";
 
             @Override
             public void onYes() {
@@ -42,10 +44,13 @@ public class MedicineMainEncounter implements RandomEncounter {
                     partyWrapper.getRawParty().quietAddGiraffe(dg);
                     partyWrapper.getRawParty().quietAddLlama(dll);
                     partyWrapper.getRawParty().quietAddLion(dl);
+                    postChoiceText = "He has healed your sick!";
                 } else {
-                    //TODO: Make a temporary text label for what happens after one of these encounter things
+                    postChoiceText = "You don't have enough supplies!";
                 }
                 partyWrapper.setMoving(false);
+                gameState.setResourceDialogText("");
+                gameState.setOtherResourceDialogText("");
             }
 
             @Override
@@ -56,6 +61,11 @@ public class MedicineMainEncounter implements RandomEncounter {
             @Override
             public boolean isAChoice() {
                 return true;
+            }
+
+            @Override
+            public String afterChoiceText() {
+                return postChoiceText;
             }
         });
     }

@@ -52,6 +52,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     private ImageLabel partyDistanceIcon;
     protected TemporaryBasicGui sleepIndicator;
     protected ScrollingBackground[] backgrounds;
+    protected BasicGui postConfirmBox;
 
     //Global Logic and managers
     private boolean paused;
@@ -379,8 +380,31 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         }
         backgrounds[0].setScrolling(true);
 
+        //Init post-confirm dialog box display thing
+        postConfirmBox = new BasicGui();
+        postConfirmBox.addComponent("text", makeInfoText("", centerWidth-140, centerHeight));
+        postConfirmBox.addComponent("xButton",
+                GraphicsFactory.getFactory().makeLinkedImageButton(
+                        MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xUp.png"),
+                        centerWidth+100, centerHeight-50, new GenericButtonListener() {
+                        @Override
+                        public void buttonPushed() {
+                            postConfirmBox.setVisible(false);
+                            toggles[0].setEnabled(true);
+                        }
+                    }
+                )
+        );
+        postConfirmBox.addComponent(new Image(MediaLoader.quickLoadImage(""), centerWidth-150, centerHeight-50));
+        postConfirmBox.setVisible(false);
+
         //Init sounds
         MediaLoader.permanentLoadSound("walking_sound.wav", "walking");
+    }
+
+    public void showPostConfirmBox(String text) {
+        ((TextLabel)postConfirmBox.getComponent("text")).setText(text);
+        postConfirmBox.setVisible(true);
     }
 
     //Make sure the text actually shows the correct values
@@ -505,6 +529,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         bufferedImage = drawResources(bufferedImage, graphics2D); //Resources and resource spots
         bufferedImage = toggles[2].render(bufferedImage, graphics2D); //Draw the pause button
         bufferedImage = partyDistanceIcon.render(bufferedImage, graphics2D);
+        bufferedImage = postConfirmBox.render(bufferedImage, graphics2D);
 
         //Info text
         bufferedImage = drawQuickTextInfo(bufferedImage, graphics2D); //Quick info
@@ -726,7 +751,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         } else {
             partyWrapper.getCurrentDecision().onNo();
         }
-        toggles[0].setEnabled(true);
+        //Make a dialog that displays what happened
+        showPostConfirmBox(partyWrapper.getCurrentDecision().afterChoiceText());
+
         hideGameLabels();
     }
 
