@@ -69,6 +69,8 @@ public class MedicineManEncounter implements RandomEncounter {
         @Override
         public void onNo() {
             postChoiceText = "You walk away from the medicine man";
+            gameState.setResourceDialogText("");
+            gameState.setOtherResourceDialogText("");
         }
 
         @Override
