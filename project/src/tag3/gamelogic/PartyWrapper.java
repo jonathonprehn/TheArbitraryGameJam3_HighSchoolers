@@ -10,7 +10,6 @@ import tag3.party.food.Water;
 import tag3.party.supplycollection.SupplyCollectPoint;
 import tag3.states.GameOverState;
 import tag3.states.PlayState;
-import tag3.utility.RandomChance;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -214,7 +213,7 @@ public class PartyWrapper implements GameCalenderListener {
     public void doRandomEncounter() {
         double randomChance = Math.random();
         for (RandomEncounter randomEncounter : randomEncounters) {
-            if (randomEncounter.getChancePerTick() >= (randomChance * 100)) {
+            if (randomEncounter.getChancePerHour() >= (randomChance * 100)) {
                 randomEncounter.handleEncounter(this, state);
                 return;
             }
