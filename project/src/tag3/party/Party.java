@@ -122,10 +122,10 @@ public class Party {
             this.walkingPace = 0.1; // minimum walking pace
         }
 
-        // increases with morale - 20% base chance
-        this.diseaseCureChance = (int)(35*(1+(morale/100.0)));
-        // decreases with morale - 2% base chance
-        this.diseaseKillChance = (int)(2*(1+(-morale/200.0)));
+        // increases with morale - 15% base chance
+        this.diseaseCureChance = (int)(15*(1+(morale/100.0)));
+        // decreases/increases with morale - 5% base chance
+        this.diseaseKillChance = (int)(5*(1+(-morale/100.0)));
 
         // 50% base with each animal adding 2%, each diseased animal subtracting 1% + morale percent
         // minimum 10% collection and hunting rate
