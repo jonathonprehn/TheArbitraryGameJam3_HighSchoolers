@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 public class GameOverState extends GameState{
 
     // FILL ME!
-    
+
     @Override
     public void updateLogic() {
 
@@ -24,6 +24,6 @@ public class GameOverState extends GameState{
 
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
-        return null;
+        return bufferedImage;
     }
 }
