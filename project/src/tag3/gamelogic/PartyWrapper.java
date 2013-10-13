@@ -1,6 +1,7 @@
 package tag3.gamelogic;
 
 import tag3.gamelogic.encounters.HunterEncounter;
+import tag3.gamelogic.encounters.MedicineMainEncounter;
 import tag3.gamelogic.encounters.RandomEncounter;
 import tag3.gamelogic.encounters.TestDeathEncounter;
 import tag3.media.MediaLoader;
@@ -213,7 +214,7 @@ public class PartyWrapper implements GameCalenderListener {
         } else {
             randomEncounters.clear();
         }
-
+        randomEncounters.add(new MedicineMainEncounter());
         randomEncounters.add(new HunterEncounter());
     }
 
