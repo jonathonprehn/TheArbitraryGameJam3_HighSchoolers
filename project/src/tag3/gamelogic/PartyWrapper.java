@@ -47,7 +47,7 @@ public class PartyWrapper implements GameCalenderListener {
     private GameCalender calender;
     private BufferedImage currentImage;
     private boolean choseConfirmation;
-    private List<RandomEncounter> randomEncounters = new ArrayList<RandomEncounter>();
+    private List<RandomEncounterWrapper> randomEncounters = new ArrayList<RandomEncounterWrapper>();
 
     private int distanceFromWyoming = 500;
 
@@ -235,18 +235,19 @@ public class PartyWrapper implements GameCalenderListener {
 
     private void initRandomEncounters() {
         if (randomEncounters == null) {
-            randomEncounters = new ArrayList<RandomEncounter>();
+            randomEncounters = new ArrayList<RandomEncounterWrapper>();
         } else {
             randomEncounters.clear();
         }
-        randomEncounters.add(new MedicineManEncounter());
-        randomEncounters.add(new LionTradeEncounter());
-        randomEncounters.add(new HunterEncounter());
+        randomEncounters.add(new RandomEncounterWrapper(new MedicineManEncounter()));
+        randomEncounters.add(new RandomEncounterWrapper(new LionTradeEncounter()));
+        randomEncounters.add(new RandomEncounterWrapper(new HunterEncounter()));
 
         //Calcumalate the weight
         totalWeight = 0;
         for (int i=0; i<randomEncounters.size(); i++) {
-            totalWeight += randomEncounters.get(i).getChancePerHour();
+            randomEncounters.get(i).assignInterval(totalWeight, (int)randomEncounters.get(i).getEncounter().getChancePerHour());
+            totalWeight += randomEncounters.get(i).getEncounter().getChancePerHour();
         }
     }
     //Does everyone a random encounter does, except for wrap it in this thing for giving it an interval for random events!
@@ -257,6 +258,20 @@ public class PartyWrapper implements GameCalenderListener {
         RandomEncounter encounter;
         public RandomEncounterWrapper(RandomEncounter encounter) {
             this.encounter = encounter;
+        }
+
+        public RandomEncounter getEncounter() {
+            return encounter;
+        }
+        public void assignInterval(int min, int max) {
+            this.min = min; this.max = max;
+        }
+        public boolean IsInInterval(int testingNumber) {
+            if (min<testingNumber && max>=testingNumber) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -274,7 +289,17 @@ public class PartyWrapper implements GameCalenderListener {
     int totalWeight;
 
     public void doRandomEncounter() {
-
+        boolean alreadyHappened = false;
+        int randomNum = (int)(Math.random()*totalWeight);
+        for (int i=0; i<randomEncounters.size(); i++) {
+            if (randomEncounters.get(i).IsInInterval(randomNum)) {
+                if (alreadyHappened) {
+                    System.out.println("FATAL ERROR: More than 1 encounter occurred! (not suppose to happen!)");
+                }
+                randomEncounters.get(i).getEncounter().handleEncounter(this, state);
+                alreadyHappened = true;
+            }
+        } //OK for loop to continue since two shouldn't happen
     }
 
     public SupplyCollectPoint getResource() {
