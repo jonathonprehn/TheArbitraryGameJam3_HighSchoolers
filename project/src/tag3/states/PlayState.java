@@ -443,6 +443,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     }
 
     public void askForConfirmation(ConfirmCommand cc) {
+        partyWrapper.setMoving(false);
         partyWrapper.setCurrentDecision(cc);
         cc.preCommandAction();
         if (cc.isAChoice()) {
@@ -706,9 +707,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     }
 
     @Override
-    public void reactToConfirm(boolean c) {
+    public void reactToConfirm(boolean con) {
+        boolean c;
         if (!partyWrapper.getCurrentDecision().isAChoice()) {
             c = true;
+        } else {
+            c = con;
         }
         partyWrapper.setChoseConfirmation(c);
         setPressed(true);
@@ -880,7 +884,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
             buttons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
                     MediaLoader.quickLoadImage("confirm_dialogue/okButtonUp.png"),
                     MediaLoader.quickLoadImage("confirm_dialogue/okButtonDown.png"),
-                    boxX + 70, boxY + 120, new NoDialogListener()
+                    boxX + 70, boxY + 120, new YesDialogListener()
             );
             diaText = makeInfoText("", boxX+30, boxY + 40);
             eatIt = makeInfoText("Consume it?", boxX+60, boxY + 70);
