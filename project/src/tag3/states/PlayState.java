@@ -337,7 +337,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         resourceDialog.addResourceListener(this);
 
         //Init sounds
-
+        MediaLoader.permanentLoadSound("walking_sound.wav", "walking");
     }
 
     //Make sure the text actually shows the correct values

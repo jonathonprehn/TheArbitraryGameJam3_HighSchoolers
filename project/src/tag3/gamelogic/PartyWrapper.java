@@ -1,5 +1,6 @@
 package tag3.gamelogic;
 
+import tag3.media.MediaLoader;
 import tag3.party.Party;
 import tag3.party.supplycollection.SupplyCollectPoint;
 import tag3.states.PlayState;
@@ -36,6 +37,11 @@ public class PartyWrapper implements GameCalenderListener {
     public void setMoving(boolean moving) {
         this.moving = moving;
         calender.setCounting(moving);
+        if (isMoving()) { //Walking!
+            MediaLoader.getLoadedSound("walking").loop();
+        } else {
+            MediaLoader.getLoadedSound("walking").stop();
+        }
     }
 
     private boolean moving;
