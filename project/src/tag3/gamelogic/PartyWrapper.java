@@ -219,6 +219,10 @@ public class PartyWrapper implements GameCalenderListener {
             setMoving(state.getMoveToggleValue()); //Are we moving according to the toggle?
         }
 
+        if (!state.isAsking() && state.isPressed()) {
+            doRandomEncounter();
+        }
+
         // if currentFoundResource!=null
         // ask player if they want to collect it
 
@@ -230,7 +234,6 @@ if (party.getSize() <= 0) {
 }
 
         //Code for random encounters!
-        doRandomEncounter();
 }
 
 private void initRandomEncounters() {
