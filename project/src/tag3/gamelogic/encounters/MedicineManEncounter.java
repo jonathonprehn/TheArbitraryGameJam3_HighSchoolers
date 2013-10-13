@@ -45,15 +45,17 @@ public class MedicineManEncounter implements RandomEncounter {
         @Override
         public void onYes() {
             if (partyWrapper.getRawParty().getFoodAmount()>=20 && partyWrapper.getRawParty().getWaterAmount()>=20) {
+                System.out.print("Invoking medicine man");
                 partyWrapper.getRawParty().removeFood(20);
                 partyWrapper.getRawParty().removeWater(20);
+                System.out.print("Removed resources");
                 int dg = partyWrapper.getRawParty().getNumDiseasedGiraffe();
                 int dll = partyWrapper.getRawParty().getNumDiseasedLlama();
                 int dl = partyWrapper.getRawParty().getNumDiseasedLion();
                 partyWrapper.getRawParty().quietRemoveDiseasedLlama(dll);
                 partyWrapper.getRawParty().quietRemoveDiseasedLion(dl);
-                partyWrapper.getRawParty().quietRemoveDiseasedGiraffe(dg);
                 partyWrapper.getRawParty().quietAddGiraffe(dg);
+                partyWrapper.getRawParty().quietRemoveDiseasedGiraffe(dg);
                 partyWrapper.getRawParty().quietAddLlama(dll);
                 partyWrapper.getRawParty().quietAddLion(dl);
                 postChoiceText = "He has healed your sick!";

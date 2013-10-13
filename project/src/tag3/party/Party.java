@@ -341,51 +341,51 @@ public class Party {
     }
 
     public void quietAddLlama(int amount) {
-        this.numLlama =+ amount;
+        this.numLlama += amount;
     }
 
     public void quietAddGiraffe(int amount) {
-        this.numGiraffe =+ amount;
+        this.numGiraffe += amount;
     }
 
     public void quietAddLion(int amount) {
-        this.numLion =+ amount;
+        this.numLion += amount;
     }
 
     public void quietAddDiseasedLlama(int amount) {
-        this.numDiseasedLlama =+ amount;
+        this.numDiseasedLlama += amount;
     }
 
     public void quietAddDiseasedGiraffe(int amount) {
-        this.numDiseasedGiraffe =+ amount;
+        this.numDiseasedGiraffe += amount;
     }
 
     public void quietAddDiseasedLion(int amount) {
-        this.numDiseasedLion =+ amount;
+        this.numDiseasedLion += amount;
     }
 
     public void quietRemoveLlama(int amount) {
-        this.numLlama =- amount;
+        this.numLlama -= amount;
     }
 
     public void quietRemoveGiraffe(int amount) {
-        this.numGiraffe =- amount;
+        this.numGiraffe -= amount;
     }
 
     public void quietRemoveLion(int amount) {
-        this.numLion =- amount;
+        this.numLion -= amount;
     }
 
     public void quietRemoveDiseasedLlama(int amount) {
-        this.numDiseasedLlama =- amount;
+        this.numDiseasedLlama -= amount;
     }
 
     public void quietRemoveDiseasedGiraffe(int amount) {
-        this.numDiseasedGiraffe =- amount;
+        this.numDiseasedGiraffe -= amount;
     }
 
     public void quietRemoveDiseasedLion(int amount) {
-        this.numDiseasedLion =- amount;
+        this.numDiseasedLion -= amount;
     }
 
     public void removeFood(int amount) {
