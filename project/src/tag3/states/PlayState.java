@@ -321,14 +321,15 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         sleepIndicator.addComponent(new ImageLabel(MediaLoader.quickLoadImage("sleep_dialog/sleepBackground.png"), centerWidth-150, centerHeight-100));
         sleepIndicator.addComponent(GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xDown.png"),
-                centerWidth+100, centerHeight-50, new GenericButtonListener() {
-                    @Override
-                    public void buttonPushed() {
-                        sleepIndicator.forceEndTimer();
-                    }
-                }
-            )
+                centerWidth + 100, centerHeight - 50, new GenericButtonListener() {
+            @Override
+            public void buttonPushed() {
+                sleepIndicator.forceEndTimer();
+            }
+        }
+        )
         );
+        sleepIndicator.addComponent("label", new TextLabel("Sleep  Text", centerHeight, centerHeight));
 
         //Init input
         getInput().addKeyDownListener(this);
