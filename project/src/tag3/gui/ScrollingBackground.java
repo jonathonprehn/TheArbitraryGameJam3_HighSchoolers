@@ -19,6 +19,16 @@ public class ScrollingBackground implements GuiComponent {
     private float scrollOffset, scrollSpeed;
     private boolean visible;
 
+    public boolean isScrolling() {
+        return scrolling;
+    }
+
+    public void setScrolling(boolean scrolling) {
+        this.scrolling = scrolling;
+    }
+
+    private boolean scrolling;
+
     @Override
     public boolean isVisible() {
         return visible;
@@ -31,9 +41,11 @@ public class ScrollingBackground implements GuiComponent {
 
     @Override
     public void updateComponent() {
-        scrollOffset += scrollSpeed;
-        if(scrollOffset>=img.getImage().getWidth()) {
-            scrollOffset = 0;
+        if (scrolling) {
+            scrollOffset += scrollSpeed;
+            if(scrollOffset>=img.getImage().getWidth()) {
+                scrollOffset = 0;
+            }
         }
     }
 

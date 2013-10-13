@@ -40,6 +40,7 @@ public class PartyWrapper implements GameCalenderListener {
     public void setMoving(boolean moving) {
         this.moving = moving;
         calender.setCounting(moving);
+        state.setBackgroundScrolling(moving);
         if (isMoving()) { //Walking!
             MediaLoader.getLoadedSound("walking").loop();
         } else {

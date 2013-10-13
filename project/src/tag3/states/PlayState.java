@@ -342,7 +342,11 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
         //Init scrolling backgrounds
         backgrounds = new ScrollingBackground[1];
-        backgrounds[0] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 1);
+        backgrounds[0] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 0.7f);
+
+        for (int i=0; i<backgrounds.length; i++) {
+            backgrounds[i].setScrolling(false);
+        }
 
         //Init sounds
         MediaLoader.permanentLoadSound("walking_sound.wav", "walking");
@@ -404,6 +408,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         resourceDialog.setText("You have found " + qualityToText(partyWrapper.getResource().getQuality()) + " " + resourceTypeToText(partyWrapper.getResource()) + ".");
         asking = true;
         setPressed(false);
+    }
+
+    public void setBackgroundScrolling(boolean scrolling) {
+        for (int i=0; i<backgrounds.length; i++) {
+            backgrounds[i].setScrolling(scrolling);
+        }
     }
 
     private String qualityToText(Quality qual) {
