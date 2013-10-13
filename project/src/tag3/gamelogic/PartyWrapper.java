@@ -82,8 +82,8 @@ public class PartyWrapper implements GameCalenderListener {
         frame = 0;
         this.calender = calender;
 
-        int startFood = 20;
-        int startWater = 15;
+        int startFood = 35;
+        int startWater = 50;
         for (int i=0; i<startFood; i++) {
             party.addFood(new Food(Quality.GOOD));
         }
