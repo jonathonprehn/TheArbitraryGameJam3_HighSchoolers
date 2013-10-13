@@ -317,7 +317,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         muchInfoText[7] = makeInfoText("Food eaten:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 8));
         muchInfoText[8] = makeInfoText("Days traveled:", muchInfoCornerX + xOffsetMuchInfo, muchInfoCornerY + (yOffsetMuchInfo * 9));
 
-        partyImage = new ImageLabel(partyWrapper.getCurrentAnimationFrame(), 300, 150);
+        partyImage = new ImageLabel(partyWrapper.getCurrentAnimationFrame(), 300, 170);
 
         //Init the "You have slept" GUI
         sleepIndicator = new TemporaryBasicGui(2, getTimer());
