@@ -35,6 +35,10 @@ public class MainMenuState extends GameState {
 
     @Override
     public void initState() {
+        //Stop the sound
+        if (MediaLoader.getLoadedSound("walking")!=null) {
+            MediaLoader.getLoadedSound("walking").stop();
+        }
         //Try to get screen size for positioning
         int width = getRunner().getDisplayer().getDisplayWidth();
         int height = getRunner().getDisplayer().getDisplayHeight();

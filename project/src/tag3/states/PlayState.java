@@ -402,7 +402,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         postConfirmBox.setVisible(false);
 
         //Init sounds
-        MediaLoader.permanentLoadSound("walking_sound.wav", "walking");
+        if (MediaLoader.getLoadedSound("walking")==null) {
+            MediaLoader.permanentLoadSound("walking_sound.wav", "walking");
+        }
     }
 
     public void showPostConfirmBox(String text) {
