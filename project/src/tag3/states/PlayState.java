@@ -839,6 +839,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         resourceDialog.setText(text);
     }
 
+    public void setOtherResourceDialogText(String text) {
+        resourceDialog.setText2(text);
+    }
+
     class ResourceDialog implements GuiComponent {
 
         protected boolean visible;
@@ -870,6 +874,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
         public void setText(String text) {
             diaText.setText(text);
+        }
+
+        public void setText2(String text) {
+            eatIt.setText(text);
         }
 
         protected void notifyListeners(boolean confirmation) {
