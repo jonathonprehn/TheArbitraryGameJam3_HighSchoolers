@@ -45,6 +45,7 @@ public class MedicineMainEncounter implements RandomEncounter {
                 } else {
                     //TODO: Make a temporary text label for what happens after one of these encounter things
                 }
+                partyWrapper.setMoving(false);
             }
 
             @Override
