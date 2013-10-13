@@ -311,7 +311,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         } catch(Exception e) {
             System.out.println("Unable to load Font: " + fontPath + "");
         }
-        headerFont = new Font(Font.SANS_SERIF, Font.BOLD, 14);
+        headerFont = infoFont.deriveFont(15.0f);
 
         //Init info text
         quickInfoText = new TextLabel[6];
