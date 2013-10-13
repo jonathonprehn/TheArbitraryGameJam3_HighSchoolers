@@ -334,8 +334,8 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         )
         );
         sleepIndicator.addComponent(new ImageLabel(MediaLoader.quickLoadImage("sleep_dialog/sleepBackground.png"), centerWidth-150, centerHeight-100));
-        sleepIndicator.addComponent("label", makeInfoText("Sleep  Text", centerWidth - 100, centerHeight));
-        sleepIndicator.addComponent("label2", makeInfoText("Sleep  Text 2", centerWidth-100, centerHeight+30));
+        sleepIndicator.addComponent("label", makeInfoText("Sleep  Text", Color.WHITE, centerWidth - 100, centerHeight));
+        sleepIndicator.addComponent("label2", makeInfoText("Sleep  Text 2", Color.WHITE, centerWidth-100, centerHeight+30));
         sleepIndicator.forceEndTimer();
 
         System.out.println("The sleep indicator sees " + sleepIndicator.getComponentCount() + " components!");
@@ -397,6 +397,13 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
     private TextLabel makeInfoText(String text, int x, int y) {
         TextLabel l = new TextLabel(text, x, y);
+        l.setFont(infoFont);
+        return l;
+    }
+
+    private TextLabel makeInfoText(String text, Color fontColor, int x, int y) {
+        TextLabel l = new TextLabel(text, x, y);
+        l.setTextColor(fontColor);
         l.setFont(infoFont);
         return l;
     }
