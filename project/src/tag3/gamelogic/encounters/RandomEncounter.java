@@ -10,6 +10,7 @@ import tag3.states.PlayState;
 public interface RandomEncounter {
     /**
      * Gets the chance per tick of this encounter happening on a scale of 1 to 100.
+     * This will be triggered if the random number is less than your chosen number. 100 means it will run every time.
      * @return The chance expressed as a percent.
      */
     public double getChancePerTick();
