@@ -21,6 +21,7 @@ public class OptionsState extends GameState {
     private ImageButton backButton, applyButton;
     private ImageToggle fullScreenToggle;
     private SimpleTextField widthField, heightField;
+    private ImageLabel optionsBackground;
 
     @Override
     public void updateLogic() {
@@ -50,7 +51,7 @@ public class OptionsState extends GameState {
         applyButton = GraphicsFactory.getFactory().makeLinkedImageButton(
                 MediaLoader.quickLoadImage("buttons/applyChangesButtonUp.png"),
                 MediaLoader.quickLoadImage("buttons/applyChangesButtonDown.png"),
-                (getDisplayer().getDisplayWidth()/6)*4, ((getDisplayer().getDisplayHeight()/5)*3),
+                (getDisplayer().getDisplayWidth()/6)*4, (((getDisplayer().getDisplayHeight()/5)*3)+40),
                 new ApplyNewDisplay()
         );
 
@@ -62,6 +63,7 @@ public class OptionsState extends GameState {
                 (getDisplayer().getDisplayWidth()/3), ((getDisplayer().getDisplayHeight()/6)*3) ,
                 100, 40, "" + getDisplayer().getDisplayHeight() + "" , 4
         );
+        optionsBackground = new ImageLabel(MediaLoader.quickLoadImage("optionsBackground.png"), 0, 0);
     }
 
     @Override
@@ -69,7 +71,7 @@ public class OptionsState extends GameState {
         graphics2D = (Graphics2D)bufferedImage.getGraphics();
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
-
+        bufferedImage = optionsBackground.render(bufferedImage, graphics2D);
         bufferedImage = backButton.render(bufferedImage, graphics2D);
         bufferedImage = widthField.render(bufferedImage, graphics2D);
         bufferedImage = heightField.render(bufferedImage, graphics2D);

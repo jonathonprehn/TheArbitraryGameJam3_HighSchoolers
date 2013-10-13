@@ -353,9 +353,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         backgrounds[1] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/hillBackground.png"), 0.15f);
         backgrounds[0] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/cloudBackground.png"), 0.08f);
         backgrounds[0].setVerticalOffset(-80);
-        for (int i=0; i<backgrounds.length; i++) {
+        for (int i=0; i<(backgrounds.length); i++) {
             backgrounds[i].setScrolling(false);
         }
+        backgrounds[0].setScrolling(true);
 
         //Init sounds
         MediaLoader.permanentLoadSound("walking_sound.wav", "walking");
@@ -420,9 +421,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     }
 
     public void setBackgroundScrolling(boolean scrolling) {
-        for (int i=0; i<backgrounds.length; i++) {
+        for (int i=0; i<(backgrounds.length); i++) {
             backgrounds[i].setScrolling(scrolling);
         }
+        backgrounds[0].setScrolling(true);
     }
 
     private String qualityToText(Quality qual) {
