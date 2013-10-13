@@ -17,6 +17,16 @@ public class ScrollingBackground implements GuiComponent {
 
     private ImageLabel img;
     private float scrollOffset, scrollSpeed;
+
+    public int getVerticalOffset() {
+        return verticalOffset;
+    }
+
+    public void setVerticalOffset(int verticalOffset) {
+        this.verticalOffset = verticalOffset;
+    }
+
+    private int verticalOffset;
     private boolean visible;
 
     public boolean isScrolling() {
@@ -54,14 +64,15 @@ public class ScrollingBackground implements GuiComponent {
         this.scrollOffset = 0;
         this.scrollSpeed = scrollSpeed;
         visible = true;
+        verticalOffset = 0;
     }
 
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
         graphics2D = (Graphics2D) bufferedImage.getGraphics();
         if (isVisible()) {
-            graphics2D.drawImage(img.getImage(), (int)scrollOffset, 0, null);
-            graphics2D.drawImage(img.getImage(), (int)(scrollOffset-(img.getImage().getWidth())), 0, null);
+            graphics2D.drawImage(img.getImage(), (int)scrollOffset, verticalOffset, null);
+            graphics2D.drawImage(img.getImage(), (int)(scrollOffset-(img.getImage().getWidth())), verticalOffset, null);
         }
         return bufferedImage;
     }

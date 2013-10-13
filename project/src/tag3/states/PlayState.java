@@ -344,9 +344,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         resourceDialog.addResourceListener(this);
 
         //Init scrolling backgrounds
-        backgrounds = new ScrollingBackground[1];
-        backgrounds[0] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 0.7f);
+        backgrounds = new ScrollingBackground[3];
+        backgrounds[2] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 1);
+        backgrounds[1] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/treeBackground.png"), 0.7f);
 
+        backgrounds[0] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/cloudBackground.png"), 0.2f);
+        backgrounds[0].setVerticalOffset(-80);
         for (int i=0; i<backgrounds.length; i++) {
             backgrounds[i].setScrolling(false);
         }
