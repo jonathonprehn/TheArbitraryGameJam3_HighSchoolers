@@ -3,6 +3,7 @@ package tag3;
 import horsentp.display.DisplayConfiguration;
 import horsentp.gamelogic.GameRunner;
 
+import tag3.states.GameOverState;
 import tag3.states.MainMenuState;
 import tag3.utility.GraphicsFactory;
 
