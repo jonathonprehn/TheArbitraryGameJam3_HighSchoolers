@@ -135,7 +135,7 @@ public class PartyWrapper implements GameCalenderListener {
         if (isMoving()) {
             party.setIdle(false);
             getRawParty().moveForward();
-           // System.out.println("Moved forward!");
+            // System.out.println("Moved forward!");
         } else {
             party.setIdle(true);
         }
@@ -226,68 +226,68 @@ public class PartyWrapper implements GameCalenderListener {
         hoursUntilNextWater--;
 
         if (party.getSize() <= 0) {
-                state.getRunner().changeState(new GameOverState("You have run out of animals."));
+            state.getRunner().changeState(new GameOverState("You have run out of animals."));
         }
 
         //Code for random encounters!
         doRandomEncounter();
-}
+    }
 
-private void initRandomEncounters() {
+    private void initRandomEncounters() {
         if (randomEncounters == null) {
-        randomEncounters = new ArrayList<RandomEncounter>();
-} else {
-        randomEncounters.clear();
-}
+            randomEncounters = new ArrayList<RandomEncounter>();
+        } else {
+            randomEncounters.clear();
+        }
         randomEncounters.add(new MedicineManEncounter());
-randomEncounters.add(new LionTradeEncounter());
-randomEncounters.add(new HunterEncounter());
-}
+        randomEncounters.add(new LionTradeEncounter());
+        randomEncounters.add(new HunterEncounter());
+    }
 
-public void doRandomEncounter() {
+    public void doRandomEncounter() {
         double randomChance = Math.random();
-for (RandomEncounter randomEncounter : randomEncounters) {
-        if (randomEncounter.getChancePerHour() >= (randomChance * 100)) {
-        randomEncounter.handleEncounter(this, state);
-return;
-}
+        for (RandomEncounter randomEncounter : randomEncounters) {
+            if (randomEncounter.getChancePerHour() >= (randomChance * 100)) {
+                randomEncounter.handleEncounter(this, state);
+                return;
+            }
         }
-        }
+    }
 
-public SupplyCollectPoint getResource() {
+    public SupplyCollectPoint getResource() {
         return resource;
-}
+    }
 
-public void setResource(SupplyCollectPoint resource) {
+    public void setResource(SupplyCollectPoint resource) {
         this.resource = resource;
-}
+    }
 
-private SupplyCollectPoint resource;
+    private SupplyCollectPoint resource;
 
-public void givePartyResources() {
+    public void givePartyResources() {
         if (resource!=null) {
-        resource.collectFrom(party);
-setResource(null);
-}
+            resource.collectFrom(party);
+            setResource(null);
         }
+    }
 
-public int getDistanceFromWyoming() {
+    public int getDistanceFromWyoming() {
         return distanceFromWyoming;
-}
+    }
 
-@Override
-public void dayPassed() {
+    @Override
+    public void dayPassed() {
         System.out.println("Day passed");
-daysPassed++;
-}
+        daysPassed++;
+    }
 
-@Override
-public void weekPassed() {
+    @Override
+    public void weekPassed() {
         //System.out.println("Week passed");
-        }
+    }
 
-public int getDaysPassed() {
+    public int getDaysPassed() {
         return daysPassed;
-}
+    }
 
-        }
+}
