@@ -121,7 +121,7 @@ public class Party {
         // 15% diseased animal amount - 1% per llama - 1/2 morale percent
         this.diseaseModifier = (int)(-morale/2.0) + (int)(getNumberOfDiseased()*0.15) - (int)(getNumLlama());
 
-        this.walkingPace = 1 + (morale/100.0);
+        this.walkingPace = 1 + (morale/100.0) - (getNumberOfDiseased()/100.0);
         if (this.walkingPace < 0.1) {
             this.walkingPace = 0.1; // minimum walking pace
         }
