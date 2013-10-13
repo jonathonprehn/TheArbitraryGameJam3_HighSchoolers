@@ -1,5 +1,6 @@
 package tag3.gamelogic;
 
+import tag3.gamelogic.encounters.HunterEncounter;
 import tag3.gamelogic.encounters.RandomEncounter;
 import tag3.gamelogic.encounters.TestDeathEncounter;
 import tag3.media.MediaLoader;
@@ -88,7 +89,7 @@ public class PartyWrapper implements GameCalenderListener {
         for (int i=0; i<startWater; i++) {
             party.addWater(new Water(Quality.GOOD));
         }
-        randomEncounters.add(new TestDeathEncounter());
+        initRandomEncounters();
     }
 
     public BufferedImage getCurrentAnimationFrame() {
@@ -208,6 +209,8 @@ public class PartyWrapper implements GameCalenderListener {
         } else {
             randomEncounters.clear();
         }
+
+        randomEncounters.add(new HunterEncounter());
     }
 
     public void doRandomEncounter() {
