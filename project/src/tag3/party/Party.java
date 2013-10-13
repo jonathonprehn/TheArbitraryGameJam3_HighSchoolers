@@ -78,11 +78,6 @@ public class Party {
     }
 
     private void updateVariables() {
-        // increases with morale - 20% base chance
-        this.diseaseCureChance = (int)(35*(1+(morale/100.0)));
-        // decreases with morale - 2% base chance
-        this.diseaseKillChance = (int)(2*(1+(-morale/200.0)));
-
         // morale modifiers
         int sleepMod = 0;
         if (getDaysSinceSlept() > 3) {
@@ -99,18 +94,19 @@ public class Party {
         // -4% morale per day of no food
         int noFoodMod = 0;
         if (foodSupply.size() == 0) {
-            noFoodMod = -(int)(daysWithNoFood*4.0);
+            noFoodMod = -(int)(daysWithNoFood*8.0);
         }
 
         // -7% morale per day of no water
         int noWaterMod = 0;
         if (waterSupply.size() == 0) {
-            noWaterMod = -(int)(daysWithNoWater*7.0);
+            noWaterMod = -(int)(daysWithNoWater*20.0);
         }
 
-        if (temporaryMoraleModifier > 3 || temporaryMoraleModifier < 3) {
-            // temporary morale decays at a rate of 50% every update cycle
-            temporaryMoraleModifier = temporaryMoraleModifier*0.5;
+        if (temporaryMoraleModifier > 3) {
+            temporaryMoraleModifier = temporaryMoraleModifier-3;
+        } else if (temporaryMoraleModifier < 3) {
+            temporaryMoraleModifier = temporaryMoraleModifier+3;
         } else {
             temporaryMoraleModifier = 0;
         }
@@ -125,6 +121,11 @@ public class Party {
         if (this.walkingPace < 0.1) {
             this.walkingPace = 0.1; // minimum walking pace
         }
+
+        // increases with morale - 20% base chance
+        this.diseaseCureChance = (int)(35*(1+(morale/100.0)));
+        // decreases with morale - 2% base chance
+        this.diseaseKillChance = (int)(2*(1+(-morale/200.0)));
 
         // 50% base with each animal adding 2%, each diseased animal subtracting 1% + morale percent
         // minimum 10% collection and hunting rate
@@ -363,7 +364,11 @@ public class Party {
     }
 
     public int getConsumeRate() {
-        return (int)(this.getSize()/5.0);
+        int rate = (int)(this.getSize()/5.0);
+        if (rate == 0) {
+            rate = 1; // minimum 1
+        }
+        return rate;
     }
 
     private void randomlyKill() {
@@ -394,7 +399,7 @@ public class Party {
 
     private void randomlyCure() {
         // see if lions gets cured
-        for (int i=0; i<this.numLion; i++) {
+        for (int i=0; i<this.numDiseasedLion; i++) {
             if (RandomChance.rollForChance(diseaseCureChance))  {
                 this.numLion++;
                 this.numDiseasedLion--;
@@ -402,7 +407,7 @@ public class Party {
         }
 
         // see if giraffes gets cured
-        for (int i=0; i<this.numGiraffe; i++) {
+        for (int i=0; i<this.numDiseasedGiraffe; i++) {
             if (RandomChance.rollForChance(diseaseCureChance))  {
                 this.numGiraffe++;
                 this.numDiseasedGiraffe--;
@@ -410,7 +415,7 @@ public class Party {
         }
 
         // see if llamas get cured
-        for (int i=0; i<this.numLlama; i++) {
+        for (int i=0; i<this.numDiseasedLlama; i++) {
             if (RandomChance.rollForChance(diseaseCureChance))  {
                 this.numLlama++;
                 this.numDiseasedLlama--;
