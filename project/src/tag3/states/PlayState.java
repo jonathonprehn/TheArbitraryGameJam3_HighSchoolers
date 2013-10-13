@@ -304,9 +304,9 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         //Import the info font!
         String fontPath = "fonts/ERASMD.ttf";
         try {
-        infoFont = Font.createFont(Font.TRUETYPE_FONT,
-                MainStartUp.class.getResource("assets/" + fontPath).openStream()
-                );
+            infoFont = Font.createFont(Font.TRUETYPE_FONT,
+                    MainStartUp.class.getResource("assets/" + fontPath).openStream()
+            );
             infoFont = infoFont.deriveFont(13.0f);
             System.out.println("Loaded font: " + fontPath + "");
         } catch(Exception e) {
@@ -388,15 +388,15 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                 GraphicsFactory.getFactory().makeLinkedImageButton(
                         MediaLoader.quickLoadImage("buttons/xUp.png"), MediaLoader.quickLoadImage("buttons/xUp.png"),
                         centerWidth+100, centerHeight-50, new GenericButtonListener() {
-                        @Override
-                        public void buttonPushed() {
-                            postConfirmBox.setVisible(false);
-                            toggles[0].setEnabled(true);
-                            toggles[0].forceSetToggle(true);
-                            partyWrapper.setMoving(true);
-                            calender.setCounting(true);
-                        }
+                    @Override
+                    public void buttonPushed() {
+                        postConfirmBox.setVisible(false);
+                        toggles[0].setEnabled(true);
+                        toggles[0].forceSetToggle(true);
+                        partyWrapper.setMoving(true);
+                        calender.setCounting(true);
                     }
+                }
                 )
         );
         postConfirmBox.setVisible(false);
@@ -501,7 +501,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
             case DISGUSTING:
                 return "disgusting";
             default:
-            return "funny looking";
+                return "funny looking";
         }
     }
 
