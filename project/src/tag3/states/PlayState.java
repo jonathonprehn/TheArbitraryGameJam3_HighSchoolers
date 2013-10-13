@@ -443,9 +443,15 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     }
 
     public void askForConfirmation(ConfirmCommand cc) {
+        partyWrapper.setMoving(false);
+        toggles[0].forceSetToggle(false);
         partyWrapper.setCurrentDecision(cc);
         cc.preCommandAction();
-        asking = true;
+        if (cc.isAChoice()) {
+            resourceDialog.setChoiceMode(resourceDialog.YES_NO);
+        } else {
+            resourceDialog.setChoiceMode(resourceDialog.OK);
+        }
         setPressed(false);
     }
 
@@ -702,7 +708,13 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     }
 
     @Override
-    public void reactToConfirm(boolean c) {
+    public void reactToConfirm(boolean con) {
+        boolean c;
+        if (!partyWrapper.getCurrentDecision().isAChoice()) {
+            c = true;
+        } else {
+            c = con;
+        }
         partyWrapper.setChoseConfirmation(c);
         setPressed(true);
         asking = false;
@@ -711,6 +723,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         } else {
             partyWrapper.getCurrentDecision().onNo();
         }
+        toggles[0].setEnabled(true);
         hideGameLabels();
     }
 
@@ -850,11 +863,13 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         private ImageLabel background;
         private ImageButton[] buttons;
         private TextLabel diaText, eatIt;
+        private int mode;
 
         public ResourceDialog(GameRunner runner) {
             int boxX = (runner.getDisplayer().getDisplayWidth() / 2) - 150, boxY = (runner.getDisplayer().getDisplayHeight() / 2) - 75;
             background = new ImageLabel(MediaLoader.quickLoadImage("confirm_dialogue/confirmBackground.png"), boxX, boxY);
-            buttons = new ImageButton[2];
+            buttons = new ImageButton[3];
+            mode = 0;
             //MAKE BUTTONS 100x50
             buttons[0] = GraphicsFactory.getFactory().makeLinkedImageButton(
                     MediaLoader.quickLoadImage("confirm_dialogue/yesButtonUp.png"),
@@ -867,6 +882,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                     MediaLoader.quickLoadImage("confirm_dialogue/noButtonDown.png"),
                     boxX + 20, boxY + 120, new NoDialogListener()
             );
+
+            buttons[2] = GraphicsFactory.getFactory().makeLinkedImageButton(
+                    MediaLoader.quickLoadImage("confirm_dialogue/okButtonUp.png"),
+                    MediaLoader.quickLoadImage("confirm_dialogue/okButtonDown.png"),
+                    boxX + 70, boxY + 120, new YesDialogListener()
+            );
             diaText = makeInfoText("", boxX+30, boxY + 40);
             eatIt = makeInfoText("Consume it?", boxX+60, boxY + 70);
             listeners = new ArrayList<ResourceDialogListener>();
@@ -878,6 +899,26 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
 
         public void setText2(String text) {
             eatIt.setText(text);
+        }
+
+        public int YES_NO = 0, OK = 1;
+
+        protected void setChoiceMode(int mode) {
+            this.mode = mode;
+            revalidateButtons();
+        }
+
+        public void revalidateButtons() {
+            if (this.mode==YES_NO) {
+                buttons[0].setVisible(true);
+                buttons[1].setVisible(true);
+                buttons[2].setVisible(false);
+            }
+            else if (this.mode==OK) {
+                buttons[0].setVisible(false);
+                buttons[1].setVisible(false);
+                buttons[2].setVisible(true);
+            }
         }
 
         protected void notifyListeners(boolean confirmation) {
@@ -905,6 +946,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
             for (int i = 0; i < buttons.length; i++) {
                 buttons[i].setVisible(visibility);
             }
+            revalidateButtons();
             background.setVisible(visibility);
             diaText.setVisible(visibility);
             eatIt.setVisible(visibility);

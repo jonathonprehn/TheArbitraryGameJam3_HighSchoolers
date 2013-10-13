@@ -23,6 +23,7 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
 
     @Override
     public void handleEncounter(PartyWrapper partyWrapper, final PlayState gameState) {
+<<<<<<< HEAD
         gameState.askForConfirmation(new HunterDialog(gameState, partyWrapper));
     }
 
@@ -72,6 +73,13 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
         public void reactToKeyDown(KeyEvent keyEvent) {
             if (complete) {
                 return;
+=======
+        gameState.askForConfirmation(new ConfirmCommand() {
+            @Override
+            public void preCommandAction() {
+                gameState.setResourceDialogText("Hunters have appeared!");
+                gameState.setOtherResourceDialogText("");
+>>>>>>> 0390dad4338e3f71317adcd4fa8883213e9802aa
             }
             if (keyEvent.getKeyCode() == KeyEvent.VK_SPACE) {
                 if (spaceLastUp) {
@@ -101,8 +109,17 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
         private class CheckForCompletion extends TimerTask {
             private HunterDialog dialog;
 
+<<<<<<< HEAD
             public CheckForCompletion(HunterDialog dialog) {
                 this.dialog = dialog;
+=======
+            @Override
+            public void onYes() {gameState.setPressed(false);
+                gameState.setAsking(true);
+                gameState.setPressed(false);
+                gameState.setResourceDialogText("You have lost half your party!");
+                //Future             //I am not sure if that should be there or not
+>>>>>>> 0390dad4338e3f71317adcd4fa8883213e9802aa
             }
 
             public void run() {
@@ -116,6 +133,12 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
                     gameState.getRunner().changeState(new GameOverState("Lost to hunters"));
                 }
             }
+<<<<<<< HEAD
         }
+=======
+
+            public boolean isAChoice() { return false; }
+        });
+>>>>>>> 0390dad4338e3f71317adcd4fa8883213e9802aa
     }
 }

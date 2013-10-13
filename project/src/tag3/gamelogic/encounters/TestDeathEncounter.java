@@ -22,6 +22,7 @@ public class TestDeathEncounter implements RandomEncounter {
             @Override
             public void preCommandAction() {
                 gameState.setResourceDialogText("You can die, yes or no?");
+                gameState.setOtherResourceDialogText("");
             }
 
             @Override
@@ -33,6 +34,8 @@ public class TestDeathEncounter implements RandomEncounter {
             public void onNo() {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
+
+            public boolean isAChoice() { return false; }
         });
     }
 }
