@@ -268,13 +268,13 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         //Notifications and resources
         gameLabels = new ImageLabel[6];
         //Water
-        gameLabels[0] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/waterNotification.png"), 20, 160);
+        gameLabels[0] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/waterNotification.png"), 20, 200);
         gameLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/waterResource.png"), 20, 300);
         //Meat
-        gameLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/meatNotification.png"), 20, 160);
+        gameLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/meatNotification.png"), 20, 200);
         gameLabels[3] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/meatResource.png"), 20, 300);
         //Plant
-        gameLabels[4] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/plantNotification.png"), 20, 160);
+        gameLabels[4] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/plantNotification.png"), 20, 200);
         gameLabels[5] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/plantResource.png"), 20, 300);
 
         hideGameLabels();
@@ -344,11 +344,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         resourceDialog.addResourceListener(this);
 
         //Init scrolling backgrounds
-        backgrounds = new ScrollingBackground[3];
-        backgrounds[2] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 1);
-        backgrounds[1] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/treeBackground.png"), 0.7f);
+        backgrounds = new ScrollingBackground[4];
 
-        backgrounds[0] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/cloudBackground.png"), 0.2f);
+        backgrounds[3] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/gameBackground.png"), 0.8f);
+        backgrounds[2] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/treeBackground.png"), 0.3f);
+        backgrounds[1] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/hillBackground.png"), 0.15f);
+        backgrounds[0] = new ScrollingBackground(MediaLoader.quickLoadImage("play_state_images/cloudBackground.png"), 0.08f);
         backgrounds[0].setVerticalOffset(-80);
         for (int i=0; i<backgrounds.length; i++) {
             backgrounds[i].setScrolling(false);
@@ -453,7 +454,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
         graphics2D = (Graphics2D) bufferedImage.getGraphics();
-        graphics2D.setColor(Color.BLACK);
+        graphics2D.setColor(new Color(110, 210, 230));
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
 
         //Draw the game
