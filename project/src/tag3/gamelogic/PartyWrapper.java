@@ -242,6 +242,22 @@ public class PartyWrapper implements GameCalenderListener {
         randomEncounters.add(new MedicineManEncounter());
         randomEncounters.add(new LionTradeEncounter());
         randomEncounters.add(new HunterEncounter());
+
+        //Calcumalate the weight
+        totalWeight = 0;
+        for (int i=0; i<randomEncounters.size(); i++) {
+            totalWeight += randomEncounters.get(i).getChancePerHour();
+        }
+    }
+    //Does everyone a random encounter does, except for wrap it in this thing for giving it an interval for random events!
+    class RandomEncounterWrapper {
+
+        private int min, max;
+
+        RandomEncounter encounter;
+        public RandomEncounterWrapper(RandomEncounter encounter) {
+            this.encounter = encounter;
+        }
     }
 
     /*public void doRandomEncounter() {
@@ -253,6 +269,9 @@ public class PartyWrapper implements GameCalenderListener {
             }
         }
     }*/
+
+    //Variables and whatnot for random encounters
+    int totalWeight;
 
     public void doRandomEncounter() {
 
