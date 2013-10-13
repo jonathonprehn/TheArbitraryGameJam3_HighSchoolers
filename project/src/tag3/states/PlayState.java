@@ -280,17 +280,12 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         );
         //Graphic User Interface stuff initialed! (Whew!)
 
-        //Notifications and resources
-        gameLabels = new ImageLabel[6];
-        //Water
-        gameLabels[0] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/waterNotification.png"), 20, 200);
-        gameLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/waterResource.png"), 20, 300);
-        //Meat
-        gameLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/meatNotification.png"), 20, 200);
-        gameLabels[3] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/meatResource.png"), 20, 300);
-        //Plant
-        gameLabels[4] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/plantNotification.png"), 20, 200);
-        gameLabels[5] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/plantResource.png"), 20, 300);
+        //Resources
+        gameLabels = new ImageLabel[3];
+
+        gameLabels[0] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/waterResource.png"), 20, 300);
+        gameLabels[1] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/meatResource.png"), 20, 300);
+        gameLabels[2] = new ImageLabel(MediaLoader.quickLoadImage("notifications_and_resources/plantResource.png"), 20, 300);
 
         hideGameLabels();
 
