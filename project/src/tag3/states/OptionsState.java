@@ -100,7 +100,7 @@ public class OptionsState extends GameState {
             if (fullScreen) {
                 newConfig = new DisplayConfiguration(newWidth, newHeight, DisplayConfiguration.FULLSCREEN);
             } else {
-                newConfig = new DisplayConfiguration(newWidth, newHeight, DisplayConfiguration.STATIC_WINDOW);
+                newConfig = new DisplayConfiguration(newWidth, newHeight, DisplayConfiguration.STATIC_WINDOW, "The Wyoming Trail");
             }
             getDisplayer().setDisplayConfiguration(newConfig);
             getRunner().relinkDisplayer();
