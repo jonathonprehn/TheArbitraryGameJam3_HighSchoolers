@@ -128,6 +128,10 @@ public class PartyWrapper implements GameCalenderListener {
         hoursUntilNextFood--;
         hoursUntilNextWater--;
 
+        if (party.getSize() <= 0) {
+
+        }
+
     }
 
     public SupplyCollectPoint getResource() {
