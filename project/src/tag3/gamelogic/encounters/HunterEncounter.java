@@ -110,6 +110,7 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
             public void run() {
                 if (this.dialog.remainingToggles <= 0) {
                     System.out.println("You made it");
+                    gameState.setOtherResourceDialogText("");
                     gameState.askForConfirmation(new ConfirmCommand() {
                         @Override
                         public void preCommandAction() {
@@ -148,6 +149,7 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
                     dialog.setComplete();
                 } else {
                     System.out.println("You didn't make it.");
+                    gameState.setOtherResourceDialogText("");
                     gameState.getRunner().changeState(new GameOverState("Lost to hunters"));
                 }
             }
