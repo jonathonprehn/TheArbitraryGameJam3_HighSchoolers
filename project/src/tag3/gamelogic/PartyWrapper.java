@@ -262,11 +262,12 @@ public class PartyWrapper implements GameCalenderListener {
         //Calcumalate the weight
         totalWeight = 0;
         for (int i=0; i<randomEncounters.size(); i++) {
-            randomEncounters.get(i).assignInterval(totalWeight, (int)randomEncounters.get(i).getEncounter().getChancePerHour());
+            randomEncounters.get(i).assignInterval(totalWeight, totalWeight+(int)randomEncounters.get(i).getEncounter().getChancePerHour());
+            System.out.println("Interval set (" + totalWeight + " to " + (int)(totalWeight+(int)randomEncounters.get(i).getEncounter().getChancePerHour()) +  ")");
             totalWeight = totalWeight + (int)randomEncounters.get(i).getEncounter().getChancePerHour();
         }
         //Add buffer so that encounters don't happen every second of your life
-        totalWeight = (totalWeight*8);
+        totalWeight = (totalWeight*6);
     }
     //Does everyone a random encounter does, except for wrap it in this thing for giving it an interval for random events!
     class RandomEncounterWrapper {
@@ -310,6 +311,7 @@ public class PartyWrapper implements GameCalenderListener {
         boolean alreadyHappened = false;
         int randomNum = (int)(Math.random()*totalWeight);
         for (int i=0; i<randomEncounters.size(); i++) {
+            System.out.println("The random number is "+randomNum);
             if (randomEncounters.get(i).IsInInterval(randomNum)) {
                 if (alreadyHappened) {
                     System.out.println("FATAL ERROR: More than 1 encounter occurred! (not suppose to happen!)");
