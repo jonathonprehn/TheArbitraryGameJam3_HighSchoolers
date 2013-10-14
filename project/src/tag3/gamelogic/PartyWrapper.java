@@ -258,7 +258,7 @@ public class PartyWrapper implements GameCalenderListener {
         totalWeight = 0;
         for (int i=0; i<randomEncounters.size(); i++) {
             randomEncounters.get(i).assignInterval(totalWeight, (int)randomEncounters.get(i).getEncounter().getChancePerHour());
-            totalWeight += randomEncounters.get(i).getEncounter().getChancePerHour();
+            totalWeight = totalWeight + (int)randomEncounters.get(i).getEncounter().getChancePerHour();
         }
         //Add buffer so that encounters don't happen every second of your life
         totalWeight = (totalWeight*8);
