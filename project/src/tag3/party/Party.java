@@ -100,7 +100,7 @@ public class Party {
         // -20% morale per day of no water
         int noWaterMod = 0;
         if (waterSupply.size() == 0) {
-            noWaterMod = -(int)(daysWithNoWater*20.0);
+            noWaterMod = -(int)(daysWithNoWater*16.0);
         }
 
         if (temporaryMoraleModifier > 20) {
@@ -118,8 +118,8 @@ public class Party {
         this.morale = (int)((this.getNumberOfNonDiseased()*0.3) + sleepMod + noFoodMod + noWaterMod
             + temporaryMoraleModifier);
 
-        // 15% diseased animal amount - 1% per llama - 1/4 morale percent
-        this.diseaseModifier = (int)(-morale/4.0) + (int)(getNumberOfDiseased()*0.15) - (int)(getNumLlama());
+        // 15% diseased animal amount - 1.5% per llama - 1/10 morale percent
+        this.diseaseModifier = (int)(-morale/10.0) + (int)(getNumberOfDiseased()*0.1) - (int)(getNumLlama()*1.5);
 
         this.walkingPace = 1.5 + (morale/100.0) - (getNumberOfDiseased()/100.0);
         if (this.walkingPace < 0.1) {
@@ -133,11 +133,11 @@ public class Party {
 
         // 50% base with each animal adding 2%, each diseased animal subtracting 1% + morale percent
         // minimum 10% collection and hunting rate
-        this.huntingSuccess = 40 + (numLion) - (int)(numDiseasedLion) + (morale/2);
+        this.huntingSuccess = 50 + (numLion) - (int)(numDiseasedLion) + (morale/2);
         if (huntingSuccess < 10) {
             huntingSuccess = 10;
         }
-        this.collectingSuccess = 40 + (numGiraffe) - (int)(numDiseasedGiraffe) + (morale/2);
+        this.collectingSuccess = 50 + (numGiraffe) - (int)(numDiseasedGiraffe) + (morale/2);
         if (collectingSuccess < 10) {
             collectingSuccess = 10;
         }
