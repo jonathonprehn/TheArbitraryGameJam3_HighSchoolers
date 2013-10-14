@@ -73,6 +73,6 @@ public class MediaLoader {
     }
 
     public static void quickPlaySound(String name) {
-        getLoadedSound(name).play();
+        quickLoadSound(name).play();
     }
 }

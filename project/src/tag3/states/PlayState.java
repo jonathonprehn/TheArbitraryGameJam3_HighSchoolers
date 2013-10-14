@@ -345,6 +345,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                 centerWidth + 100, centerHeight - 100, new GenericButtonListener() {
             @Override
             public void buttonPushed() {
+                MediaLoader.getLoadedSound("sleep").stop();
                 sleepIndicator.forceEndTimer();
             }
         }
@@ -397,9 +398,10 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         postConfirmBox.setVisible(false);
 
         //Init sounds
-        if (MediaLoader.getLoadedSound("walking")==null) {
-            MediaLoader.permanentLoadSound("walking_sound.wav", "walking");
-        }
+        MediaLoader.permanentLoadSound("walking_sound.wav", "walking");
+        MediaLoader.permanentLoadSound("drink_sound.wav", "drink");
+        MediaLoader.permanentLoadSound("sleep_sound.wav", "sleep");
+        MediaLoader.permanentLoadSound("eat_sound.wav", "eat");
     }
 
     public void showPostConfirmBox(String text) {
@@ -766,6 +768,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         public void buttonPushed() {
             int beforeMoral = partyWrapper.getRawParty().getMorale();
             int afterMoral;
+            MediaLoader.getLoadedSound("sleep").play();
             partyWrapper.getRawParty().sleep();
             afterMoral = partyWrapper.getRawParty().getMorale();
             int deltaMoral = afterMoral-beforeMoral;
@@ -875,6 +878,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         @Override
         public void toggleChanged(boolean valueSetTo) {
             partyWrapper.setMoving(valueSetTo);
+
         }
     }
 

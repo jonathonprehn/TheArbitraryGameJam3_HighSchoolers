@@ -37,6 +37,8 @@ public class GameOverState extends GameState implements KeyDownListener, MouseDo
 
         getInput().addKeyDownListener(this);
         getInput().addMouseDownListener(this);
+
+        MediaLoader.quickPlaySound("lose_sound.wav");
     }
 
     @Override

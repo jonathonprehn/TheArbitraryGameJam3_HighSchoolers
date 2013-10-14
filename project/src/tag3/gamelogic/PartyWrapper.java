@@ -59,7 +59,7 @@ public class PartyWrapper implements GameCalenderListener {
         this.moving = moving;
         calender.setCounting(moving);
         state.setBackgroundScrolling(moving);
-        if (isMoving()) { //Walking!
+        if (moving) { //Walking!
             MediaLoader.getLoadedSound("walking").loop();
         } else {
             MediaLoader.getLoadedSound("walking").stop();
@@ -160,6 +160,7 @@ public class PartyWrapper implements GameCalenderListener {
                 public void onYes() {
                     givePartyResources();
                     text = "Your party took the food.";
+                    MediaLoader.getLoadedSound("eat").play();
                     state.setResourceDialogText("");
                     state.setOtherResourceDialogText("");
                 }
@@ -198,6 +199,7 @@ public class PartyWrapper implements GameCalenderListener {
                 public void onYes() {
                     givePartyResources();
                     text = "Your party drank the water.";
+                    MediaLoader.getLoadedSound("drink").play();
                     state.setResourceDialogText("");
                     state.setOtherResourceDialogText("");
                 }
