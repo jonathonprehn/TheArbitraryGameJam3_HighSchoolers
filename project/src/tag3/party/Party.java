@@ -440,7 +440,7 @@ public class Party {
         for (int i=0; i<this.numDiseasedLion; i++) {
             if (RandomChance.rollForChance(diseaseKillChance))  {
                 this.numDiseasedLion--;
-                addTemporaryMorale(-10);
+                addTemporaryMorale(-7);
             }
         }
 
@@ -448,7 +448,7 @@ public class Party {
         for (int i=0; i<this.numDiseasedGiraffe; i++) {
             if (RandomChance.rollForChance(diseaseKillChance))  {
                 this.numDiseasedGiraffe--;
-                addTemporaryMorale(-10);
+                addTemporaryMorale(-7);
             }
         }
 
@@ -456,7 +456,7 @@ public class Party {
         for (int i=0; i<this.numDiseasedLlama; i++) {
             if (RandomChance.rollForChance(diseaseKillChance))  {
                 this.numDiseasedLlama--;
-                addTemporaryMorale(-10);
+                addTemporaryMorale(-7);
             }
         }
     }
