@@ -30,7 +30,7 @@ public class LionTradeEncounter implements RandomEncounter {
                 accepted = false;
 
                 gameState.setResourceDialogText("A party of "+lionAmount+" lions offer to join you if");
-                gameState.setOtherResourceDialogText("you let them eat half of your healthy llamas");
+                gameState.setOtherResourceDialogText("you let them eat half of your healthy llamas.");
             }
 
             @Override

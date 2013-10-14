@@ -47,8 +47,8 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
         }
 
         public void preCommandAction() {
-            gameState.setOtherResourceDialogText("Hunters have appeared!");
-            gameState.setResourceDialogText("JAM SPACE!!!!");
+            gameState.setResourceDialogText("Hunters have appeared!");
+            gameState.setOtherResourceDialogText("TAP SPACE TO RUN AWAY");
 
             gameState.getInput().addKeyDownListener(this);
             gameState.getInput().addKeyUpListener(this);

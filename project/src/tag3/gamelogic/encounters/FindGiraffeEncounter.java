@@ -30,7 +30,7 @@ public class FindGiraffeEncounter implements RandomEncounter {
                 accepted = false;
 
                 gameState.setResourceDialogText("You have found "+amount+" stray giraffes");
-                gameState.setOtherResourceDialogText("Would you like to add them to your party");
+                gameState.setOtherResourceDialogText("Would you like to add them to your party?");
             }
 
             @Override
