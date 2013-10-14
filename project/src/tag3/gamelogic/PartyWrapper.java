@@ -153,7 +153,9 @@ public class PartyWrapper implements GameCalenderListener {
 
                 @Override
                 public void preCommandAction() {
-                    state.setResourceDialogText("You have found " + state.qualityToText(getResource().getQuality()) + " " + state.resourceTypeToText(getResource()) + ".");
+                    state.setResourceDialogText("You have found " + state.qualityToText(getResource().getQuality()) + " "
+                            + state.resourceTypeToText(getResource()) + ".");
+                    state.setOtherResourceDialogText("Collect it?");
                 }
 
                 @Override
@@ -191,7 +193,9 @@ public class PartyWrapper implements GameCalenderListener {
                 private String text = "";
                 @Override
                 public void preCommandAction() {
-                    state.setResourceDialogText("You have found " + state.qualityToText(getResource().getQuality()) + " " + state.resourceTypeToText(getResource()) + ".");
+                    state.setResourceDialogText("You have found " + state.qualityToText(getResource().getQuality()) + " "
+                            + state.resourceTypeToText(getResource()) + ".");
+                    state.setOtherResourceDialogText("Collect it?");
                 }
 
                 @Override

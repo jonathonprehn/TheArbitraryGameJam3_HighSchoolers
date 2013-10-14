@@ -139,11 +139,6 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
                             return "";
                         }
                     });
-                    try {
-                        Thread.sleep(500);
-                        // Get their wits about them.
-                    } catch (InterruptedException e) {
-                    }
                     partyWrapper.setMoving(false);
                     gameState.setAsking(false);
                     gameState.setPressed(true);
