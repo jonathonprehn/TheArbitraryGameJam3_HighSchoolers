@@ -1,9 +1,6 @@
 package tag3.gamelogic;
 
-import tag3.gamelogic.encounters.HunterEncounter;
-import tag3.gamelogic.encounters.LionTradeEncounter;
-import tag3.gamelogic.encounters.MedicineManEncounter;
-import tag3.gamelogic.encounters.RandomEncounter;
+import tag3.gamelogic.encounters.*;
 import tag3.media.MediaLoader;
 import tag3.party.Party;
 import tag3.party.food.Food;
@@ -258,6 +255,8 @@ public class PartyWrapper implements GameCalenderListener {
         randomEncounters.add(new RandomEncounterWrapper(new MedicineManEncounter()));
         randomEncounters.add(new RandomEncounterWrapper(new LionTradeEncounter()));
         randomEncounters.add(new RandomEncounterWrapper(new HunterEncounter()));
+        randomEncounters.add(new RandomEncounterWrapper(new FindGiraffeEncounter()));
+        randomEncounters.add(new RandomEncounterWrapper(new FindLlamaEncounter()));
 
         //Calcumalate the weight
         totalWeight = 0;

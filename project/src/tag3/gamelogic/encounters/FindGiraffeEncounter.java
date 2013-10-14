@@ -8,12 +8,12 @@ import tag3.states.PlayState;
  * Created with IntelliJ IDEA.
  * User: Owner
  * Date: 10/13/13
- * Time: 4:43 PM
+ * Time: 8:25 PM
  * To change this template use File | Settings | File Templates.
  */
-public class LionTradeEncounter implements RandomEncounter {
+public class FindGiraffeEncounter implements RandomEncounter {
 
-    int lionAmount;
+    int amount;
     boolean accepted;
 
     @Override
@@ -26,18 +26,17 @@ public class LionTradeEncounter implements RandomEncounter {
         gameState.askForConfirmation(new ConfirmCommand() {
             @Override
             public void preCommandAction() {
-                lionAmount = 10+(int)(Math.random()*5);
+                amount = 5+(int)(Math.random()*20);
                 accepted = false;
 
-                gameState.setResourceDialogText("A party of "+lionAmount+" lions offer to join you if");
-                gameState.setOtherResourceDialogText("you let them eat half of your healthy llamas");
+                gameState.setResourceDialogText("You have found "+amount+" stray giraffes");
+                gameState.setOtherResourceDialogText("Would you like to add them to your party");
             }
 
             @Override
             public void onYes() {
                 accepted = true;
-                partyWrapper.getRawParty().quietRemoveLlama((int)(partyWrapper.getRawParty().getNumLlama()/2.0));
-                partyWrapper.getRawParty().quietAddLion(lionAmount);
+                partyWrapper.getRawParty().addGiraffe(amount);
             }
 
             @Override
@@ -54,9 +53,9 @@ public class LionTradeEncounter implements RandomEncounter {
             public String afterChoiceText() {
                 String message;
                 if (accepted) {
-                    message = "You have gained "+lionAmount+" lions";
+                    message = "You have gained "+amount+" giraffes";
                 } else {
-                    message = "You have refused their offer";
+                    message = "You ignored the giraffes";
                 }
                 return message;
             }
