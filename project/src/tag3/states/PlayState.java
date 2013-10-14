@@ -928,7 +928,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
                     boxX + 70, boxY + 120, new YesDialogListener()
             );
             diaText = makeInfoText("", boxX+30, boxY + 40);
-            eatIt = makeInfoText("Consume it?", boxX+60, boxY + 70);
+            eatIt = makeInfoText("Consume it?", boxX+30, boxY + 70);
             listeners = new ArrayList<ResourceDialogListener>();
         }
 
