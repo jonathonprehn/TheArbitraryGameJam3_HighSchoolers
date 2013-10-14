@@ -3,6 +3,7 @@ package tag3.states;
 import horsentp.gamelogic.GameState;
 import tag3.gui.GenericButtonListener;
 import tag3.gui.ImageButton;
+import tag3.gui.ImageLabel;
 import tag3.media.MediaLoader;
 import tag3.utility.GraphicsFactory;
 
@@ -19,6 +20,7 @@ import java.awt.image.BufferedImage;
 public class HelpState extends GameState {
 
     private ImageButton backButton;
+    private ImageLabel background;
 
     @Override
     public void updateLogic() {
@@ -39,6 +41,8 @@ public class HelpState extends GameState {
                     }
                 }
         );
+
+        background = new ImageLabel(MediaLoader.quickLoadImage("help/page1.png"), 0, 0);
     }
 
     @Override
@@ -46,6 +50,7 @@ public class HelpState extends GameState {
         graphics2D = (Graphics2D)bufferedImage.getGraphics();
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
+        bufferedImage = background.render(bufferedImage, graphics2D);
 
         bufferedImage = backButton.render(bufferedImage, graphics2D);
 
