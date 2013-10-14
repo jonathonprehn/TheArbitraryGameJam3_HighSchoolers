@@ -19,7 +19,7 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
     @Override
     public double getChancePerHour() {
         // TODO: Create hunters
-        return 0;
+        return 8;
     }
 
     @Override
