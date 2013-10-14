@@ -17,7 +17,7 @@ public class MainStartUp {
         GraphicsFactory.getFactory().initFactory(runner.getDisplayer(), runner.getInput());
         runner.startGame();    ///Don't forget to change the state!
         runner.setDebugging(false);
-        runner.changeState(new WinGameState());
+        runner.changeState(new MainMenuState());
         //For final version
         //Run the program with "javaw" instead of "java" (How to do that?)
     }

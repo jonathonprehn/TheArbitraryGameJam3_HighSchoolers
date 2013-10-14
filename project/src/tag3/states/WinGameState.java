@@ -2,6 +2,7 @@ package tag3.states;
 
 import horsentp.gamelogic.GameState;
 import horsentp.input.KeyDownListener;
+import tag3.MainStartUp;
 import tag3.gui.ImageLabel;
 import tag3.media.MediaLoader;
 
@@ -35,7 +36,7 @@ public class WinGameState extends GameState {
 
     @Override
     public void initState() {
-        millisecondsBetween = 2000;
+        millisecondsBetween = 2300;
         winImages = new BufferedImage[]{
                 MediaLoader.quickLoadImage("welcome/welcome0.png"),
                 MediaLoader.quickLoadImage("welcome/welcome1.png"),
@@ -55,6 +56,25 @@ public class WinGameState extends GameState {
     @Override
     public BufferedImage render(BufferedImage bufferedImage, Graphics2D graphics2D) {
         bufferedImage = currentImage.render(bufferedImage, graphics2D);
+        Graphics g2 = (Graphics2D) bufferedImage.getGraphics();
+        g2.setColor(Color.WHITE);
+        g2.fillRect(0, 540, 800, 60);
+        g2.setColor(new Color(50, 50, 50));
+
+        Font infoFont;
+        // load the font
+        String fontPath = "fonts/ERASMD.TTF";
+        try {
+            infoFont = Font.createFont(Font.TRUETYPE_FONT, MainStartUp.class.getResourceAsStream("assets/" + fontPath));
+            infoFont = infoFont.deriveFont(15.0f);
+            System.out.println("Loaded font: " + fontPath + "");
+            g2.setFont(infoFont);
+        } catch(Exception e) {
+            System.out.println("Unable to load Font: " + fontPath + "");
+            e.printStackTrace();
+        }
+
+        g2.drawString("Congratulations on making it to Wyoming! We welcomes you! (Press any key to go to the main menu)", 30, 560);
         return bufferedImage;
     }
 
