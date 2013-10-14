@@ -402,6 +402,7 @@ public class PlayState extends GameState implements KeyDownListener, ResourceDia
         MediaLoader.permanentLoadSound("drink_sound.wav", "drink");
         MediaLoader.permanentLoadSound("sleep_sound.wav", "sleep");
         MediaLoader.permanentLoadSound("eat_sound.wav", "eat");
+        MediaLoader.permanentLoadSound("hunters_sound.wav", "hunters");
     }
 
     public void showPostConfirmBox(String text) {

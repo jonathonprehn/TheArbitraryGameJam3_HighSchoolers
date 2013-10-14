@@ -4,6 +4,7 @@ import horsentp.input.KeyDownListener;
 import horsentp.input.KeyUpListener;
 import tag3.gamelogic.ConfirmCommand;
 import tag3.gamelogic.PartyWrapper;
+import tag3.media.MediaLoader;
 import tag3.states.GameOverState;
 import tag3.states.PlayState;
 
@@ -54,14 +55,18 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
 
             Timer timer = new Timer();
             timer.schedule(new CheckForCompletion(this), 2000);
+
+            MediaLoader.getLoadedSound("hunters").play();
         }
 
         @Override
         public void onYes() {
+            MediaLoader.getLoadedSound("hunters").stop();
         }
 
         @Override
         public void onNo() {
+            MediaLoader.getLoadedSound("hunters").stop();
         }
 
         public synchronized void setComplete() {
@@ -110,12 +115,14 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
             public void run() {
                 if (this.dialog.remainingToggles <= 0) {
                     System.out.println("You made it");
+                    MediaLoader.getLoadedSound("hunters").stop();
                     gameState.setOtherResourceDialogText("");
                     gameState.askForConfirmation(new ConfirmCommand() {
                         @Override
                         public void preCommandAction() {
                             gameState.setOtherResourceDialogText("Success");
                             gameState.setResourceDialogText("You escaped from the hunters!");
+                            MediaLoader.getLoadedSound("hunters").stop();
                         }
 
                         @Override
@@ -144,6 +151,7 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
                     dialog.setComplete();
                 } else {
                     System.out.println("You didn't make it.");
+                    MediaLoader.getLoadedSound("hunters").stop();
                     gameState.setOtherResourceDialogText("");
                     gameState.getRunner().changeState(new GameOverState("Lost to hunters"));
                 }
