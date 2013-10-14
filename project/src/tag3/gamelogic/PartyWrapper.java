@@ -49,7 +49,7 @@ public class PartyWrapper implements GameCalenderListener {
     private boolean choseConfirmation;
     private List<RandomEncounterWrapper> randomEncounters = new ArrayList<RandomEncounterWrapper>();
 
-    private int distanceFromWyoming = 500;
+    private int distanceFromWyoming = 300;
 
     public boolean isMoving() {
         return moving;
