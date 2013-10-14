@@ -6,6 +6,7 @@ import horsentp.gamelogic.GameRunner;
 import tag3.media.MediaLoader;
 import tag3.states.GameOverState;
 import tag3.states.MainMenuState;
+import tag3.states.WinGameState;
 import tag3.utility.GraphicsFactory;
 
 public class MainStartUp {
@@ -16,7 +17,7 @@ public class MainStartUp {
         GraphicsFactory.getFactory().initFactory(runner.getDisplayer(), runner.getInput());
         runner.startGame();    ///Don't forget to change the state!
         runner.setDebugging(false);
-        runner.changeState(new MainMenuState());
+        runner.changeState(new WinGameState());
         //For final version
         //Run the program with "javaw" instead of "java" (How to do that?)
     }
