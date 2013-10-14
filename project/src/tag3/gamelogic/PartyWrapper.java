@@ -12,6 +12,7 @@ import tag3.party.food.Water;
 import tag3.party.supplycollection.SupplyCollectPoint;
 import tag3.states.GameOverState;
 import tag3.states.PlayState;
+import tag3.states.WinGameState;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -241,6 +242,10 @@ public class PartyWrapper implements GameCalenderListener {
 
         if (party.getSize() <= 0) {
             state.getRunner().changeState(new GameOverState("You have run out of animals."));
+        }
+
+        if (party.getDistanceTraveled() > getDistanceFromWyoming()) {
+            state.getRunner().changeState(new WinGameState());
         }
     }
 

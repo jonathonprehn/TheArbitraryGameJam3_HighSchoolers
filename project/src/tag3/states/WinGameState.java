@@ -22,6 +22,8 @@ public class WinGameState extends GameState {
     BufferedImage[] winImages;
     ImageLabel currentImage;
 
+    Font infoFont;
+
     @Override
     public void updateLogic() {
         if (System.currentTimeMillis() > lastTime+millisecondsBetween) {
@@ -48,9 +50,21 @@ public class WinGameState extends GameState {
             };
 
         currentImage = new ImageLabel(winImages[imageOn], 0, 0);
-        lastTime = System.currentTimeMillis();
+
+        // load the font
+        String fontPath = "fonts/ERASMD.TTF";
+        try {
+            infoFont = Font.createFont(Font.TRUETYPE_FONT, MainStartUp.class.getResourceAsStream("assets/" + fontPath));
+            infoFont = infoFont.deriveFont(15.0f);
+            System.out.println("Loaded font: " + fontPath + "");
+        } catch(Exception e) {
+            System.out.println("Unable to load Font: " + fontPath + "");
+            e.printStackTrace();
+        }
 
         getInput().addKeyDownListener(new ReturnToMainMenu());
+
+        lastTime = System.currentTimeMillis();
     }
 
     @Override
@@ -60,21 +74,8 @@ public class WinGameState extends GameState {
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 540, 800, 60);
         g2.setColor(new Color(50, 50, 50));
-
-        Font infoFont;
-        // load the font
-        String fontPath = "fonts/ERASMD.TTF";
-        try {
-            infoFont = Font.createFont(Font.TRUETYPE_FONT, MainStartUp.class.getResourceAsStream("assets/" + fontPath));
-            infoFont = infoFont.deriveFont(15.0f);
-            System.out.println("Loaded font: " + fontPath + "");
-            g2.setFont(infoFont);
-        } catch(Exception e) {
-            System.out.println("Unable to load Font: " + fontPath + "");
-            e.printStackTrace();
-        }
-
         g2.drawString("Congratulations on making it to Wyoming! We welcomes you! (Press any key to go to the main menu)", 30, 560);
+        g2.setFont(infoFont);
         return bufferedImage;
     }
 
