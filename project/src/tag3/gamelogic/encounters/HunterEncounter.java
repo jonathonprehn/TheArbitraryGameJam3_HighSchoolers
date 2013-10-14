@@ -111,6 +111,7 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
             public void run() {
                 if (this.dialog.remainingToggles <= 0) {
                     System.out.println("You made it");
+                    gameState.setOtherResourceDialogText("");
                     gameState.askForConfirmation(new ConfirmCommand() {
                         @Override
                         public void preCommandAction() {
@@ -138,17 +139,13 @@ public class HunterEncounter implements RandomEncounter, KeyDownListener{
                             return "";
                         }
                     });
-                    try {
-                        Thread.sleep(500);
-                        // Get their wits about them.
-                    } catch (InterruptedException e) {
-                    }
                     partyWrapper.setMoving(false);
                     gameState.setAsking(false);
                     gameState.setPressed(true);
                     dialog.setComplete();
                 } else {
                     System.out.println("You didn't make it.");
+                    gameState.setOtherResourceDialogText("");
                     gameState.getRunner().changeState(new GameOverState("Lost to hunters"));
                 }
             }
