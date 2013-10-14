@@ -18,7 +18,8 @@ import java.util.TimerTask;
 public class HunterEncounter implements RandomEncounter, KeyDownListener{
     @Override
     public double getChancePerHour() {
-        return 20;
+        // TODO: Create hunters
+        return 0;
     }
 
     @Override
